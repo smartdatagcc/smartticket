@@ -49,3 +49,4 @@ Thumbs.db
 # Built deployment files
 *.zip
 prod-build/*
+server/env.json 
