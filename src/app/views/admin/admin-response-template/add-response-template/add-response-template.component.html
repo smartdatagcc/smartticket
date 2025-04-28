@@ -1,0 +1,51 @@
+<div class="col-sm-12 model">
+    <div class="model-header">
+        <h2>
+            Add Response Template
+            <button type="button" class="close outline-none" (click)="onDismiss()">&times;</button>
+        </h2>
+    </div>
+    <div class="model-body">
+        <form name="addResponseTemplateControlForm" #addResponseTemplateControlForm="ngForm" >
+            <div class="row nomargin bodycontainer">
+                <div class="form-group col-md-12 nopadding nomargin body_content" >
+                    <label class="control-label"  [ngClass]="{ 'invalid': responsetemplatesubmitted && labelControl.invalid}"
+                    >Name/Title*</label>
+                    <input type="text" [(ngModel)]="newControl.name" name="label" #labelControl="ngModel"
+                        [ngClass]="{ 'is-invalid': responsetemplatesubmitted &&  labelControl.invalid}"
+                        oninput="this.value = this.value.replace(/[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}|^ /g,'')"
+                        trim="blur" class="form-control col-md-12" maxLength="100" required />
+                    <span style="color:red" class="help-block"
+                        *ngIf="responsetemplatesubmitted && labelControl.invalid">
+                        Name/Title is Required
+                    </span>
+                </div>
+                <div class="form-group col-md-12 nopadding nomargin body_content">
+                    <label class="control-label" [ngClass]="{ 'invalid': responsetemplatesubmitted && (editorControl.value == null || editorControl.value.length <= 0 || editorControl.value.length >= 5000)}">Content*</label>
+                    <editor name="content" maxLength=5000 [(ngModel)]="newControl.content"
+                        [ngClass]="{ 'is-invalid': responsetemplatesubmitted && (editorControl.value == null || editorControl.value.length <= 0 || editorControl.value.length >= 5000) }"
+                        #editorControl="ngModel" required="required" required [init]="tinyMceConfig"></editor>
+                    <div *ngIf="responsetemplatesubmitted &&  editorControl.invalid"
+                        [ngClass]="{ 'invalid': responsetemplatesubmitted &&  editorControl.invalid  }">
+                        <div *ngIf="responsetemplatesubmitted && editorControl.value.length >= 5000 ">
+                            <span>Content must not exceed 5000</span>
+                        </div>
+                    </div>
+                    <span style="color:red" class="help-block"
+                        *ngIf="responsetemplatesubmitted && (editorControl.value == null || editorControl.value.length <= 0)">
+                        Content is Required
+                    </span>
+                </div>
+                <div class="add-option-error body_content" *ngIf="newMessage">
+                    {{newMessage}}
+                </div>
+            </div>
+            
+            <div  align="end" class="footer">
+                <button class="btn btn-primary"
+                (click)="addResponseTemplateControl(addResponseTemplateControlForm)" type="submit">Add</button>
+                <button class="btn btn-default" type="button" (click)="onDismiss()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

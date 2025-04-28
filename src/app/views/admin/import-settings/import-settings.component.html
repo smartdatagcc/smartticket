@@ -1,0 +1,62 @@
+<div id="import-users" class="ImportUsers">
+    <section class="content" style="padding-top: 10px;">
+        <div class="row">
+            <div class="col-xl-6 col-lg-10 col-md-12">
+                <div class="card card-theme">
+                    <div class="card-header with-border">
+                        <h3 class="card-title">Export Settings</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <button type="button" class="btn btn-primary" (click)="download()">Export as JSON...</button>
+                    </div>
+                </div>
+                <div class="card card-theme">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"> Import Settings</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="mt5 mb15">
+                            <label>Keep existing forms, tickets and custom fields? </label><br />
+                            <div class="alert alert-danger mb5" *ngIf="clearExisting">
+
+                                <h4><i class="icon fa fa-info"></i> This will remove data from this tenant!</h4>
+                                <p>ALL EXISTING TICKETS, FORMS, AND CUSTOM FIELDS WILL BE REMOVED!</p>
+
+                            </div>
+                            <mat-slide-toggle class="danger" style="margin: 1em;" [(ngModel)]="clearExisting"
+                                name="clearExisting">
+                                {{clearExisting ? 'Delete' : 'Keep'}}
+                            </mat-slide-toggle>
+
+                        </div>
+
+
+                        <form #tenantAdminForm="ngForm" name="tenantAdminForm" (ngSubmit)="bulkImport(tenantAdminForm)"
+                            form-unsaved novalidate>
+                            <div class="col-md-6">
+                                <label>Select JSON file * </label>
+                                <input #inputFile type="file" name="fileupload" (click)="inputFile.value = null"
+                                    required accept="application/JSON" (change)="onFileChange($event)" />
+                            </div>
+                            <div class="importbutton">
+                                <button type="submit" class="btn btn-primary pull-right">Start Import</button>
+                            </div>
+                            
+                        </form>
+
+                        <mat-tab-group animationDuration="0ms" [color]="'transparent'">
+                            <mat-tab label="Example JSON">
+                                <pre>{{[example] | json}}</pre>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+</div>

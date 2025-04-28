@@ -1,0 +1,28 @@
+#profile {
+
+    .table > tbody > tr > td.p0{
+        padding: 0;
+    }
+    .card-widget {
+        border: none!important;
+        .widget-user-header{
+            text-align: left;
+        }
+    }
+   
+    .card-footer{
+        padding-top: 30px;
+        border-top: 1px solid #f4f4f4;
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 0 0 3px 3px;
+    }
+}
+
+h2{
+    margin: 0;
+}
+.table th, .table td {
+    border: transparent;
+    border-top: 1px solid #f4f4f4;
+}

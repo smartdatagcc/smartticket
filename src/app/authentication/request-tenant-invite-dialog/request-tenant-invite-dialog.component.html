@@ -1,0 +1,38 @@
+<div class="col-md-12 col-xs-12">
+  <div class="model-header">
+    <h2>
+      <span class="close" (click)="onDismiss()">&times;</span>
+      Request an Invite to SmartTicket</h2>
+  </div>
+  <form ngNoForm  ngNativeValidate  name="emailForm" action="https://getsmartticket.com:443/public-api/1003/tickets"  method='post'
+    class="sign-up-form">
+    <div class="model-body">
+      <p>Join now and receive personalized help setting up and using SmartTicket, as well as direct access to our
+        product team for any enhancements or issues.</p>
+      <input type="hidden" name="ApiKey" value="498d6ae8c3668efda6f187631726aaf2" />
+      <input type="hidden" name="FormId" value="167" />
+      <input type="hidden" name="SuccessUrl"
+        value="http://help.getsmartticket.com/wordpress/forms/success/?id=invite-request" />
+      <input type="hidden" name="ErrorUrl"
+        value="http://help.getsmartticket.com/wordpress/forms/error/?id=invite-request" />
+      <div class="form-group">
+        <form-field label="Name" is-required="true">
+          <label class="control-label required" for="name">Name:</label>
+          <input type="text" name="requesterName" form-control class="form-control" required/>
+        </form-field>
+      </div>
+
+
+      <div class="form-group">
+        <form-field label="Email" is-required="true">
+          <label class="control-label required" for="email">Email:</label>
+          <input type="email" name="requesterEmail" form-control class="form-control" required/>
+        </form-field>
+      </div>
+    </div>
+    <div class="model-footer text-right">
+      <button type="submit" class="btn btn-primary" >Request an Invite or Demo</button>
+      <button class="btn btn-default" (click)="onDismiss()">Cancel</button>
+    </div>
+  </form>
+</div>

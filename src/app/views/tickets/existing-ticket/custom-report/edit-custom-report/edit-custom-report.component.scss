@@ -1,0 +1,36 @@
+.add-option-error {
+    color: #a94442;
+    font-weight: bold;
+  }
+ 
+  .model {
+    padding: 0;
+    .model-header{
+      border-bottom-color: #f4f4f4;
+      border-bottom: 1px solid #f4f4f4;
+      h2{
+        padding: 0;
+        margin: 0;
+      }
+    }
+    .model-body{
+      .nopadding{
+        padding: 0;
+      }
+      .nomargin{
+        margin: 0;
+      }
+      .bodycontainer{
+        border-bottom: 1px solid #f4f4f4;
+        .body_content{
+          padding:15px;
+        }
+      }
+     .footer{
+      padding: 15PX;
+      button{
+        margin-left: 15px;
+      }
+     }
+    }
+  }

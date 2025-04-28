@@ -1,0 +1,139 @@
+<!--<h1>Custom Form Fields</h1>-->
+<div style="padding-top: 10px;">
+    <!-- left column -->
+    <div class="card card-theme">
+        <!-- general form elements -->
+
+        <div class="card-header">
+            <h2 class="card-title" style="padding-left: 10px;"> Create New Form</h2>
+        </div><!-- /.card-header -->
+
+        <div class="card-body">
+
+            <form #addForm="ngForm" name="addForm" (ngSubmit)="saveForm(addForm)">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger mb20" *ngIf="submitted">
+                            <p><i class="icon fa fa-warning" *ngIf="message"></i> {{message}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" [class.has-error]="formName.invalid && formName.touched">
+                    <label class="control-label">Form Name:</label>
+                    <input type="text" [(ngModel)]="form.name" name="name" maxlength="50" #formName="ngModel"
+                        class="form-control" required
+                        oninput="this.value = this.value.replace(/[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}|^ /g,'')" trim="blur" />
+                    <span style="color:red" class="help-block" *ngIf="formName.errors?.required && formName.touched">
+                        Form Name is Required
+                    </span>
+                    <span *ngIf="formExists" class="help-block" style="color: red;"> Form with this name already
+                        exists. </span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Form Access:</label>
+                    <div class="panel-body">
+                        <table class="table table-hover" *ngIf="forms != undefined">
+                            <tbody>
+                                <tr>
+                                    <th>Role</th>
+                                    <th title="Can view and create tickets">Can View/Create</th>
+                                    <th>Can be Assigned to ?</th>
+                                </tr>
+                                <tr *ngFor="let role of form.roles.assignedRoles">                               
+                                    <td class="center-role">{{role.name}}</td>
+                                    <td>
+                                        <div class="form-group">                                         
+                                            <mat-slide-toggle style="margin: 1em;" [isChecked]="role.canCreateTicket"
+                                                [(ngModel)]="role.canCreateTicket"
+                                                name="canCreateTicket - {{role.name}}" *ngIf="!role.isReadOnly"
+                                                [color]="color">
+                                            </mat-slide-toggle>
+                                            <!-- *ngIf="role.isReadOnly" -->
+                                            <mat-slide-toggle style="margin: 1em;" checked="true"
+                                                name="canCreateTicket - {{role.name}}" *ngIf="role.isReadOnly"
+                                                [color]="color" disabled="true">
+                                            </mat-slide-toggle>
+                                            <span class="knob" *ngIf="role.isReadOnly"><i
+                                                class="fa fa-lock"></i></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <!-- *ngIf="role.canCreateTicket" -->
+                                            <mat-slide-toggle style="margin: 1em;" [isChecked]="role.canBeAssigned"
+                                                [(ngModel)]="role.canBeAssigned" name="canBeAssigned - {{role.name}}"
+                                                *ngIf="role.canCreateTicket" [color]="color">
+                                            </mat-slide-toggle>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label"> Ticket Age </label>
+                    <div class="panel-body">
+                        <label class="control-label" style="padding-left: 10px;">Calculate Ticket Age By</label>
+                        <div class="radio" style="padding-left: 10px;padding-top: 10px;">
+                            <label class="control-label">
+                                <input type="radio" name="calculateFrom" checked value="created_at"
+                                    [(ngModel)]="form.settings.details.calculateBy">
+                                <span style="padding-left: 10px;"> Ticket was Created</span>
+                            </label>
+                        </div>
+                        <div class="radio" style="padding-left: 10px;padding-top: 10px;">
+                            <label class="control-label">
+                                <input type="radio" name="calculateFrom" value="updated_at"
+                                    [(ngModel)]="form.settings.details.calculateBy">
+                                <span style="padding-left: 10px;"> Ticket was last Modified</span>
+                            </label>
+                        </div>
+                        <div class="checkbox" style="padding-left: 10px; padding-top: 10px;">
+                            <label class="control-label">
+                                <input type="checkbox" name="cbOverdue" [(ngModel)]="form.settings.details.overDue">
+                                <span style="padding-left: 10px;">Consider ticket overdue if age is greater than
+                                    <input (disabled)="!form.settings.details.overDue" type="number" name="overDueDays"
+                                        style="width: 10%" placeholder="0" min="0" max="30"
+                                        [(ngModel)]="form.settings.details.overDueDays">
+                                    days</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label"> Select Form Icon: </label>
+                    <div class="panel-body">
+                        <ul class="list-unstyled clearfix text-center">
+                            <li style="display: inline-block; width: 100px; padding: 5px;" *ngFor="let icon of icons">
+                                <label
+                                    style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4); background-color: #ecf0f5;"
+                                    class="clearfix full-opacity-hover">
+                                    <div>
+                                        <i style="display:block; width:90px; padding-top:5px; padding-bottom:10px; float:left; height: 30px;"
+                                            class="fa {{icon}} fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <!-- <span style="display:block; width: 3%; padding-bottom: 5px; float: left; height: 30px;" class="{{theme.secondary}}"></span> -->
+                                    </div>
+                                    <input type="radio" name="icon" value="{{icon}}" style="margin-top:10px;"
+                                        [(ngModel)]="form.settings.details.icon" />
+                                </label>
+
+                                <!-- <p class="text-center no-margin">{{theme.name}}</p>  -->
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="form-group clearfix">
+                    <button type="submit" class="btn btn-primary pull-right m5">Create</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

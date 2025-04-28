@@ -1,0 +1,42 @@
+.main-header{
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1037;
+}
+.main-header>.dropdown{
+    text-align: center;
+}
+#dropdownMenuButton{
+    color:#ffffff;
+}
+
+.dropdown-toggle::after {
+   margin-left: 40px;
+}
+
+#dropdownMenuButton {
+    line-height: normal!important;
+    font-weight: 600;
+}
+.dropdown-menu{
+   
+    width: 200px;
+    padding: 10px;
+    ul{
+        padding: 0;
+        margin: 0;
+        li{
+            padding: 5px 10px;
+            list-style-type: none;
+            a{
+                padding: 0;
+            }
+            a.active, a:active{
+                background-color: transparent;
+                color: #212529;
+            }
+        }
+    }
+}

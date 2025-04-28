@@ -1,0 +1,39 @@
+<div class="settings-grid">
+  <div class="container-fluid">
+    <div class="form-inline p20">
+      <div class="form-group">
+        <label class="label" for="code">Enter Code to view:&nbsp;</label>
+        <input type="text" class="form-control" placeholder="Security Code" name="code" id="code"
+          (keyup)="onCodeEnter($event)">
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div *ngIf="displaySettings" class="p20">
+      <h3 class="text-danger">
+        <span class="icon"><i class="fa fa-exclamation-circle"></i></span>
+        &nbsp;Changing these can break the application!!! Proceed with utmost caution!!!&nbsp;
+        <span class="icon"><i class="fa fa-exclamation-circle"></i></span>
+      </h3>
+      <ng-container>
+        <mat-accordion class="global-settings-headers-align" multi>
+          <mat-expansion-panel *ngFor="let setting of settings; index as i" class="card card-theme mb30">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ setting.key }}
+              </mat-panel-title>
+              <mat-panel-description>
+                <span class="light-label">{{ typeOf(setting.value) }}</span>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <form (ngSubmit)="saveSettings(setting)" novalidate>
+              <json-editor [options]="editorOptions" [(json)]="setting.value" ></json-editor>
+              <button type="submit" class="btn btn-primary pull-right m15">Save</button>
+            </form>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </ng-container>
+    </div>
+  </div><!-- end outer container -->
+</div> <!-- end display settings block -->

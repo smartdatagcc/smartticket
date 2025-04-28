@@ -1,0 +1,27 @@
+
+#user-controls{
+    padding-top: 15px;
+    margin-bottom: 30px;
+    .user-controls-content{
+        background-color: #ffffff;
+        padding-bottom: 20px;
+    }
+}
+
+.collapsing {
+    -webkit-transition: none;
+    transition: none;
+    display: none;
+}
+
+#manager_user{
+    margin-left: 10px;    
+    margin-bottom: 10px;
+}
+
+h2{
+    margin: 0;
+}
+app-response-metadata-controls{
+    width: 100%;
+}

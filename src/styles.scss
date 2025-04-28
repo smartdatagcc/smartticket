@@ -1,0 +1,500 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$smartticket-upgrade-primary: mat-palette($mat-indigo);
+$smartticket-upgrade-accent: mat-palette($mat-pink, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$smartticket-upgrade-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$smartticket-upgrade-theme: mat-light-theme($smartticket-upgrade-primary, $smartticket-upgrade-accent, $smartticket-upgrade-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($smartticket-upgrade-theme);
+
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/font-awesome/css/font-awesome.css";
+
+@import "../node_modules/ag-grid-community/src/styles/ag-grid.scss";
+@import "../node_modules/ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss";
+
+@import "~jsoneditor/dist/jsoneditor.min.css";
+.jsoneditor-mode-tree {
+    margin-bottom: 100px;
+    border: transparent!important;
+    .jsoneditor-navigation-bar{
+        border: transparent!important;
+    }
+    // .jsoneditor-menu{
+    //     display: none;
+    // }
+    .jsoneditor-search, .jsoneditor-sort, .jsoneditor-transform{
+        display: none;
+    }
+    .jsoneditor-anchor{
+        .jsoneditor-contextmenu-root {
+            .jsoneditor-contextmenu {
+                .jsoneditor-menu{
+                    width: 200px;
+                    max-height: 190px;
+                    overflow-y: auto;
+               }
+            }
+        }
+    }
+}
+.jsoneditor-tree{
+    tr:nth-child(even) {background-color: #f2f2f2;}
+    table td, table th {
+        border: transparent!important;
+        font-size: 14px!important;
+    }
+}
+ 
+.ag-theme-alpine {
+    @include ag-theme-alpine();
+
+    .ag-root-wrapper{
+        border-color: transparent!important;
+    }
+}
+.ag-theme-alpine .ag-cell{
+    line-height: 35px;
+}
+html, body { height: 100%;}
+body { 
+    margin: 0!important; 
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif!important;
+    background: #f4f6f9;
+    overflow-x: hidden;
+}
+
+#dropdownMenuButton{
+    line-height: 50px;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    border: transparent;
+    border-top: 1px solid #f4f4f4;
+}
+
+.su-footer > footer {
+   margin-left: 0!important;
+}
+
+@media (max-width : 767px){
+    .margin-bottom-sm {
+        margin-bottom: 10px;
+    }
+    .hidden-xs,  .hidden-sm{
+        display: none;
+    }
+    .user-menu > a{
+        padding: 5px 0!important;
+        // img{
+        //     margin-right: 0!important;
+        // }
+    }
+}
+
+@media (max-width : 991px){
+    .form-names{
+        white-space: nowrap;
+    }
+}
+
+@media (min-width: 992px){
+    .sidebar-mini.sidebar-collapse{
+        .main-sidebar{
+            margin-left: 0;
+            width: 4.6rem;
+            .togglemyall{
+                display: none;
+            }
+            .nav-treeview {
+                display: none;
+            }
+            &:hover{
+                width: 250px;
+                .togglemyall{
+                    display: block;
+                }
+                .menu-open > .nav-treeview {
+                    display: block;
+                }
+            }
+            .treeview-menu, .treeview-menu.menu-open{
+                display: none;
+            }
+            &:hover{
+                width: 250px;
+                .treeview-menu{
+                    display: block;
+                }
+                .menu-open > .nav-treeview {
+                    display: block;
+                }
+            }
+        }
+        .brand-text{
+            display: none;
+        }
+    } 
+    
+}
+
+.nav-sidebar .menu-open > .nav-treeview {
+    display: block;
+}
+
+a{
+    cursor: pointer;
+}
+
+.search{
+    position: relative;
+    .form-control-feedback{
+        font-size: 20px;
+        pointer-events: auto;
+        font-weight: 400;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 2;
+        display: block;
+        width: 34px;
+        height: 34px;
+        line-height: 34px;
+        text-align: center;
+        cursor: pointer;
+    }
+}
+.unread{
+    font-weight: bold;
+}
+
+.collapsablebutton {
+    width: 100%;
+    text-align: left;
+}
+
+.invalid{
+    color: #dc3545;
+}
+
+
+.is-invalid  {
+    .ql-editor{
+        border: 1px solid #dc3545;
+    }
+}
+.is-invalid  {
+    border: 1px solid #dc3545;
+}
+
+.helptext{
+    color: #999;
+    font-size: 12px;
+    font-style: italic;
+}
+.helptext_toggle {
+    margin-left: 5px;
+    color: #3c8dbc;
+}
+.ql-editing, .ql-tooltip{
+    left: 5px !important;
+  }
+
+
+.skin-blue .btn.btn-app.active-ticket-type {
+    border: 2px solid transparent;
+    border-bottom-color: #3c8dbc;
+}
+
+ngx-material-timepicker-toggle{
+    position: absolute;
+    right: 10px;
+    top: 30px;
+}
+.main-header, .header{
+    height: 57px;
+}
+.tox-menubar, .tox-statusbar{
+    display: none!important;
+}
+
+.cdk-overlay-container{
+    z-index: 1040!important;
+}
+.timepicker-overlay, .timepicker-backdrop-overlay{
+    z-index: 1050!important;
+}
+
+.ag-root-wrapper-body.ag-layout-normal {
+        height: auto!important;
+    }
+.card{
+    position: relative;
+    border-radius: 3px;
+    background: #fff;
+    border-top: 3px solid #d2d6de;
+    margin-bottom: 20px;
+    width: 100%;
+}
+.card-header{
+    color: #444;
+    display: block;
+    padding: 10px;
+    position: relative;
+}
+.card-body{
+    padding: 10px;
+    border-radius: 0 0 3px 3px;
+}
+.label-default{
+    background-color: #d2d6de;
+    color: #444;
+}
+.ag-header-cell-text{
+    color: #3c8dbc;
+    font-size: 14px;
+    text-transform: capitalize;
+}
+.alert h4 {
+    margin-top: 0;
+    color: inherit;
+    font-weight: 600;
+    font-size: 18px;
+}
+@import "assets/themes.scss";
+
+.modal-header{
+    border-bottom-color: #f4f4f4;
+}
+.close, .mailbox-attachment-close{
+    font-size: 21px;
+    opacity: 0.2;
+    background-color: none!important;
+    outline: none!important;
+}
+
+.ag-root.ag-layout-normal{
+    min-height: 300px;
+}
+.ag-body-viewport{
+    .ag-cell-focus{
+        border-color: transparent!important;
+    }
+    button{
+        font-size: 14px!important;
+        line-height: 1rem!important;
+    }
+
+    /* Sticky header*/
+        overflow-y: scroll;
+        height: calc(100vh - 400px)
+}
+
+.model {
+    padding: 0;
+    .model-header{
+      border-bottom-color: #f4f4f4;
+      border-bottom: 1px solid #f4f4f4;
+      h2{
+        padding: 15px;
+        margin: 0;
+      }
+    }
+    .model-body{
+      .nopadding{
+        padding: 0;
+      }
+      .nomargin{
+        margin: 0;
+      }
+      .bodycontainer{
+        border-bottom: 1px solid #f4f4f4;
+        .body_content{
+          padding:15px;
+        }
+      }
+     .footer{
+      padding: 15PX;
+      button{
+        margin-left: 15px;
+      }
+     }
+    }
+  }
+  .mat-calendar-header{
+      padding: 0!important;
+  }
+    .mat-calendar-table-header th, .mat-calendar-body td{
+        border: transparent;
+    }
+  .mat-tab-header{
+    border-bottom: none;
+  }
+  .mat-tab-labels{
+    margin: 0;
+    border-bottom-color: #f4f4f4;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    .mat-tab-label{
+        border-top: 3px solid transparent;
+        margin-bottom: -2px;
+        margin-right: 5px;
+    }
+    .mat-tab-label-active{
+        border-top : 3px solid #3c8dbc;
+        border-right: 2px solid #f4f4f4;
+        border-left: 2px solid #f4f4f4;
+    }
+    }
+    .name-header{
+     max-width: 200px;
+     overflow: hidden;
+     display: inline-block;
+     text-overflow: ellipsis;
+     margin: -5px 0!important;
+  }
+  
+//   .ag-center-cols-container{
+//    // width: inherit!important;
+// }
+#adminsettings, #edit-role {
+    .mat-slide-toggle{
+        margin: 0!important;
+        .mat-slide-toggle-label{
+            margin: 0;
+        }
+    }
+}
+
+.btn-danger{
+    color: #ffffff!important;
+}
+
+h3, h4{
+    font-size: 18px!important;
+}
+.user-menu{
+    .dropdown-item.active, .dropdown-item:active{
+        background: transparent;
+        color: #212529;
+    }
+}
+.fa.fa-lock{
+    margin-left: 5px;
+}
+
+.chooseworkspacedropdown{
+    position: fixed!important;
+    width: 200px;
+    padding: 10px;
+    ul{
+        padding: 0;
+        margin: 0;
+        li{
+            padding: 5px 10px;
+            list-style-type: none;
+            a{
+                padding: 0;
+            }
+            a.active, a:active{
+                background-color: transparent;
+                color: #212529;
+            }
+
+        }
+    }
+}
+
+.announcementbannerDiv{
+    border-left: 5px solid #0097bc;
+    .announcementbanner{
+        a{
+            color: #ffffff!important;
+            text-decoration: underline;
+            background-color: transparent;
+        }
+    }
+}
+
+.card-header{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.mat-dialog-container {
+    padding: 0!important;
+}
+
+.model-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.model-body{
+    position: relative;
+    padding: 15px;
+
+    canvas{
+        border: 1px solid #d2d6de;
+        border-radius: 5px;
+    }
+}
+.model-footer{
+    border-top: 1px solid #e5e5e5;
+    padding: 15px;
+    button{
+        margin-right: 0!important;
+        border-radius: 3px;
+        margin-left: 10px;
+    }
+}
+.fa-circle{
+    font-size: 0.8rem!important;
+}
+
+.close{
+    cursor: pointer;
+}
+
+.fa.gif:before, .fa.ico:before, .fa.jpg:before, .fa.jpeg:before, .fa.png:before, .fa.svg:before, .fa.tiff:before {
+    content: "\f1c5";
+    margin-right: 5px;
+}
+
+.ag-header-container {
+    white-space: normal !important;
+  }
+
+.grid-row-selection {
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: inset 2px 2px rgba(255,255,255,.4);
+}
+
+.grid-row-selection-header {
+    justify-content: center !important;
+    cursor: help;
+
+    i {
+        color: #3c8dbc;
+    }
+}

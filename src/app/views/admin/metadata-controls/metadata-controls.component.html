@@ -1,0 +1,189 @@
+<div id="metadata-controls" cdkDropList (cdkDropListDropped)="drop($event)" *ngIf="templateControls != undefined && templateControls.length > 0">
+    <div class="panel-group card card-theme" [attr.id]="'accordion_' + i" *ngFor="let control of templateControls; let i = index;" cdkDrag>
+        <div class="control" >
+            <div class="panel panel-default inline-block" >
+                <div class="panel-heading" cdkDragHandle>
+                    <h4 class="panel-title">
+                        <a class="btn btn-link collapsablebutton" data-toggle="collapse" [attr.data-parent]="'#accordion_' + i"
+                            [attr.href]="'#collapseOne_' + i">
+                            <svg class="bi bi-three-dots-vertical" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg" >
+                                <path fill-rule="evenodd"
+                                    d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                            </svg>
+                            {{ control.label }} </a>
+                    </h4>
+                </div>
+                <div [attr.id]="'collapseOne_' + i" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="clearfix">
+                            <button type="button" class="btn btn-danger pull-right" (click)="removeUserField(control)">Remove
+                            </button>
+                        </div>
+                        <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div
+                                    [ngClass]="{'col-xs-12':control.type != 'label', 'col-md-8 col-xs-8':control.type == 'label'}">
+                                    <div class="form-group">
+                                        <label>label</label>
+                                        <input type="text" class="form-control" [(ngModel)]="control.label" name="Label-{{i}}"  required
+                                            maxLength="500" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-xs-4" *ngIf="control.type === 'label'">
+                                    <div class="form-group">
+                                        <label>Show Label</label>
+                                        <div>
+                                            <mat-slide-toggle style="margin: 1em;" [(ngModel)]="control.showMyLabel" name="Show Label-{{i}}" color="primary">
+                                                {{control.showMyLabel ? 'Yes' : 'No'}}
+                                            </mat-slide-toggle>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 col-xs-4">
+                                    <div class="form-group">
+                                        <label>Type</label>
+                                        <select class="form-control" [(ngModel)]="control.type"  name="Type-{{i}}" disabled="true">
+                                            <option *ngFor="let item of controlTypes" [ngValue]="item">{{item}}</option>
+                                        </select>
+                                    </div>
+                                    <!-- <form-field is-required="true" is-readonly="true">
+                                    <select ng-model="control.type" form-control
+                                            ng-options="item for item in controlTypes"></select>
+                                </form-field> -->
+                                </div>
+                                <div class="col-md-4 col-xs-4">
+                                    <div class="form-group">
+                                        <label>Required</label>
+                                        <div>
+                                            <mat-slide-toggle color="primary" style="margin: 1em;" [(ngModel)]="control.required"  name="Toggle/timpicket/label-{{i}}">
+                                            </mat-slide-toggle>
+                                        </div>
+                                    </div>
+                                    <!-- <form-field>
+                                    <toggle-switch form-control ng-model="control.required"
+                                                   on-label="Yes"
+                                                   off-label="No"></toggle-switch>
+                                </form-field> -->
+                                </div>
+                                <div class="col-md-4 col-xs-4">
+                                    <div class="form-group">
+                                        <label>Internal Use Only<a data-toggle="tooltip" placement="top" title="Viewable/Editable only by those with the 'CanManageTickets' permission">
+                                            <i class="fa fa-question-circle" style="font-size:14px;color:blue;margin-left: 5px;" aria-hidden="true"></i></a>
+                                        </label>
+                                        <div>
+                                            <mat-slide-toggle color="primary" style="margin: 1em;" [(ngModel)]="control.adminOnly"  name="Internal Use Only-{{i}}">
+                                            </mat-slide-toggle>
+                                        </div>
+                                    </div>
+                                    <!-- <form-field  label="Internal Use Only"
+                                             show-tool-tip="true"
+                                             help-text="Viewable/Editable only by those with the
+                                                'CanManageTickets' permission">
+                                    <toggle-switch form-control ng-model="control.adminOnly"
+                                                   on-label="Yes"
+                                                   off-label="No"></toggle-switch>
+                                </form-field> -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12" *ngIf="control.type === 'label'">
+                                    <!--<form-field is-readonly="true" label="Content" >-->
+                                        <div>
+                                            <label>Content</label>
+                                            <label class="col-xs-12 well" ng-readonly="true" style="font-weight: normal"
+                                            [innerHTML]="control.content |  sanitizeHtml">
+                                            </label>
+                                        </div>
+                                   
+                                    <!--</form-field>-->
+                                    <span> <button type="button" class="btn-primary pull-left" (click)="editControl(control)">Edit Content</button>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <label *ngIf="control.type === 'toggle'">
+                                <div class="row">
+                                    <div class="col-xs-6 mr10" >
+                                        <div class="form-group">
+                                            <label>On Label</label>
+                                            <input type="text" class="form-control" [(ngModel)]="control.options[0]"  name="Toggle-{{i}}_{{control.options[0]}}"
+                                                maxLength="25" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                            <label>Off Label</label>
+                                            <input type="text" class="form-control" [(ngModel)]="control.options[1]" name="Toggle-{{i}}_{{control.options[1]}}"
+                                                maxLength="25" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label *ngIf="hasOptionsControl(control.type)">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <strong>Options for {{control.type}}:</strong>
+                                    </div>
+                                </div>
+                                <div *ngFor="let option of control.options;let indexOfOptions=index;" class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="input-group ">
+                                                <input type="text" [(ngModel)]="control.options[indexOfOptions]" name="Options-{{i}}_{{control.options[indexOfOptions]}}"
+                                                    maxLength="100" />
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-danger" (click)="removeOption(control, option)"><i
+                                                            class="fa fa-trash"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Option:</label>
+                                            <div class="input-group ">
+                                                <input type="text" placeholder="Option" maxLength="100" [(ngModel)]="newOption" name="newOption" />
+
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-primary" (click)="addoption(control)">Add </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </label>
+
+                        </div>
+                        <div class="row" *ngIf="control.type !== 'label'">
+                            <div class="col-md-8 col-xs-8">
+                                <div class="form-group">
+                                    <label> Help Text </label>
+                                    <input type="text" class="form-control" [(ngModel)]="control.helpText"  name="Help Text-{{i}}"
+                                        maxLength="100" />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-xs-4"
+                                *ngIf="control.helpText? control.helpText.length > 0 : false">
+                                <div class="form-group">
+                                    <label>Show Help Text As</label>
+                                    <div>
+                                        <mat-slide-toggle style="margin: 1em;" [(ngModel)]="control.showHelpText" name="Show Help Text As-{{i}}" color="primary">
+                                            {{control.showHelpText ? 'Label' : 'Tool Tip'}}
+                                        </mat-slide-toggle>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

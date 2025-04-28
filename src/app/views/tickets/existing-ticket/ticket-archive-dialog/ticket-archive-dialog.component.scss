@@ -1,0 +1,25 @@
+.model-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.model-body{
+    position: relative;
+    padding: 15px;
+    p{
+        i{
+            margin-left: 5px;
+        }
+    }
+}
+.model-footer{
+    border-top: 1px solid #e5e5e5;
+    padding: 15px;
+    button{
+        margin-right: 0!important;
+        border-radius: 3px;
+        margin-left: 10px;
+    }
+}
+h4 {
+    margin: 0;
+}

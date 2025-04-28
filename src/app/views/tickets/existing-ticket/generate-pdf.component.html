@@ -1,0 +1,166 @@
+<section class="content">
+    <div class="card card-theme" id="pdfTicketFrm" #pdfTicketFrm *ngIf="ticket != undefined">
+        <div class="card-header with-border">
+            <div class="row">
+                <div class="col-md-6">
+                    <app-ticket-header [ticket]="ticket"></app-ticket-header>
+                </div>
+                <div class="col-md-6">
+                    <!-- <app-ticket-menu [ticket]="ticket" [lookup]="lookupData"></app-ticket-menu> -->
+                </div>
+            </div>
+        </div><!-- /.card-header -->
+        <div class="card-body">
+            <!-- <div *ngIf="ticket.deleted" class="alert alert-danger" role="alert"><i>This
+                    {{ticket.form.name | lowercase}} is currently marked as deleted</i></div>
+            <div *ngIf="ticket.archived" class="alert alert-warning" role="alert"><i>This {{ticket.form.name}} is
+                    currently marked as archived</i></div> -->
+            <div class="row">
+
+                <div [hidden]="!expandComments === false"
+                    [ngClass]="{'col-md-12': expandDetails === true, 'col-md-6': expandDetails === false, 'hidden-comments': expandComments === false }">
+                    <form name="pdfTicketFrm" #pdfTicketFrm="ngForm"  form-unsaved novalidate>
+                        <div class="card card-solid card-theme">
+                          
+                            <!-- /.card-header -->
+                            <div class="card-body" [ngClass]="{'bg-ticket-details': !inEditMode}">
+                              
+                                <div>
+                                    <div class="row">
+                                        <div>
+                                            <div class="panel-group">
+                                                <!-- User Fields -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a data-toggle="collapse" data-parent="#accordion"
+                                                                href="">Fields</a>
+                                                            <i class="fa pull-right"></i>
+                                                        </h4>
+                                                    </div>
+                                                    
+                                                        <div class="panel-body">
+                                                            <div class="row"
+                                                                *ngFor="let control of metadataControls.userControls">
+                                                                <div
+                                                                    [ngClass]="{'col-md-6':control.type !== 'textarea' && control.type !== 'label' && expandDetails === true, 'col-md-12': control.type === 'textarea' || control.type === 'label' || expandDetails === false}">
+                                                                    <label
+                                                                        *ngIf="control.type !== 'label' || control.type === 'label' && control.showMyLabel">{{control.label}}:</label>
+                                                                    <!-- <p *ngIf="control.type !== 'signature' && control.type !== 'textarea'">{{control.value}} </p> -->
+                                                                    <p *ngIf="control.type !== 'signature'"
+                                                                        [innerHtml]="getControlValue(control) | sanitizeHtml"> </p>
+                                                                    <!-- <p *ngIf="control.type == 'label'" [innerHtml]="control.content"> </p> -->
+                                                                    <div *ngIf="control.type == 'signature'">
+                                                                        <img [src]="control.value" height="110"
+                                                                            width="284" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                
+                                                </div>
+                                                <!-- User Fields  End-->
+
+                                                <!-- Internal User Fields -->
+                                                <div class="panel panel-default"
+                                                    *ngIf="metadataControls.internalControls.length > 0">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a data-toggle="collapse" data-parent="#accordion"
+                                                                href="">Internal Only Fields</a>
+                                                            <i class="fa pull-right"></i>
+                                                        </h4>
+                                                    </div>
+                                                    <div class="panel-collapse">
+                                                        <div class="panel-body">
+                                                            <div class="row"
+                                                                *ngFor="let control of metadataControls.internalControls">
+                                                                <div
+                                                                    ng-class="{'col-md-6':control.type !== 'textarea' && control.type !== 'label' && expandDetails === true, 'col-md-12': control.type === 'textarea' || control.type === 'label' || expandDetails === false}">
+                                                                    <label
+                                                                        *ngIf="control.type !== 'label' || control.type === 'label' && control.showMyLabel">{{control.label}}:</label>
+                                                                    <!-- <p *ngIf="control.type !== 'signature'">{{control.value}} </p>
+                                                                    <p *ngIf="control.type == 'label'" [innerHtml]="control.content"> </p> -->
+                                                                    <p *ngIf="control.type !== 'signature'"
+                                                                        [innerHtml]="control.value | sanitizeHtml"> </p>
+                                                                    <div *ngIf="control.type == 'signature'">
+                                                                        <img [src]="control.value" height="110"
+                                                                            width="284" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Internal User Fields End-->
+
+                                            </div>
+                                            <div class="panel-group">
+                                                <!-- Summary -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a data-toggle="collapse" data-parent="#accordion"
+                                                                href="">Summary</a>
+                                                            <i class="fa pull-right"></i>
+                                                        </h4>
+                                                    </div>
+                                                    <div class="panel-collapse">
+                                                        <div class="panel-body">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-12">
+                                                                            <p>
+                                                                                <a><label style="display:inline;">Ticket
+                                                                                        Id:</label> {{ticket.id}}</a>
+                                                                            </p>
+                                                                            <hr>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <label>Created By</label>
+                                                                            <p>
+                                                                                <a href="javascript: void(0)"
+                                                                                    (click)="openProfile(ticket.createdBy)">{{ticket.user.name}}</a>
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <label>Assigned To</label>
+
+                                                                            <p>
+                                                                                <a *ngIf="ticket.assignedTo"
+                                                                                    href="javascript: void(0)"
+                                                                                    (click)="openProfile(ticket.assignedTo)">{{ticket.assignedUser.name}}</a>
+                                                                                <span
+                                                                                    *ngIf="!ticket.assignedTo"><i>Unassigned</i></span>
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <label>Created On</label>
+
+                                                                            <p>{{ticket.created_at | date: 'short'}}</p>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <label>Last Updated At</label>
+
+                                                                            <p>{{ticket.updated_at | date: 'short'}}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Summary End -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>                
+            </div>
+        </div>
+    </div>
+</section>

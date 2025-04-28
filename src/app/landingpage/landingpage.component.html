@@ -1,0 +1,434 @@
+<div id="splash" class="row no-gutters">
+  <div class="body">
+    <!-- start page -->
+    <header id="top">
+      <nav class="navbar layout-navbar-fixed fixed-top" (scroll)="onWindowScroll($event);">
+
+        <div class="container">
+          <h1 class="sr-only brand-text">SmartTicket</h1>
+          <a routerLink="." fragment="top" class="navbar-brand">
+            <img src="../assets/images/SmartTicket-logo.png" alt="SmartTicket logo"></a>
+
+          <div class="nav mainnavigation">
+            <ul class="nav">
+              <li><a routerLink="." (click)="triggerScrollTo('scroll-target')">Features</a></li>
+              <li><a routerLink="." (click)="triggerScrollTo('pricing')" class="btn">Pricing</a></li>
+              <li class="dropdown"  (clickOutside)="ClickOutside()">
+                <a href="#" class="btn dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" (click)="openlogin()"
+                  aria-expanded="false">Log In</a>
+                <div class="dropdown-menu" [ngStyle]="{'display': showorhideloginmenu}">
+                  <form *ngIf ="!showForgotPassword" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                    <div class="box box-theme text-left">
+                      <div class="box-body">
+                        <div class="alert alert-danger mb20" *ngIf="message">
+                          <strong>There seems to be a problem</strong>
+                          <div>{{message}}</div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label class="control-label" for="email"  [ngClass]="{ 'invalid': submitted &&  f.email.invalid}">Email Address * </label>
+                          <div>
+                            <input formControlName="email" class="form-control" type="email" name="email" id="email"
+                            [ngClass]="{ 'is-invalid': submitted && f.email.errors }" required />      
+                              <div *ngIf="submitted && f.email.errors" class="help-block" style="color: #a94442">
+                                <div *ngIf="f.email.errors.required">Email is required</div>
+                                <div *ngIf="f.email.errors.email">A Valid Email Address Required
+                                </div>
+                            </div>                                       
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label" for="password" [ngClass]="{ 'invalid': submitted &&  f.password.invalid}" >Password *</label>
+                          <div>
+                            <input formControlName="password" class="form-control" type="password" name="password"
+                              id="password"  [ngClass]="{ 'is-invalid': submitted && f.password.errors }"  required />
+                              <div *ngIf="submitted && f.password.errors" class="help-block" style="color: #a94442">
+                                <div *ngIf="f.password.errors.required">Password is Required
+                                </div>
+                               
+                            </div>  
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="box-footer">
+                        <button type="submit" class="btn btn-primary pull-right">Login</button>
+                        <p class = p-forgotPassword (click) = "$event.stopPropagation(); setForgotPassword()"
+                        >Forgot Password ?
+                        </p>
+                        <!-- <div id="registerLink">
+                          <a href="">New User? Register here</a>
+                        </div> -->
+                      </div>
+                    </div>
+
+                  </form>
+                  <form *ngIf ="showForgotPassword" [formGroup]="forgotPasswordForm" (ngSubmit)="onForgotPasswordSubmit()">
+                    <div class="box box-theme text-left">
+                        <div class="box-body">
+                            <!-- <div class="alert-danger alert mb20" [ngClass] = "{'has-error':forgotPasswordForm.get('email').errors && 
+                                    (forgotPasswordForm.get('email').touched || forgotPasswordForm.get('email').dirty) }">              
+                            
+                                <div class="notification-content" *ngIf = "forgotPasswordForm.get('email').errors && 
+                                            (forgotPasswordForm.get('email').touched || forgotPasswordForm.get('email').dirty)">
+                                    {{forgotPasswordMessage}}
+                                    <div >
+                                        <div *ngIf="forgotPasswordForm.get('email').errors.required">Email is Required</div>  
+                                        <div *ngIf="forgotPasswordForm.get('email').errors.email">Your email address is invalid</div>                     
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="alert-danger alert mb20" [ngClass] = "{'has-error':forgotPasswordFormErrors.email }" *ngIf = "forgotPasswordFormErrors.email || forgotPasswordMessage">              
+                            
+                                <div class="notification-content" *ngIf = "forgotPasswordFormErrors.email || forgotPasswordMessage">
+                                    {{forgotPasswordMessage}}
+                                    {{forgotPasswordFormErrors.email}}
+                                </div>
+                            </div>
+                            <p>Enter your email address and we will send you a link to reset your password.</p>
+                
+                            <div class="form-group">
+                                <label class="control-label" for="forgotemail">
+                                    Email Address
+                                </label>
+                                <div>
+                                    <input type="email" id="email" name="email" class="form-control" formControlName="email"
+                                        required />
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary pull-right">Submit</button>
+                            <a href="" class="btn btn-default pull-left" (click)="$event.stopPropagation(); showForgotPassword = false">Cancel</a>
+                        </div>
+                    </div>
+                </form>                
+                </div>
+              </li>
+              <li><a routerLink="." (click)="triggerScrollTo('sign-up')" class="btn btn-primary">Sign Up</a></li>
+            </ul>
+
+          </div>
+
+        </div>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero__content">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <h1>Focus on Your Customers, Not Your Inbox</h1>
+              <p>SmartTicket promotes team collaboration. No need to foward or carbon copy, all ticket collaborators are
+                engaged in the ongoing conversation at all times.</p>
+              <p><a routerLink="." fragment="sign-up" class="btn btn-primary btn-lg">Request an Invite</a></p>
+            </div>
+            <div [@slideInOut] class="hero__media"></div>
+          </div>
+        </div>
+      </div>
+      <a routerLink="." (click)="triggerScrollTo('scroll-target')" class="hero__scroll"><span class="sr-only">Scroll to next section</span></a>
+    </section>
+
+    <section id="scroll-target" class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-md-8 offset-md-2 offset-lg-2  text-center">
+            <h2>Take Control of Your Workflow and Workspace</h2>
+            <p>SmartTicket isn’t an out-of-the-box helpdesk solution. We all conduct business differently and
+              SmartTicket fully embraces that fact. Your SmartTicket is tailored to meet the needs of your business.</p>
+          </div>
+          <div class="workflow__media">
+            <img src="../assets/images/admin-workspace.jpg" class="hideUntilAnimated" alt="SmartTicket Admin Workspace Screenshot">
+          </div>
+          <div>
+            <ul class="icon-list">
+              <li><span><i class="fa fa-user"></i></span>Create Users</li>
+              <li><span><i class="fa fa-lock"></i></span>Custom User Roles</li>
+              <li><span><i class="fa fa-laptop"></i></span>Custom Forms</li>
+              <li><span><i class="fa fa-code"></i></span>Built-in API</li>
+              <li><span><i class="fa fa-cloud-upload"></i></span>Upload Your Logo</li>
+              <li><span><i class="fa fa-eyedropper"></i></span>Change Theme Colors</li>
+              <li><span><i class="fa fa-envelope"></i></span>Manage Email Notifiications</li>
+              <li><span><i class="fa fa-list-alt"></i></span>WYSIWYG Editors</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section support">
+      <div class="container">
+        <div class="row">
+          <div class="support__media hideUntilAnimated"></div>
+          <div class="col-xs-12 col-sm-6">
+            <h2>Track Support Performance</h2>
+            <p>SmartTicket will help create a transparent workflow for your business and your customers. The status,
+              comments and uploaded documents for any ticket can be viewed at anytime. Know what has been completed and
+              what actions need to be taken to complete each request.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section custom-forms">
+      <div class="container">
+        <div class="row">
+          <div class="custom-forms__media hideUntilAnimated"></div>
+          <div class="col-xs-12 col-sm-6  offset-sm-6">
+            <h2>Create Custom HTML Forms for Your Website</h2>
+            <p>Leveraging the Custom Form Builder feature, external custom HTML forms can be built to create records
+              within your SmartTicket system without your clients or prospective clients ever having to log in. You can
+              create anything from patient enrollment forms to basic contact forms. With the built-in SmartTicket API,
+              SDS can create forms matching your layout that can be placed directly on your website. When the forms are
+              filled out and submitted on your website, the information is passed into SmartTicket and a ticket will be
+              created automatically. <a href="mailto:smart.ticket@smartdatasystems.net">Contact us</a> for an estimate.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-6">
+            <h2>Secure and HIPAA/PII Compliant</h2>
+            <p>Confidential data never leaves your company. Handling any personal information such as litigations or
+              medical records requires great care. SmartTicket uses the best industry practices to ensure that only
+              people with right access can see or modify related information.</p>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-5 offset-md-1">
+            <blockquote class="testimonial hideUntilAnimated">
+              <p>We use the SDS internal secure and HIPAA compliant communication portal in our clinic for interoffice
+                communications as well as communication with our patients.</p>
+              <p><a href="#" class="testimonial-trigger">Read Full Testimonial</a></p>
+              <p class="testimonial__name">Van D Merkle DC, DABCI, DCBCN</p>
+              <img src="../assets/images/dr-merkle.jpg" alt="">
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonial-full">
+      <a href="#" class="testimonial-full__close"><span class="fa fa-close"></span></a>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-md-8 offset-md-2 ">
+
+            <img src="../assets/images/dr-merkle.jpg" alt="">
+
+            <div class="wrapped">
+
+              <p>We use the SDS internal secure and HIPAA compliant communication portal in our clinic for interoffice
+                communications as well as communication with our patients. We often refer to this as our ‘Ticket’
+                system.</p>
+
+              <p>This communication portal or ‘ticket system’ makes the office run much smoother for the staff, doctors
+                and patients. Our front desk staff appreciates how this portal makes it much easier to take care of
+                patients concerns and questions. Our staff no longer has to take phone messages, relay them to the
+                doctor, call the patient back and then having to try to make sure that all messages are documented and
+                relayed accurately. Our patients like the ability to have access our doctors directly. All
+                communications are filtered through our staff first and then staff will assign any necessary
+                communications to the doctor. Once a Ticket is determined it needs to go to the doctor, then the doctor
+                can correspond via the ticket system directly with the patient. The Ticket system has a lot of
+                flexibility so you can customize who receives these communications.</p>
+
+              <p>Regular email is not HIPAA compliant and cannot be used to discuss patient matters between staff and
+                doctors. This Ticket system allows ongoing discussion that can be sent or made available to whoever
+                needs to be involved.</p>
+
+              <p>All new patients are given or sent a log in so that they can set up their account and from then on all
+                questions or correspondence is done through it. Current patients are given the Ticket log in information
+                as needed. (We didn’t try to get all of our patients into the Ticket system when we stated to use it.)
+                Phone calls are now much fewer resulting in a more productive and less stressed staff.</p>
+
+              <p>I’m not in the office everyday but my staff and patients can still relay messages to me and I can
+                respond in a secure manner even if I’m away on vacation or just at home.</p>
+
+              <p>If I had a small one doctor office, I would still use this Ticket system, because it allows me to be
+                more efficient in dealing with patients, their problems and gives them access to me without using
+                traditional email or the phone- basically, it will save time for the doctor and staff.</p>
+
+              <p>Our staff likes this Ticket system for several reasons but no longer can the patients say they didn’t
+                get a reply and the doctors can’t say they didn’t get the message: everything is documented and time
+                stamped.</p>
+
+              <p>This Ticket system can also send and receive PDF documents. Special forms, documents, diet etc. can be
+                made available to patients via this Ticket system making the office more efficient and saving time and
+                money from mailing out forms and documents or faxing them.</p>
+
+              <p>Finally, with this Ticket system we are doing everything possible to secure the patient’s confidential
+                health records and information to the highest degree. The fact that it makes our staff more efficient is
+                a bonus and just as important is that it gives me peace of mind that we are doing the right thing.</p>
+
+              <p>I highly recommend this Ticket system.</p>
+
+              <p>Sincerely,
+                <br>
+                Van D Merkle DC, DABCI, DCBCN</p>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 text-center">
+            <h2>Plans &amp; Pricing</h2>
+          </div>
+        </div>
+
+
+
+        <div class="container plan-table">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-3">
+              <div class="plan basic">
+                <header>
+                  <h3>Basic</h3>
+                  <strong>Free</strong>
+                </header>
+                <div>
+                  <ul>
+                    <li><strong>50</strong> tickets per month max</li>
+                    <li><strong>500</strong> MB max storage</li>
+                    <li><strong>2</strong> max form (ticket) types)</li>
+                    <li>up to <strong>5</strong> active users</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3">
+              <div class="plan silver">
+                <header>
+                  <h3>Silver</h3>
+                  <strong>$15 per month</strong>
+                </header>
+                <div>
+                  <ul>
+                    <li><strong>100</strong> tickets per month max</li>
+                    <li><strong>2</strong> GB max storage</li>
+                    <li><strong>5</strong> max form (ticket) types</li>
+                    <li>up to <strong>200</strong> active users</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3">
+              <div class="plan gold">
+                <header>
+                  <h3>Gold</h3>
+                  <strong>$50 per month</strong>
+                </header>
+                <div>
+                  <ul>
+                    <li><strong>1000</strong> tickets per month max</li>
+                    <li><strong>10</strong> GB max storage</li>
+                    <li><strong>10</strong> max form (ticket) types</li>
+                    <li>up to <strong>1000</strong> active users</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3">
+              <div class="plan platinum">
+                <header>
+                  <h3>Platinum</h3>
+                  <strong>$99 per month</strong>
+                </header>
+                <div>
+                  <ul>
+                    <li><strong>unlimited</strong> tickets per month</li>
+                    <li><strong>50</strong> GB max storage</li>
+                    <li><strong>unlimited</strong> form (ticket) types</li>
+                    <li><strong>unlimited</strong> active users</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sign-up" class="section skin-gray">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-6">
+            <h2>Request an Invite to SmartTicket</h2>
+            <p>Join now and receive personalized help setting up and using SmartTicket, as well as direct access to our
+              product team for any enhancements or issues. After you submit your invite request, we will reply back to
+              you within two business days.</p>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-5 offset-md-1">
+            <form ngNoForm  ngNativeValidate name="emailForm" action="{{landingPageURLs.requestInviteURL}}" method="post"
+              class="sign-up-form">
+              <input type="hidden" name="ApiKey" value="{{landingPageURLs.apiKey}}" />
+              <input type="hidden" name="FormId" value="{{landingPageURLs.formId}}" />
+              <input type="hidden" name="SuccessUrl"
+                value="{{landingPageURLs.successURL}}" />
+              <input type="hidden" name="ErrorUrl"
+                value="{{landingPageURLs.errorURL}}" />
+              <div class="form-group">
+                <form-field label="Name" is-required="true">
+                  <label class="control-label required" for="name">Name:</label>
+                  <input type="text" name="requesterName" form-control class="form-control" required/>
+                </form-field>
+              </div>
+              <div class="form-group">
+                <form-field label="Email" is-required="true">
+                  <label class="control-label required" for="email">Email:</label>
+                  <input type="email" name="requesterEmail" form-control class="form-control" required/>
+                </form-field>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block btn-lg">Request an Invite</button>
+              </div>
+              <p>Already have an account? <a [routerLink]="['/login']">Log in</a></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <a routerLink="." (click)="triggerScrollTo('top')" class="cd-top cd-is-visible cd-fade-out">Top</a>
+
+    <footer class="footer vertical-space">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 text-center" style="margin: auto;">
+            <div class="row">
+              <div class="footer__logo">
+                <a href="http://smartdata.net/"><img src="../assets/images/sds-logo.png" alt="Smart Data Systems"></a>
+              </div>
+            </div>
+            <p>Copyright &copy; 2021 Smart Data Systems LLC</p>
+            <ul class="list-inline social">
+              <li><a href="https://www.facebook.com/getsmartdata"><span class="fa fa-facebook"></span><span
+                    class="sr-only">Facebook</span></a></li>
+              <li><a href="https://twitter.com/getsmartdata"><span class="fa fa-twitter"></span><span
+                    class="sr-only">Twitter</span></a></li>
+              <li><a href="https://www.linkedin.com/company/getsmartdata/"><span class="fa fa-linkedin"></span><span
+                    class="sr-only">LinkedIn</span></a></li>
+              <li><a href="https://github.com/SMARTDATASYSTEMSLLC"><span class="fa fa-github"></span><span
+                    class="sr-only">Github</span></a></li>
+            </ul>
+            <p><strong>Version</strong> 1.1.36 </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- end page -->
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="form-group">
+    <label *ngIf="control.label" [ngClass]="{ 'invalid': formsubmitted && textareacomp.invalid }"> {{control.label}}
+        <span *ngIf="control.required">*</span>
+        <i *ngIf="control.showToolTip === true" class="fa fa-question-circle helptext_toggle" data-toggle="tooltip"
+            data-placement="top" title="{{control.helpText}}" aria-hidden="true"></i>
+    </label>
+    <editor name="{{control.name}}_{{index}}" [ngClass]="{ 'is-invalid': formsubmitted && textareacomp.invalid }"
+        (onContentChanged)="changedEditor($event)" maxLength=5000 [(ngModel)]="control.value"
+        [required]="control.required" #textareacomp="ngModel" [init]="tinyMceConfig"></editor>
+    <span *ngIf="control.showHelpText === true" class="helptext">{{control.helpText}} </span>
+    <div *ngIf="formsubmitted && textareacomp.invalid "
+        [ngClass]="{ 'invalid': formsubmitted && textareacomp.invalid }">
+        <p *ngIf="control.value == null || control.value.length <= 0 ">{{control.label}} is required</p>
+        <p *ngIf="control.value != null && control.value.length > 5000">New textarea must not exceed 5000</p>
+    </div>
+
+</div>

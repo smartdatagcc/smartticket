@@ -1,0 +1,32 @@
+<section class="content">
+    <div class="card card-theme" id="module-custom-report" *ngIf="ticket != undefined">
+        <div class="card-header with-border">
+            <div class="row">
+                <div class="col-md-6">
+                    <app-ticket-header [ticket]="ticket"></app-ticket-header>
+                </div>
+                <div class="col-md-6">
+                    <app-ticket-menu [ticket]="ticket" active="custom-report" [lookup]="lookupData"></app-ticket-menu>
+                </div>
+            </div>
+        </div><!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                     <div class="box-body markdown" [innerHTML]="compiledTemplate | sanitizeHtml" >
+                            <!-- {{compiledTemplate}} -->
+                    </div> 
+                    <div class="box-footer action-buttons">
+                        <a class="btn btn-primary pull-right" href="javascript: void(0)" (click)="edit()">Edit Report...</a>
+                        <a class="btn btn-default pull-right mr10" *ngIf="ticket.metadata.reportEdited" (click)="revert()">Revert to Auto-generated</a>
+                        <a class="btn btn-default pull-right mr10" (click)="download()">Generate PDF</a>
+                    </div>
+
+                    <form method="POST" action= "{{environment}}/api/generate-pdf" target="_blank" id="formPdfDocument" #formPdfDocument>
+                        <input type="hidden" name="document" id="document" value="" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,44 @@
+<div id="timeline">
+    <p *ngIf="items && items.length === 0"><i>There are currently no items</i></p>
+    <a class="pull-right" style="position: relative; z-index:1;" (click)="this.sortDesc = !this.sortDesc; sortdata();">Sort <i
+            [ngClass]="{'fa': true, 'fa-caret-up': !sortDesc, 'fa-caret-down': sortDesc}"></i></a>
+    <div>
+
+        <ul class="timeline">
+
+            <li *ngFor="let item of items; let indexOfelement=index;">
+                <div class="time-label" *ngIf="indexOfelement == 0">
+                    <span class="timeline-item-bgColor"> {{ item.created_at | date:'M/dd/yyyy' }}</span>
+                </div>
+                <div class="time-label"
+                    *ngIf="indexOfelement > 0 && !datesMatch(items[indexOfelement-1].created_at, item.created_at)">
+                    <span class="timeline-item-bgColor"> {{ item.created_at | date:'M/dd/yyyy' }}</span>
+                </div>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <div class="timeline-content">
+                    <img src="{{getImage(item)}}" class="ion">
+                    <div class="timeline-item">
+                        <span class="time" title="{{ item.created_at | date:'short' }}">
+                            <i class="fa fa-clock-o"></i> {{ item.created_at | date:'shortTime' }}</span>
+                        <h3 class="timeline-header"><label>{{getHeader(item)}}</label></h3>
+
+                        <div class="timeline-body">
+                            <div *ngFor="let diff of item.changes.diff;">
+                                <p [innerHtml]="displayDiff(diff).current"></p>
+                                <p *ngIf="displayDiff(diff).previous" [innerHtml]="displayDiff(diff).previous"
+                                    style="text-indent: 15px;"></p>
+                            </div>
+                            <div class="timeline-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <i class="fa  bg-gray"></i>
+            </li>
+        </ul>
+    </div>
+</div>
+

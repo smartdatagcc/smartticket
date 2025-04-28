@@ -1,0 +1,35 @@
+
+.inline-block{
+    display: inline-table;
+    cursor: pointer;
+}
+.panel-default{
+    width: 100%;
+}
+
+.panel-group{
+    border-radius: 3px;
+    border-top: 3px solid #d2d6de;
+    margin-bottom: 20px;
+    border-top-color: #3c8dbc;
+
+    .control{
+        border-bottom: 1px solid #f4f4f4;
+        color: #444;
+        display: block;
+        padding: 10px;
+        position: relative;
+        box-shadow: 0 1px 1px rgba(0,0,0,.1);
+
+        .panel-title{
+            margin: 0;
+
+            .btn-link{
+                padding: 0;
+            }
+        }
+    }
+}
+.bi-three-dots-vertical{
+    cursor: pointer;
+}

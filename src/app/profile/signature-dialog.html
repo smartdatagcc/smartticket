@@ -1,0 +1,20 @@
+<div class="col-sm-12" style="padding: 0;">
+  <div class="model-header">
+    <h1 style="margin: 0;">
+      <span class="close" (click)="close()">&times;</span>
+      {{data.control.label}}</h1>
+  </div>
+  <div class="model-body">
+    <div class="signature-pad">
+      <div class="signature-pad--body">
+        <p>Sign Here : </p>
+        <canvas #sPad width="510" height="200" style="touch-action: none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="model-footer text-right">
+    <button class="btn btn-default mr-3" (click)="close()">Cancel</button>
+    <button class="btn btn-default mr-3" (click)="clear()">Clear</button>
+    <button class="btn btn-primary mr-3" (click)="save()">Sign</button>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="col-sm-12" style="padding: 0;">
+    <div class="model-header">
+        <h3>
+          <span class="close" (click)="onDismiss()">&times;</span>
+          Remove Status
+        </h3>
+    </div>
+    <div class="model-body">
+        <label> Please choose a status for affected tickets to be set to:</label>
+        <select [(ngModel)]="moveStatus" class="form-control" required>
+            <option *ngFor="let status of statusTypes;"> 
+                        {{status.name}}
+            </option>
+        </select>
+    </div>
+    <div class="model-footer text-right">
+        <button class="btn btn-primary" (click)="onConfirm()" >Ok</button>
+        <button class="btn btn-default" (click)="onDismiss()">Cancel</button> 
+    </div>
+</div>
+
+

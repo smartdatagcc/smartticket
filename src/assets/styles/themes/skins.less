@@ -1,0 +1,38 @@
+//All skins in one file
+//@import "skin-blue.less";
+//@import "skin-blue-light.less";
+@import "skin-black.less";
+@import "skin-black-light.less";
+//@import "skin-green.less";
+//@import "skin-green-light.less";
+//@import "skin-red.less";
+//@import "skin-red-light.less";
+//@import "skin-yellow.less";
+//@import "skin-yellow-light.less";
+//@import "skin-purple.less";
+//@import "skin-purple-light.less";
+//@import "skin-lime.less";
+//@import "skin-aqua.less";
+//@import "skin-maroon.less";
+
+@import "skin-mixins.less";
+
+.skin(aqua, @aqua, @light-blue);
+.skin(blue, @light-blue, @aqua);
+.skin(navy, @navy, @blue);
+.skin(green, @green, @lime);
+.skin(lime, @lime, @gray, false, @text-color);
+.skin(maroon, @maroon, @fuchsia);
+.skin(purple, @purple, @aqua);
+.skin(red, @red, @yellow);
+.skin(yellow, @yellow, @orange);
+
+.skin(aqua-light, @aqua, @light-blue, true, @text-color);
+.skin(blue-light, @light-blue, @aqua, true);
+.skin(navy-light, @navy, @blue, true);
+.skin(green-light, @green, @lime, true);
+.skin(lime-light, @lime, @gray, true);
+.skin(maroon-light, @maroon, @fuchsia, true);
+.skin(purple-light, @purple, @aqua, true);
+.skin(red-light, @red, @yellow, true);
+.skin(yellow-light, @yellow, @orange,true);

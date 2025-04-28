@@ -1,0 +1,77 @@
+<div id="import-users" class="ImportUsers">
+    <section class="content" style="padding-top: 10px;">
+        <div class="row">
+            <div class="col-xl-6 col-lg-10 col-md-12">
+                <div class="card card-theme">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"> Import Users</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="alert alert-info">
+
+                            <h4><i class="icon fa fa-info"></i> How Import Works:</h4>
+
+                            <p>If an email address is found in our system, they will be added to this tenant, and have
+                                their metadata and role updated</p>
+                            <p>if an email does not exist, a new user will be created</p>
+
+                        </div>
+
+                        <form #tenantAdminForm="ngForm" name="tenantAdminForm" (ngSubmit)="bulkImport(tenantAdminForm)"
+                            form-unsaved novalidate>
+                            <div class="mt5 mb15">
+                                <label>Remove existing users? </label><br />
+                                <div class="alert alert-warning mb5" *ngIf="clearExisting">
+
+                                    <h4><i class="icon fa fa-info"></i> This will remove all users from this tenant!
+                                    </h4>
+                                    <p>All existing users except yourself - including other admins - will be removed
+                                        from this tenant. </p>
+                                    <strong>Users will NOT be deleted!</strong>
+
+                                </div>
+                                <mat-slide-toggle style="margin: 1em;" [isChecked]="clearExisting"
+                                    [(ngModel)]="clearExisting" name="clearExisting" [color]="color">
+                                </mat-slide-toggle>
+
+                            </div>
+                            <div class="importbutton">
+                                <button type="submit" class="btn btn-primary pull-right clearfix">Start Import</button>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label>Select JSON file * </label>
+                                <div class="selectjsonfile">
+                                    <input #inputFile type="file" name="fileupload" (click)="inputFile.value = null"
+                                        required accept="application/JSON" (change)="onFileChange($event)" />
+                                </div>
+                            </div>
+
+
+                        </form>
+                        <mat-tab-group animationDuration="0ms" [color]="'transparent'">
+                            <mat-tab label="Example JSON">
+                                <pre>{{[example] | json}}</pre>
+                            </mat-tab>
+                        </mat-tab-group>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-6" *ngIf="results && results.length>0">
+                <h3>Results: ({{results.length}} completed)</h3>
+                <div *ngFor="let result of results"
+                    [ngClass]="{'text-success': result.success, 'text-danger': !result.success }">
+                    <i class="fa" [ngClass]="{'fa-check': result.success, 'fa-times': !result.success }"></i>
+                    {{result.id}}
+                    {{result.reason}}
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+</div>

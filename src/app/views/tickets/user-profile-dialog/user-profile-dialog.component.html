@@ -1,0 +1,45 @@
+<div *ngIf="user != undefined" class="{{themeColor}}">
+    <div class="card card-widget widget-user" id="userprofile">
+
+        <div class="widget-user-header bg-theme-alt">
+            <h3 class="widget-user-username">
+                <span class="close" (click)="onDismiss()">&times;</span>
+                {{user.name}}
+            </h3>
+            <h5 class="widget-user-desc">{{user.email}}</h5>
+        </div>
+
+        <div class="widget-user-image">
+            <img class="img-circle" [src]="image" alt="{{user.name}}" />
+        </div>
+
+        <div class="card-footer">
+            <div class="row col-12 border-bottom" style="margin:10px 0px">
+                <div class="col-sm-6 col-xs-6 border-right">
+                    <div class="description-block">
+                        <h5 class="description-header">{{user.created_at | date: 'M/d/yyyy'}}</h5>
+                        <span class="description-text">User Since</span>
+                    </div><!-- /.description-block -->
+                </div><!-- /.col -->
+                <div class="col-sm-6 col-xs-6 ">
+                    <div class="description-block">
+                        <h5 class="description-header">{{currentRole.name}}</h5>
+                        <span class="description-text">Role</span>
+                    </div><!-- /.description-block -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+            <div class="modal-body">
+                <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item" *ngFor="let control of controls">
+                        <b>{{control.label}}</b> <a class="pull-right content-limit" *ngIf="control.type !== 'label'">{{control.val}}</a>
+                    </li>
+                </ul>
+
+                <div >
+                    <button  class="btn btn-primary btn-block" (click)="onDismiss()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>

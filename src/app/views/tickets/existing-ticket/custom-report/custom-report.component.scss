@@ -1,0 +1,34 @@
+#module-custom-report {
+    .box-body.markdown{
+      border:10px solid gray;
+      padding:30px;
+    }
+  }
+  .markdown{
+  
+    table{
+     // .table();
+    }
+  }
+  
+  .print-margins .modal-dialog {
+    width:8.5in;
+  
+    .modal-body{
+      margin:.02in;
+    }
+    .ta-scroll-window > .ta-bind{
+      padding: .6in;
+    }
+  
+    .btn-group{
+      margin-bottom:4px;
+    }
+  }
+
+  .action-buttons {
+    margin-top: 15px;
+    a{
+      margin-left: 15px;
+    }
+  }

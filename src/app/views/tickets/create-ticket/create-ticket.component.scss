@@ -1,0 +1,26 @@
+.signaturediv{
+    img {
+        width:100%;
+        margin-bottom: 10px;
+    }
+}
+
+h4{
+  margin-bottom: 0;
+}
+
+.signature-pad--body{
+    h4{
+        margin-bottom: 0;
+      }
+}
+
+.file { position: relative; height: 50px;  }
+.file > input[type="file"] { height: 50px; width: 200px; position: absoulte; opacity: 0; top: 0; left: 0; right: 0; bottom: 0 }
+.file > label { width: 200px; position: absolute; top: 0; right: 0; left: 0; bottom: 0; font-weight: 300; line-height: 30px; text-align: center; cursor: pointer; }
+.file > label > span { margin-left: 10px;}
+.file > a {    margin: 10px;    line-height: 40px;} 
+
+h2{
+  margin: 0;
+}

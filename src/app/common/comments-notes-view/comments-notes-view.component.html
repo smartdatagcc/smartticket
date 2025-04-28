@@ -1,0 +1,16 @@
+<div id="comments-notes-views">
+    <a class="pull-right" style="position: relative; z-index:1;" (click)="this.sortDesc = !this.sortDesc; sortdata();">Sort <i
+            [ngClass]="{'fa': true, 'fa-caret-up': !sortDesc, 'fa-caret-down': sortDesc}"></i></a>
+    <div class="item-container" *ngFor="let item of items">
+        <div class="item-header">
+            <img [src]="getImage(item)" class="ion">
+            <p class="item-header-name">{{item.user.name}}</p>
+            <p class="item-header-date">
+                <span class="time" title="{{ item.created_at | date:'short' }}">
+                <i class="fa fa-clock-o"></i> replied on <i>{{item.created_at | date:'shortDate' }}</i> at <i>{{ item.created_at | date:'shortTime' }}</i></span>
+            </p>
+        </div>
+        <div class="item-content" [innerHtml]="item.content | sanitizeHtml"></div>
+        <!-- <hr *ngIf="index + 1 !== allItems.length"> -->
+    </div>
+</div>

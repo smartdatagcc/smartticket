@@ -1,0 +1,87 @@
+<div id="import-tickets" class="ImportTickets">
+    <section class="content">
+        <div class="row">
+            <div class="col-xl-6 col-lg-10 col-md-12">
+                <div class="card card-theme">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"> Import tickets</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+
+                            <h4><i class="icon fa fa-info"></i> How Import Works:</h4>
+
+                            <p>If an email address is not found in our system, the user will be replaced with the
+                                default user</p>
+                            <p>if a created_by date is invalid, it will be replaced with today.</p>
+                            <p>if a status does not match existing statuses, it will be set to the first status in the
+                                workflow.</p>
+
+
+                        </div>
+                        <form name="importTicketsForm" (ngSubmit)="bulkImport(importTicketsForm)"
+                            #importTicketsForm="ngForm">
+                            <div class="form-group">
+                                <label>Select Form*</label>
+                                <select [(ngModel)]="selectedFormID" class="form-control" name="formId"
+                                    #selectFormID="ngModel" (change)='formChange(selectFormID.value)' required>
+                                    <option *ngFor="let form of forms;" [value]="form.id">
+                                        {{form.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="mt5 mb15">
+                                <label>Keep existing tickets in selected form? </label><br />
+                                <div class="alert alert-danger mb5" *ngIf="!clearExisting">
+
+                                    <h4><i class="icon fa fa-info"></i> This will remove data from this tenant!</h4>
+                                    <p>ALL EXISTING TICKETS IN THIS FORM WILL BE REMOVED!</p>
+
+                                </div>
+                                <!-- <toggle-switch class="danger" ng-model="vm.clearExisting" on-label="Delete" off-label=" Keep "></toggle-switch> -->
+                                <mat-slide-toggle class="danger" [(ngModel)]="clearExisting"
+                                    name="CanAdminstrateWorkspace" color="primary"></mat-slide-toggle>
+                            </div><br />
+                            <div class="form-group">
+                                <label>Select JSON file*</label><br />
+                                <label for="file-input" class="btn btn-default"><span>Choose File</span></label>
+                                <input #imageInput id="file-input" type="file" style="display: none;" required
+                                    accept="application/JSON" (click)="imageInput.value = null"
+                                    (change)="processFile(imageInput)" />
+                                <a *ngIf="file" style="padding-left: 5px;">{{file.name}} <span (click)="removefile()">
+                                        <i class="fa fa-times" aria-hidden="true"></i></span></a>
+                                <label *ngIf="!file" style="padding-left: 5px;">No File Choosen</label>
+                            </div>
+                            <div class="form-group">
+                                <label>Default User: *</label>
+                                <select [(ngModel)]="defaultUser" class="form-control" name="userId"
+                                    #selectUserID="ngModel" required>
+                                    <option *ngFor="let user of manageTicketEnabledUsers;" [value]="user.id">
+                                        {{user.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary pull-right">Start Import</button>
+                        </form>
+                    </div>
+                    <div class="ExampleGroup">
+                        <mat-tab-group animationDuration="0ms" *ngIf="selectedFormID">
+                            <mat-tab label="Example JSON">
+                                <pre>{{[example] | json}}</pre>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-10 col-md-12" *ngIf="results && results.length>0">
+                <h3>Results: ({{results.length}} completed)</h3>
+                <div *ngFor="let result of results"
+                    [ngClass]="{'text-success': result.success, 'text-danger': !result.success }">
+                    <i class="fa" [ngClass]="{'fa-check': result.success, 'fa-times': !result.success }"></i>
+                    {{result.id}}
+                    {{result.reason}}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

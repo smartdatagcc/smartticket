@@ -1,0 +1,19 @@
+<div id="ticket-header" *ngIf="ticket != undefined">
+    <i class="pull-left {{setFormIcon()}}"></i>
+    <div class="ticket-header-subject margin-bottom-sm">
+        <div class="ticket-header-status">
+            <i class="fa fa-circle" [ngStyle]="{'color': ticket.statusType.color }"></i>
+            {{ticket.statusType.name}}
+        </div>
+        <div class="ticket-header-details">
+            <i>Created by</i> <a href="javascript: void(0)" (click)="openProfile(ticket.createdBy)">{{ticket.user.name}}</a>
+            <br/>
+            <span *ngIf="validTenantUser == true && ticket.assignedTo && ticket.assignedUser != undefined"><i>Assigned to</i> <a
+                    href="javascript: void(0)" (click)="openProfile(ticket.assignedTo)">{{ticket.assignedUser.name}}</a></span>
+            <span *ngIf="validTenantUser == false && ticket.assignedTo && ticket.assignedUser != undefined"><i>Assigned to</i>
+                <span style="color: red;"> &nbsp;{{ticket.assignedUser.name}}</span>
+            </span>
+            <span *ngIf="!ticket.assignedTo"><i>Unassigned</i></span>
+        </div>
+    </div>
+</div>

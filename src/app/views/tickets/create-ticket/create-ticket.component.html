@@ -1,0 +1,252 @@
+<section class="content">
+    <div class="card card-theme" *ngIf="form !== undefined">
+        <div class="card-header with-border">
+            <div class="row">
+                <div class="col-md-6">
+                    <i class="fa fa-2x {{form.settings.details.icon}}"><span class="m10">Add
+                            {{form.name}}</span></i>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form name="createTicketForm" (submit)="submit(createTicketForm)" #createTicketForm="ngForm">
+                        <div class="row">
+                            <div *ngFor="let control of metadataControls.userControls; let i=index;"
+                                [ngClass]="{'col-sm-12': control.type === 'textarea', 'col-sm-6': control.type !== 'textarea' }"
+                                [ngSwitch]="control.type">
+
+                                <div *ngSwitchCase="'signature'" class="blue">
+                                    <div class="form-group">
+                                        <label
+                                            [ngClass]="{ 'invalid': formsubmitted && (control.value=== null && control.required && control.value != '')}">{{control.label}}
+                                            <span *ngIf="control.required">*</span>
+                                            <i *ngIf="control.showToolTip === true"
+                                                class="fa fa-question-circle helptext_toggle"
+                                                data-toggle="tooltip" data-placement="top"
+                                                title="{{control.helpText}}" aria-hidden="true"></i>
+                                        </label>
+                                        <div class="signaturediv">
+                                            <input name="{{control.label}}_{{i}}" [(ngModel)]="control.value"
+                                                required="control.required" hidden *ngIf="control.required" />
+                                            <img class="img-responsive" src="{{control.value}}"
+                                                *ngIf="control.value!= ''" />
+                                            <button type="button" class="btn btn-primary"
+                                                (click)="signature(control , i)">Sign</button>
+                                            <div class="helptext">
+                                                <span *ngIf="control.showHelpText === true"
+                                                class="helptext">{{control.helpText}} </span>
+                                            </div>
+                                            <div *ngIf="formsubmitted && (control.value=== null && control.required && control.value != '')"
+                                                [ngClass]="{ 'invalid': formsubmitted && (control.value=== null && control.required && control.value != '')}">
+                                                {{control.label}} is required
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div *ngSwitchCase="'email'" class="blue">
+                                    <app-email [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                    </app-email>
+                                </div>
+
+                                <div *ngSwitchCase="'checkboxlist'" class="blue">
+                                    <app-checkboxlist [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                    </app-checkboxlist>
+                                </div>
+
+                                <div *ngSwitchCase="'text'" class="blue">
+                                    <app-text [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                    </app-text>
+                                </div>
+
+                                <div *ngSwitchCase="'phone number'" class="blue">
+                                    <app-phonenumber [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                    </app-phonenumber>
+                                </div>
+
+                                <div *ngSwitchCase="'datepicker'" class="blue">
+                                    <app-datepicker [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                    </app-datepicker>
+                                </div>
+
+                                <div *ngSwitchCase="'timepicker'" class="blue">
+                                    <app-timepicker [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                    </app-timepicker>
+                                </div>
+
+                                <div *ngSwitchCase="'radiobuttonlist'" class="blue">
+                                    <app-radiobuttonlist [control]="control" [index]="i"
+                                        [formsubmitted]="formsubmitted"></app-radiobuttonlist>
+                                </div>
+
+                                <div *ngSwitchCase="'select'" class="blue">
+                                    <app-select [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                    </app-select>
+                                </div>
+
+                                <div *ngSwitchCase="'textarea'" class="blue">
+                                    <app-textarea [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                    </app-textarea>
+                                </div>
+
+                                <div *ngSwitchCase="'toggle'" class="blue">
+                                    <app-ticket-toggle [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                    </app-ticket-toggle>
+                                </div>
+                                <div *ngSwitchCase="'label'" class="blue">
+                                    <app-label [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                    </app-label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="metadataControls.internalControls.length > 0">
+                            <hr>
+                            <label><i>Internal Only</i></label>
+                            <div class="row">
+                                <div *ngFor="let control of metadataControls.internalControls; let i=index;"
+                                    [ngClass]="{'col-sm-12': control.type === 'textarea', 'col-sm-6': control.type !== 'textarea' }"
+                                    [ngSwitch]="control.type">
+
+                                    <div *ngSwitchCase="'signature'" class="blue">
+                                        <div class="form-group">
+                                            <label
+                                                [ngClass]="{ 'invalid': formsubmitted && (control.value=== null && control.required && control.value != '')}">{{control.label}}
+                                                <span *ngIf="control.required">*</span>
+                                                <i *ngIf="control.showToolTip === true"
+                                                    class="fa fa-question-circle helptext_toggle"
+                                                    data-toggle="tooltip" data-placement="top"
+                                                    title="{{control.helpText}}" aria-hidden="true"></i>
+                                            </label>
+                                            <div class="signaturediv">
+                                                <input name="{{control.label}}_{{i}}" [(ngModel)]="control.value"
+                                                    required="control.required" hidden *ngIf="control.required" />
+                                                <img class="img-responsive" src="{{control.value}}"
+                                                    *ngIf="control.value!= ''" />
+                                                <button type="button" class="btn btn-primary"
+                                                    (click)="signature(control , i)">Sign</button>
+                                                <div class="helptext">
+                                                    <span *ngIf="control.showHelpText === true"
+                                                        class="helptext">{{control.helpText}} </span>
+                                                </div>
+                                                <div *ngIf="formsubmitted && (control.value=== null && control.required && control.value != '')"
+                                                    [ngClass]="{ 'invalid': formsubmitted && (control.value=== null && control.required && control.value != '')}">
+                                                    {{control.label}} is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div *ngSwitchCase="'email'" class="blue">
+                                        <app-email [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                        </app-email>
+                                    </div>
+
+                                    <div *ngSwitchCase="'checkboxlist'" class="blue">
+                                        <app-checkboxlist [control]="control" [index]="i"
+                                            [formsubmitted]="formsubmitted"></app-checkboxlist>
+                                    </div>
+
+                                    <div *ngSwitchCase="'text'" class="blue">
+                                        <app-text [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                        </app-text>
+                                    </div>
+
+                                    <div *ngSwitchCase="'phone number'" class="blue">
+                                        <app-phonenumber [control]="control" [index]="i"
+                                            [formsubmitted]="formsubmitted"></app-phonenumber>
+                                    </div>
+
+                                    <div *ngSwitchCase="'datepicker'" class="blue">
+                                        <app-datepicker [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                        </app-datepicker>
+                                    </div>
+
+                                    <div *ngSwitchCase="'timepicker'" class="blue">
+                                        <app-timepicker [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                        </app-timepicker>
+                                    </div>
+
+                                    <div *ngSwitchCase="'radiobuttonlist'" class="blue">
+                                        <app-radiobuttonlist [control]="control" [index]="i"
+                                            [formsubmitted]="formsubmitted"></app-radiobuttonlist>
+                                    </div>
+
+                                    <div *ngSwitchCase="'select'" class="blue">
+                                        <app-select [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                        </app-select>
+                                    </div>
+
+                                    <div *ngSwitchCase="'textarea'" class="blue">
+                                        <app-textarea [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                        </app-textarea>
+                                    </div>
+
+                                    <div *ngSwitchCase="'toggle'" class="blue">
+                                        <app-ticket-toggle [control]="control" [index]="i"
+                                            [formsubmitted]="formsubmitted"></app-ticket-toggle>
+                                    </div>
+                                    <div *ngSwitchCase="'label'" class="blue">
+                                        <app-label [control]="control" [index]="i" [formsubmitted]="formsubmitted">
+                                        </app-label>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group" *ngIf="canManageTicket">
+                                    <label><b>Assigned To:</b></label>
+                                    <select [(ngModel)]="this.ticket.assignedTo" name="assigneduser"
+                                        #autoAssignedUser="ngModel" class="form-control">
+                                        <option [ngValue]=null>(None Assigned)</option>
+                                        <option *ngFor="let user of assignableUsers; let i = index" 
+                                        [selected]="this.ticket.assignedTo == user.id"
+                                        [value]="user.id">
+                                            {{user.name}} ({{user.roleName}})
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div *ngFor="let attachment of ticketAttachments; let i = index">
+                                    <div class="file">
+                                        <label for="file-input{{i}}" class="btn btn-default"><i class="fa fa-paperclip"
+                                                aria-hidden="true"></i> <span>Replace Attachment</span></label>
+                                        <input type="file" id="file-input{{i}}" (change)="replacefile($event, i)">
+                                        <a>{{attachment.name}} <span (click)="removefile(attachment)"><i
+                                                    class="fa fa-times" aria-hidden="true"></i></span></a>
+                                    </div>
+                                </div>
+                                <div class="selectnewfile">
+                                    <div class="file">
+                                        <label for="file-input" class="btn btn-primary"><i class="fa fa-paperclip"
+                                                aria-hidden="true"></i><span>Add Attachment</span></label>
+                                        <input #imageInput type="file" id="file-input" accept="image/*"
+                                        (click)="imageInput.value = null" (change)="processFile(imageInput)">
+                                    </div>
+                                </div>
+                                <div><i style="font-size:smaller;">You can not attach applications or files larger than
+                                        5 MB</i></div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

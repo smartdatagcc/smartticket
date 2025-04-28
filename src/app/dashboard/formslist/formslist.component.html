@@ -1,0 +1,49 @@
+<div class="info-box mb-12 bg-info announcementbannerDiv" *ngIf="lookupData.tenant.tenantSettings.settings.showAnnouncement">
+  <div class="info-box-content announcementbanner">
+    <h4><i class="icon fa fa-info-circle"></i> {{lookupData.tenant.tenantSettings.settings.announcementTitle}}</h4>
+    <span class="info-box-number" [innerHTML]="lookupData.tenant.tenantSettings.settings.announcementBody | sanitizeHtml"></span>
+  </div>
+  <!-- /.info-box-content -->
+</div>
+
+<div class="row formslist">
+  <div class="col-md-12">
+    <div class="content">
+      <!-- Default box -->
+      <div class="">
+        <div class="card-body nopadding">
+          <div class="row d-flex align-items-stretch">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3" *ngFor="let form of forms">
+              <div class="card card-info">
+                <div class="card-header formName" (click)="selectedform(form)" [routerLink]="['../tickets', form.id]">
+                  <a >
+                    <i class="fa {{form.settings.details.icon}}"></i>
+                    {{toggleSetting}} {{form.namePlural}}
+                  </a>
+                </div>
+                <div *ngFor="let status of form.statusTypes.statusIds">
+                  <div class="card-body" *ngIf="getCount(form.name,  getStatusTypes(status?.id)[0]?.name)">
+                    <a (click)="selectedform(form)" [routerLink]="['../tickets', form.id]" [queryParams]="{ statusId: status.id }">
+                      <i class="fa fa-circle" [style.color]="getStatusTypes(status.id)[0].color"></i>
+                      {{getStatusTypes(status.id)[0].name}} <span
+                        class="label label-default pull-right badge badge-info">{{getCount(form.name, getStatusTypes(status?.id)[0]?.name)}}</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="card-footer text-center">
+
+                  <a (click)="selectedform(form)" [routerLink]="['../create-ticket', form.id]" routerLinkActive="router-link-active">
+                    <i class="fa fa-plus"></i>
+                    Add {{form.name}}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+</div>

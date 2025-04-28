@@ -1,0 +1,58 @@
+#workspaces{
+    .workspace_header{
+        text-align: center;
+    }
+
+    .workspace-list{
+        width: 80%;
+        margin: auto;
+
+        .card-header{
+            height: 50px;
+            padding: 0;
+        }
+    }
+    .logo{
+        overflow: visible;
+        white-space: nowrap;
+        line-height: 42px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center center;
+        height: 50px;
+    }
+    .logo-lg{
+        margin-bottom: 0;
+        font-size: 20px;
+        line-height: 42px;
+        background-color: #367fa9;
+        color: #fff;
+        border-top: 4px solid #367fa9;
+        border-bottom: 4px solid #367fa9;
+    }
+    h1{
+        color: #fff;
+        font-size: 36px;
+        margin-bottom: 30px;
+    }
+    h4{
+        line-height: 42px;
+        margin: 0;
+        font-size: 20px;
+    }
+
+    .card .card-footer {
+        padding: 3px 0 0;
+        border-top: 0 none;
+    }
+}
+
+.skin-blue .bg-theme {
+    background-color: #3c8dbc!important;
+}
+
+body, html {
+    height: 100%;
+    background-color: #3c8dbc!important;
+
+}

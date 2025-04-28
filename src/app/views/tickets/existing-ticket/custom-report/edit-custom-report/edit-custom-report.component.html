@@ -1,0 +1,27 @@
+<div class="col-sm-12 model">
+    <div class="model-header">
+        <h2>
+            Edit Report
+            <button type="button" class="close"  (click)="onDismiss()">&times;</button>
+        </h2>
+    </div>
+    <div class="model-body">
+        <form name="editForm" (ngSubmit)="edit(editForm)" #editForm="ngForm">
+            <div class="row nomargin bodycontainer">
+                <div class="form-group col-md-12 nopadding nomargin">
+                    <div class="body_content">   
+                            <editor name="editcontent" maxLength=5000 id="test" [(ngModel)]="compiledTemplate"
+                                #editControl="ngModel" [init]="tinyMceConfig"></editor>
+                    </div>
+                </div>
+            </div>
+            <div class="add-option-error" *ngIf="newMessage">
+                {{newMessage}}
+            </div>
+            <div align="end" class="footer">
+                <button class="btn btn-primary" type="submit">Save</button>
+                <button class="btn btn-default" (click)="onDismiss()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

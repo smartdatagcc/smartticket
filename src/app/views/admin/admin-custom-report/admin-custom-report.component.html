@@ -1,0 +1,43 @@
+<section class="content">
+    <div class="card card-theme">
+        <div class="card-header with-border">
+            <h3 class="card-title"> Edit Template</h3>
+        </div>
+
+        <form #reportForm="ngForm" name="reportForm" (ngSubmit)="save(reportForm)" >
+            <div class="card-body">
+                <textarea #templatetext="ngModel" name="templatetext" [(ngModel)]="template" class="form-control" rows="20" style="font-family: monospace;"></textarea>
+            </div>
+
+            <div class="card-footer">
+
+                <button type="submit" class="btn btn-primary pull-right">Save</button>
+
+                <h4>Variables:</h4>
+                <ul style="columns:  3; -webkit-columns: 3;">
+
+                    <li>{{createdAt}<!---->}</li>
+                    <li>{{updatedAt}<!---->}</li>
+                    <li>{{createdBy.name}<!---->}</li>
+                    <li>{{createdBy.email}<!---->}</li>
+                    <li>{{updatedBy.name}<!---->}</li>
+                    <li>{{updatedBy.email}<!---->}</li>
+                    <li>{{formName}<!---->}</li>
+                    <li>{{statusType}<!---->}</li>
+                    <li>{{comments}<!---->}</li>
+                    <li>{{notes}<!---->}</li>
+                    <li *ngFor="let control of form.ticketTemplate.controls">
+                        <div *ngIf="control.type === 'signature'; else otherType" 
+                            data-toggle="tooltip" title="* Signature field type must be encloded in 3 curly braces for templating">
+                            <span>{{'{{{' + control.name + '}' + '}' + '}'}}</span> 
+                            &nbsp;<i class="fa fa-question-circle helptext_toggle" data-toggle="tooltip"></i>
+                    </div>
+                        <ng-template #otherType>{{'{{' + control.name + '}' + '}'}}</ng-template>
+                    </li>
+                </ul>
+            </div>
+        </form>
+
+    </div>
+
+</section>

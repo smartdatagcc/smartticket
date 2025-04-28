@@ -1,0 +1,26 @@
+<div class="tenant-grid">
+  <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="input-group">
+        <div class="search">
+            <input type="text" class="form-control" placeholder="Filter Items"
+            (keyup)="quickSearch()" [(ngModel)]="searchValue">
+            <a (click)="refreshgrid()" class="form-control-feedback feedback-link">×</a>
+        </div>
+      
+    </div>
+
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary" (click)="openAddDialog()">Add Tenant</button>
+    </div>
+  </div>
+
+  <ag-grid-angular style="width: 100%;" class="ag-theme-alpine"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs" 
+    [pagination]="true" 
+    [paginationPageSize]="paginationPageSized"
+    [frameworkComponents]="frameworkComponents" 
+    (gridReady)="onGridReady($event)"
+    [rowSelection]="rowSelection">
+  </ag-grid-angular>
+</div>

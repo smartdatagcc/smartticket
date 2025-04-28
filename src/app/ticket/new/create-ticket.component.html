@@ -1,0 +1,80 @@
+<div class="createTicketForm">
+  <form (ngSubmit)="onSubmit()">
+    <div *ngFor="let control of controls; let i=index;" [ngSwitch]="control.type">
+
+      <div *ngSwitchCase="'signaturepad'" class="blue">
+        <app-signature-pad [control]="control" [index]="i"></app-signature-pad>
+      </div>
+      
+      <div *ngSwitchCase="'email'" class="blue">
+        <app-email [control]="control" [index]="i"></app-email>
+      </div>  
+
+      <div *ngSwitchCase="'checkboxlist'" class="blue">
+        <app-checkboxlist [control]="control" [index]="i"></app-checkboxlist>
+      </div>
+
+      <div *ngSwitchCase="'text'" class="blue">
+        <app-text [control]="control" [index]="i"></app-text>
+      </div>
+
+      <div *ngSwitchCase="'phone number'" class="blue">
+        <app-phonenumber [control]="control" [index]="i"></app-phonenumber>
+      </div>
+
+      <div *ngSwitchCase="'datepicker'" class="blue">
+        <app-datepicker [control]="control" [index]="i"></app-datepicker>
+      </div>
+
+      <div *ngSwitchCase="'timepicker'" class="blue">
+        <app-timepicker [control]="control" [index]="i"></app-timepicker>
+      </div>
+
+      <div *ngSwitchCase="'radiobuttonlist'" class="blue">
+        <app-radiobuttonlist [control]="control" [index]="i"></app-radiobuttonlist>
+      </div>
+
+      <div *ngSwitchCase="'select'" class="blue">
+        <app-select [control]="control" [index]="i"></app-select>
+      </div>
+
+      <div *ngSwitchCase="'textarea'" class="blue">
+        <app-textarea [control]="control" [index]="i"></app-textarea>
+      </div>
+
+      <div *ngSwitchCase="'toggle'" class="blue">
+        <app-toggle [control]="control" [index]="i"></app-toggle>
+      </div>
+    </div>
+
+    <div>
+      <label for="ToasterMessageOption" style="padding-right: 5px;"> Choose Type of Toaster Message: </label>
+      <label><input name="ToasterMessageOption" type="radio" [(ngModel)]="ToasterOption" value="success"
+          style="padding-right: 5px;"> Success </label>
+      <label><input name="ToasterMessageOption" type="radio" [(ngModel)]="ToasterOption" value="error"
+          style="padding-right: 5px;"> Error </label>
+      <label><input name="ToasterMessageOption" type="radio" [(ngModel)]="ToasterOption" value="warning"
+          style="padding-right: 5px;"> Warning </label>
+      <label><input name="ToasterMessageOption" type="radio" [(ngModel)]="ToasterOption" value="info"
+          style="padding-right: 5px;"> Info </label>
+    </div>
+    <div>
+      <input type="button" name="ShowToaster" (click)="ShowToaster()" value="Show Toaster Messages">
+    </div>
+
+    <div style="margin-top: 1em;">
+      <a [routerLink]="['/not-found']" routerLinkActive="router-link-active"><button>Show
+          NotFound
+          Page</button></a>
+    </div>
+
+    <div style="margin-top: 1em;">
+      <button mat-raised-button (click)="confirmDialog()">Show Dialog</button>
+      <br />
+      Response is: {{result}}
+    </div>
+
+    <br />
+    <input type="submit" value="save" />
+  </form>
+</div>

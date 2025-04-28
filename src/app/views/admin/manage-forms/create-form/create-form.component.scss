@@ -1,0 +1,19 @@
+.card-header{
+    padding: 0;
+    border-bottom: 1px solid #f4f4f4;
+    h2{
+        width: 100%;
+        padding: 10px;
+    margin: 0;
+    }
+}
+.panel-body{
+    > .control-label{
+        font-weight: 500;
+    }
+    .radio, .control-label{
+        span{
+            font-weight: 400;
+        }
+    }
+}

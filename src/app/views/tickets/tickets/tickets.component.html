@@ -1,0 +1,100 @@
+<div id="tickets" class="tickets-grid">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-theme">
+                    <div class="card-body">
+                        <div *ngIf="deletedTickets" class="alert alert-danger" role="alert"><i>You are currently viewing
+                                all deleted {{formName}}</i></div>
+                        <div *ngIf="archivedTickets" class="alert alert-warning" role="alert"><i>You are currently
+                                viewing all archived {{formName}}</i></div>
+                        <div class="btn-toolbar justify-content-between" style="padding:10px 5px;" role="toolbar"
+                            aria-label="Toolbar with button groups">
+                            <div class="input-group">
+                                <div class="search margin-bottom-sm">
+                                    <input type="text" class="form-control" placeholder="Filter Items" [(ngModel)]="searchValue" (keyup)="quickSearch($event)">
+                                    <a (click)="refreshGrid()" class="form-control-feedback feedback-link">×</a>
+                                </div>
+                                <button class="btn btn-default margin-bottom-sm" (click)="submitSearch()">Search</button>
+                                
+
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button"
+                                        id="advancefilter" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        <i class="fa fa-cog" aria-hidden="true"></i>
+                                    </button>
+
+                                    <ul class="dropdown-menu advancefilter_class" aria-labelledby="advancefilter">
+                                        <li class="dropdown-item">
+                                            <a (click)="showHideAllColumns($event, true)">
+                                                <i class="fa fa-check" aria-hidden="true"></i>
+                                                <span class="name">Check All</span>
+                                            </a>
+                                        </li>
+                                        <li class="dropdown-item">
+                                            <a (click)="showHideAllColumns($event, false)">
+                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                                <span class="name">Uncheck All</span>
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown-item" *ngFor="let filterColumns of advanceFilterColumns">
+                                            <a (click)="showHideColumn($event, filterColumns)">
+                                                <i [ngClass]="{'fa fa-check': filterColumns.value === true}" aria-hidden="true"></i>
+                                                <span class="name">{{filterColumns.label}}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="input-group margin-bottom-sm">
+                                    <!-- <button class="btn btn-default" (click)=onBtnExport()>Download as CSV... </button> -->
+                                    <a href="javascript: void(0)" 
+                                        class="btn btn-default" download="{{formName}}.csv" (click)=onBtnExport()>Download as CSV...</a>
+                                </div>
+                            </div>
+                            
+
+                            <div class="btn-group margin-bottom-sm">
+                                <a *ngIf="!deletedTickets && !archivedTickets" class="btn btn-default" [routerLink]="['../../create-ticket', formId]"><i
+                                        class="fa fa-plus-circle fa-fw"></i>Add New {{formName}}</a>
+                            </div>
+                        </div>
+                        <span id="grid-pagination-outer-container" *ngIf="rowData?.length">
+                        
+                            <div id="grid-pagination-buttons-container">
+                                <button class="btn btn-default" [attr.disabled]="currentPage === 1 ? true : null" (click)="pagination('first')">To
+                                    First</button>
+                                <button class="btn btn-default" [attr.disabled]="currentPage < 2 ? true : null" (click)="pagination('previous')">To
+                                    Previous</button>
+                                <button class="btn btn-default" [attr.disabled]="currentPage >= totalPages ? true : null"
+                                    (click)="pagination('next')">To Next</button>
+                                <button class="btn btn-default" [attr.disabled]="currentPage === totalPages ? true : null" (click)="pagination('last')"
+                                    id="btLast">To
+                                    Last</button>
+                            </div>
+                            <div>Displaying page {{currentPage}} of {{totalPages}}</div>
+                            </span>
+                        <div id="copyscroller" appTopscroll>
+                        </div>
+                        <ag-grid-angular style="width: 100%;"
+                            class="ag-theme-alpine" 
+                            id="mainscroller"
+                            [rowData]="rowData" 
+                            [columnDefs]="columnDefs" 
+                            [pagination]="true"
+                            [paginationPageSize]="paginationPageSize"  
+                            (componentStateChanged)="gridRerender($event)"
+                            [rowClassRules]="rowClassRules" 
+                            [frameworkComponents]="frameworkComponents"
+                            [suppressPaginationPanel]="true"
+                            [rowSelection]="rowSelection"
+                            >
+                        </ag-grid-angular>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<app-custom-header></app-custom-header>

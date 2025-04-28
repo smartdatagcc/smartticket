@@ -1,0 +1,16 @@
+<div class="form-group">
+        <label [ngClass]="{ 'invalid': formsubmitted && textcomp.invalid }"> {{control.label}}: <span *ngIf="control.required">*</span>
+                <i *ngIf="control.showToolTip === true" class="fa fa-question-circle helptext_toggle" data-toggle="tooltip" data-placement="top" title="{{control.helpText}}" aria-hidden="true"></i>
+        </label>
+        
+        <input name="{{name}}_{{index}}" type="text" class="form-control"   oninput="this.value = this.value.replace(/[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}|^ /g,'')"
+                 [required]="control.required && !(control.value && control.value.length > 0)" #textcomp="ngModel"
+                [title]="control.showHelpText ? control.helpText : ''" [(ngModel)]="control.value"
+                [ngClass]="{ 'is-invalid': formsubmitted && textcomp.invalid }" trim="blur">
+
+        <span  *ngIf="control.showHelpText === true" class="helptext" >{{control.helpText}} </span>
+        <div *ngIf="formsubmitted && textcomp.invalid " [ngClass]="{ 'invalid': formsubmitted && textcomp.invalid }">
+                {{control.label}} is required
+        </div>
+
+</div>

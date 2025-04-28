@@ -1,0 +1,173 @@
+<div class="model-header">
+    <h2>
+        <span class="close outline-none" (click)="onDismiss()">&times;</span>
+        Add New User
+    </h2>
+</div>
+<div class="model-body">
+    <form name="AddUserForm" (ngSubmit)="AddUser(AddUserForm)" #AddUserForm="ngForm"
+    (keydown.enter)="keyDownFunction($event,AddUser(AddUserForm))">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-danger mb20" *ngIf="submitted && message">
+                    <p><i class="icon fa fa-warning" *ngIf="message"></i> {{message}}</p>
+                </div>
+                <div class="form-group"
+                    [ngClass]="{ 'invalid': userEmailControl.invalid && userEmailControl.touched && submitted}">
+                    <label class="control-label"
+                        [ngClass]="{ 'invalid': userEmailControl.invalid && userEmailControl.touched && submitted}">Email
+                        Address*</label>
+                    <input type="email" [(ngModel)]="newUser.email" name="email"
+                        [ngClass]="{ 'is-invalid': userEmailControl.invalid && userEmailControl.touched && submitted}"
+                        #userEmailControl="ngModel" class="form-control" required email
+                        (keydown.space)="$event.preventDefault();" />
+                    <span style="color:red" class="help-block"
+                        *ngIf="userEmailControl.errors?.required && userEmailControl.touched && submitted">
+                        Email Address is required.
+                    </span>
+                    <span style="color:red" class="help-block"
+                        *ngIf="userEmailControl.errors?.email && userEmailControl.touched && submitted">
+                        Valid Email Address Required
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label>Role*</label>
+                    <select [(ngModel)]="newUser.role_id" name="role" #userRoleControl="ngModel" class="form-control"
+                        required>
+                        <option *ngFor="let role of roles; let i = index" [value]="roles[i].id">
+                            {{roles[i].name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div [ngClass]="{'col-sm-6': control.type != 'textarea', 'col-sm-12':control.type === 'textarea' }"
+                *ngFor="let control of metadataControls.userControls; let i=index;" [ngSwitch]="control.type">
+                <div *ngSwitchCase="'text'" class="blue">
+                    <app-text [control]="control" [index]="i"></app-text>
+                </div>
+                <div *ngSwitchCase="'label'" class="blue">
+                    <app-label [control]="control" [index]="i"></app-label>
+                </div>
+                <div *ngSwitchCase="'phone number'" class="blue">
+                    <app-phonenumber [control]="control" [index]="i"></app-phonenumber>
+                </div>
+
+                <div *ngSwitchCase="'signature'" class="blue">
+
+                    <div class="form-group">
+                        <label>{{control.label}}</label>
+                        <div class="signaturediv">
+                            <img class="img-responsive" src="{{control.value}}" *ngIf="control.value!= ''" />
+                            <button type="button" class="btn btn-primary" (click)="signature(control , i)">Sign</button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div *ngSwitchCase="'email'" class="blue">
+                    <app-email [control]="control" [index]="i"></app-email>
+                </div>
+
+                <div *ngSwitchCase="'datepicker'" class="blue">
+                    <app-datepicker [control]="control" [index]="i"></app-datepicker>
+                </div>
+
+                <div *ngSwitchCase="'timepicker'" class="blue">
+                    <app-timepicker [control]="control" [index]="i"></app-timepicker>
+                </div>
+
+                <div *ngSwitchCase="'radiobuttonlist'" class="blue">
+                    <app-radiobuttonlist [control]="control" [index]="i"></app-radiobuttonlist>
+                </div>
+
+                <div *ngSwitchCase="'checkboxlist'" class="blue">
+                    <app-checkboxlist [control]="control" [index]="i"></app-checkboxlist>
+                </div>
+                
+                <div *ngSwitchCase="'select'" class="blue">
+                    <app-select [control]="control" [index]="i"></app-select>
+                </div>
+
+                <div *ngSwitchCase="'textarea'" class="blue">
+                    <app-textarea [control]="control" [index]="i"></app-textarea>
+                </div>
+
+                <div *ngSwitchCase="'toggle'" class="blue">
+                    <app-toggle [control]="control" [index]="i"></app-toggle>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="metadataControls.internalControls && metadataControls.internalControls.length > 0">
+            <hr>
+            <label><i>Internal Only</i></label>
+            <div class="row">
+                <div [ngClass]="{'col-sm-6': control.type != 'textarea', 'col-sm-12':control.type === 'textarea' }"
+                    *ngFor="let control of metadataControls.internalControls; let i=index;" [ngSwitch]="control.type">
+                    <div *ngSwitchCase="'text'" class="blue">
+                        <app-text [control]="control" [index]="i"></app-text>
+
+                    </div>
+                    <div *ngSwitchCase="'label'" class="blue">
+                        <app-label [control]="control" [index]="i"></app-label>
+
+                    </div>
+                    <div *ngSwitchCase="'phone number'" class="blue">
+                        <app-phonenumber [control]="control" [index]="i"></app-phonenumber>
+                    </div>
+
+                    <div *ngSwitchCase="'signature'" class="blue">
+
+                        <div class="form-group">
+                            <label>{{control.label}}</label>
+                            <div class="signaturediv">
+                                <img class="img-responsive" src="{{control.value}}" *ngIf="control.value!= ''" />
+                                <button type="button" class="btn btn-primary"
+                                    (click)="signature(control , i)">Sign</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div *ngSwitchCase="'email'" class="blue">
+                        <app-email [control]="control" [index]="i"></app-email>
+                    </div>
+
+                    <div *ngSwitchCase="'datepicker'" class="blue">
+                        <app-datepicker [control]="control" [index]="i"></app-datepicker>
+                    </div>
+
+                    <div *ngSwitchCase="'timepicker'" class="blue">
+                        <app-timepicker [control]="control" [index]="i"></app-timepicker>
+                    </div>
+
+                    <div *ngSwitchCase="'radiobuttonlist'" class="blue">
+                        <app-radiobuttonlist [control]="control" [index]="i"></app-radiobuttonlist>
+                    </div>
+
+                    <div *ngSwitchCase="'checkboxlist'" class="blue">
+                        <app-checkboxlist [control]="control" [index]="i"></app-checkboxlist>
+                    </div>
+                    
+                    <div *ngSwitchCase="'select'" class="blue">
+                        <app-select [control]="control" [index]="i"></app-select>
+                    </div>
+
+                    <div *ngSwitchCase="'textarea'" class="blue">
+                        <app-textarea [control]="control" [index]="i"></app-textarea>
+                    </div>
+
+                    <div *ngSwitchCase="'toggle'" class="blue">
+                        <app-toggle [control]="control" [index]="i"></app-toggle>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <i>An invitation email will be sent to the user.</i>
+        <div align="end" class="mat-footer">
+            <button class="btn btn-default" (click)="onDismiss()">Cancel</button>
+            <button class="btn btn-primary" type="submit">Add</button>
+        </div>
+    </form>
+</div>

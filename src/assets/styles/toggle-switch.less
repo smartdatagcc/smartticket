@@ -1,0 +1,29 @@
+/* override the default */
+.toggle-switch {
+  margin-bottom: -6px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: @font-size-small;
+  border-radius: @border-radius-base !important;
+  border: 1px solid @input-border !important;
+
+  span {line-height: 24px !important;}
+  .knob {
+    background: @gray-lighter;
+    border: none;
+  }
+  .switch-left {
+    background: @brand-primary;
+  }
+  .switch-right {
+    background: @gray !important;
+  }
+  &.primary .switch-left {background: @brand-primary !important;}
+  &.success .switch-left {background: @brand-success !important;}
+  &.info .switch-left {background: @brand-info !important;}
+  &.danger .switch-left {background: @brand-danger !important;}
+  &.warning .switch-left {background: @brand-warning !important;}
+  &.inverse .switch-left {background: @black !important;}
+  &.default .switch-left {background: @gray !important; color: @text-color;}
+
+}

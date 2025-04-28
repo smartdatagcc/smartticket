@@ -1,0 +1,26 @@
+<div *ngIf="tenantId">
+  <a  href="/{{tenantId}}/dashboard" routerLinkActive="router-link-active"
+    class="brand-link logo navbar-lightblue dropdownMenuButton" *ngIf="tenants.length <= 1">
+    <img class="logoimage" src="{{tenantLogo}}" *ngIf="tenantLogo !== ''">
+    <span class="brand-text name-header font-weight-light" *ngIf="tenantLogo === ''">{{tenantName}}</span>
+  </a>
+
+  <div class="dropdown" *ngIf="tenants.length > 1">
+    <a class="brand-link logo dropdown-toggle dropdownMenuButton" type="button" id="dropdownMenuButton"
+      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <img class="logoimage" src="{{tenantLogo}}" *ngIf="tenantLogo !== ''">
+      <span class="brand-text name-header font-weight-light " *ngIf="tenantLogo === ''">{{tenantName}}</span>
+    </a>
+    <div class="dropdown-menu chooseworkspacedropdown" aria-labelledby="dropdownMenuButton">
+      <ul>
+        Choose a Workspace:
+        <li *ngFor="let tenant of tenants">
+          <a class="dropdown-item name-header" [routerLink]="[ '/' + tenant.id +'/dashboard']"
+            routerLinkActive="router-link-active" href="/{{tenant.id}}/dashboard"
+            (click)="changeTenant(tenant)">{{tenant.name}}</a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>

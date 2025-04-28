@@ -1,0 +1,25 @@
+<div class="col-sm-12" style="padding: 0;">
+    <div class="model-header">
+        <h4 *ngIf="editControl">
+            Editing {{editControl.label}} Content
+            <span class="close" (click)="onDismiss()">&times;</span>
+        </h4>
+    </div>
+    <form name="editControlForm" (ngSubmit)="updateControl(editControlForm)" #editControlForm="ngForm">
+        <div class="model-body">
+            <div class="row">
+                <div class="col-sm-12" *ngIf="editControl.type === 'label'">
+                    <div class="form-group">
+                        <editor name="{{editControl.name}}" maxLength=5000 id="test" [(ngModel)]="editControl.content"
+                            #EditorControl="ngModel" [init]="tinyMceConfig">
+                        </editor>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="model-footer text-right">
+            <button class="btn btn-primary" type="submit">Save Changes</button>
+            <button class="btn btn-default" (click)="onDismiss()">Cancel</button>
+        </div>
+    </form>
+</div>

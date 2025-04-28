@@ -1,0 +1,141 @@
+<!-- <div class="{{lookupTenant.tenant.tenantSettings.settings.themeColor ||  'skin-lime'}}"> -->
+<div class="{{themeColor}}">
+    <div id="login" class="row-flex full-height center-xs middle-xs  bg-theme  bg-splash">
+        <main class="login-form">
+            <header class="main-header">
+                <div class="logo">
+                    <img class="logoimage" src="{{tenantLogo}}" *ngIf="tenantLogo !== ''">
+                    <span class="brand-text" *ngIf="tenantLogo === ''">{{tenantName}}</span>
+                </div>
+            </header>
+            <div class="cotainer">
+                <div class="row justify-content-center">
+                    <div class="col-xs-10 col-md-10 col-lg-6">
+                        <div class="card card-theme"  *ngIf="!showForgotPassword">
+                            <div class="card-header">
+                                <h1 >Login to SmartTicket <span *ngIf="lookupTenant != undefined">- {{lookupTenant.tenantName}}</span></h1>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="alert alert-danger mb20" *ngIf="message">
+                                    <h4><i class="icon fa fa-warning"></i> There seems to be a problem</h4>
+                                    {{message}}
+                                    
+                                </div>
+                                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()"
+                                    novalidate class="col-md-12 form-horizontal">
+                                    <div *ngIf="isOldBrowser" class="login-panel">
+                                        <i class="fa fa-warning pull-left" style="font-size: 42px;"></i>
+                                        <p>This application was built to support IE 10 and greater. </p>
+                                        <p>Please use IE 10 or greater, Edge, Firefox, or Chrome.</p>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="email" class="col-md-4 col-xs-4 col-form-label text-md-right"
+                                        [ngClass]="{ 'invalid': submitted &&  f.email.invalid}">Email Address *
+                                       
+                                        </label>
+                                        <div class="col-md-8 col-xs-8">
+                                            <input formControlName="email" class="form-control" type="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+                                                name="email" id="email" required />
+
+                                                <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.email.errors.required">Email is required</div>
+                                                    <div *ngIf="f.email.errors.email">A Valid Email Address Required
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row"
+                                        ng-class="{ 'has-error': (loginForm.password.invalid ) }">
+                                        <label for="password" class="col-md-4 col-xs-4 col-form-label text-md-right"
+                                        [ngClass]="{ 'invalid': submitted &&  f.password.invalid}">Password *
+                                        </label>
+                                        <div class="col-md-8 col-xs-8">
+                                            <input formControlName="password" class="form-control" type="password"
+                                                name="password" id="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }"  required  />
+
+                                                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.password.errors.required">Password is required</div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a href="javascript: void(0)" (click)="$event.stopPropagation(); setForgotPassword()">Forgot Password ?
+                                            </a>
+                                            <div>
+                                                <a href="/landing-page" >Landing Page</a>
+                                            </div>
+                                           
+                                            <div id="registerLink" *ngIf="lookupTenant != undefined && lookupTenant.inviteOnly === false">
+                                                <a href="{{lookupTenant.tenantId}}/registration">New User? Register here</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                            <button type="submit" class="btn btn-primary">Login</button>
+                                        </div>
+                                    </div>
+                                   
+                                </form>
+                              
+                            </div>
+                        </div>
+
+                        <!-- Forgot Password -->
+                        <div class="card card-theme" *ngIf="showForgotPassword">
+                            <div class="card-header">
+                                <h1>Forgot Password</h1>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="alert-danger alert mb20" *ngIf="forgotPasswordFormErrors.email">
+                                    <div class="notification-content">
+                                        {{forgotPasswordMessage}}
+                                        {{forgotPasswordFormErrors.email}}
+                                    </div>
+                                </div>
+                                <form  [formGroup]="forgotPasswordForm" (ngSubmit)="onForgotPasswordSubmit()" novalidate >                               
+                                    <p>Enter your email address and we will send you a link to reset your password.</p>
+                                    <div class="form-group row">
+                                        <label for="forgotemail" class="col-md-4 col-form-label text-md-right">Email
+                                            Address * </label>
+                                        <div class="col-md-7 col-xs-8">
+                                            <input formControlName="email" class="form-control" type="email"
+                                                name="email" id="email" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <button type="submit" class="btn btn-primary pull-right">Submit</button>
+                                        <a class="btn btn-default" (click)="cancelforgotpassword($event)">Cancel</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            Like SmartTicket?
+                            <div class="pull-right">
+                                SmartTicket v{{version}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                        <a href="javascript: void(0)" (click)="openRequestInviteDialog()">Get your own SmartTicket</a><span class="hidden-xs hidden-sm"> and make your customers happy</span>
+                        <div class="pull-right">
+                            Provided by <a href="https://smartdata.net">Smart Data</a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

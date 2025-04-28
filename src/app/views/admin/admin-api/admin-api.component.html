@@ -1,0 +1,99 @@
+<div id="admin-api" class="Admin-API">
+    <section class="content" style="padding-top: 15px;">
+        <form name="tenantAdminAPIForm" (ngSubmit)="updateTenant(tenantAdminAPIForm)" #tenantAdminAPIForm="ngForm">
+            <div class="row">
+                <div class="col-xl-6 col-lg-10 col-md-12">
+                    <div class="card  card-theme">
+                        <div class="card-header with-border">
+                            <h3 class="card-title">Api Connectivity</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-md-6 col-lg-4">                                    
+                                    <label>Enable API Access:</label><br />                                   
+                                    <mat-slide-toggle [(ngModel)]="apiToggle"  name="apiToggleCtrl"
+                                                (change)="toggleAPIAccess($event)"
+                                                color="primary" #apiToggleControl="ngModel"></mat-slide-toggle>      
+                                                                                                                          
+                                </div>
+                                <div class="col-md-6 col-lg-8" *ngIf="apiToggle">
+                                    <label>API Key:</label><br />
+                                    <input type="text" class="form-control" [value]="tenant.tenantSettings.settings.apiKey" readonly>                                                                                           
+                                </div>
+                            </div>
+                            <div  *ngIf="apiToggle">
+                                <div class="form-group" [class.has-error] = "successReturnURLControl.invalid && successReturnURLControl.touched">
+                                    <label>Default Return Url (Success): *</label>
+                                    <input type="text" class="form-control" name="successReturnURL"
+                                    #successReturnURLControl="ngModel" [(ngModel)]="tenant.tenantSettings.settings.apiReturnUrl" required />
+                                    <span style="color:red" class="help-block" *ngIf = "successReturnURLControl.errors?.required && successReturnURLControl.touched">
+                                        Success Return URL is Required
+                                    </span>
+                                </div>
+                                <div class="form-group" [class.has-error] = "ErrorReturnURLControl.invalid && ErrorReturnURLControl.touched">
+                                    <label>Default Return Url (Error): *</label>
+                                    <input type="text" class="form-control" name="errorReturnURL"
+                                    #ErrorReturnURLControl="ngModel" [(ngModel)]="tenant.tenantSettings.settings.apiErrorUrl" required />
+                                    <span style="color:red" class="help-block" *ngIf = "ErrorReturnURLControl.errors?.required && ErrorReturnURLControl.touched">
+                                        Error Return URL is Required
+                                    </span>
+                                </div>
+                                <div class="form-group" [class.has-error] = "specificDomainEnableControl.invalid && specificDomainEnableControl.touched">
+                                    <label>Enable Api Access from these domains (one per line): *</label>
+                                    <textarea class="form-control" name="specificDomainEnableTextArea"
+                                    #specificDomainEnableControl="ngModel" [(ngModel)]="tenant.tenantSettings.settings.apiRefs" required ></textarea>
+                                    <span style="color:red" class="help-block" *ngIf = "specificDomainEnableControl.errors?.required && specificDomainEnableControl.touched">
+                                        Enabled Domains are Required
+                                    </span>
+                                </div>
+                                <div class="form-group" [class.has-error] = "apiDefaultUser.invalid && apiDefaultUser.touched">
+                                    <label>Owner of anonymous tickets: *</label>
+                                    <select [(ngModel)]="tenant.tenantSettings.settings.apiUser" name="role"
+                                            #apiDefaultUser="ngModel" class="form-control" required>
+                                        <option *ngFor="let user of users" [value]="user.id">
+                                        {{user.name}}
+                                        </option>
+                                    </select>
+                                    <span style="color:red" class="help-block" *ngIf = "apiDefaultUser.errors?.required && apiDefaultUser.touched">
+                                        Selection of default user is Required
+                                    </span>
+                                    <em>This user will be set as the creator of all api-based tickets</em>
+                                </div>
+                                <hr />
+                                <p>Forms which can be submitted through the api:</p>
+                                <!-- <div *ngFor="let form of tenant.forms">
+                                    <div class="form-group" layout="horizontal">
+                                        <label>{{form.name}}</label>                                       
+                                        <mat-slide-toggle [(ngModel)]="form.settings.details.allowPublic" [ngModelOptions]="{standalone: true}"
+                                        color="primary" #formAPIToggleControl="ngModel"></mat-slide-toggle>
+                                        <a *ngIf="form.settings.details.allowPublic">Documentation</a>
+                                    </div>
+                                </div> -->
+                                <div class="card-body table-responsive">
+                                    <table class="table table-hover table-borderless">
+                                        <tbody>
+                                            <ng-container *ngFor="let form of tenant.forms; let i = index">
+                                                <tr>
+                                                    <td class="center-role">{{form.name}}</td>
+                                                    <td class="center-role">
+                                                        <mat-slide-toggle [(ngModel)]="form.settings.details.allowPublic" [ngModelOptions]="{standalone: true}"
+                                                            color="primary" #formAPIToggleControl="ngModel"></mat-slide-toggle>
+                                                    </td>
+                                                    <td class="center-role">
+                                                        <a (click)="Documentation(form)"  *ngIf="form.settings.details.allowPublic">Documentation</a>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right" style="margin-bottom: 25px;">Update</button>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>

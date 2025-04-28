@@ -1,0 +1,51 @@
+<!-- 
+<div class="model-header">
+    <h1 mat-dialog-title>{{getTitle()}}</h1>
+</div>
+
+<div mat-dialog-content>
+    <form name="deleteArchiveForm" #deleteArchiveForm="ngForm" (ngSubmit)="archiveDelete(deleteArchiveForm)" novalidate>
+        <div *ngIf="!deleteOnly">
+            Do you want to archive this ticket ?
+
+            <p *ngIf="!deleteOnly">
+                <input type="checkbox" (click)="deleteThis = !deleteThis"/> <i>Skip archive and delete ticket ?</i>
+            </p>
+        </div>
+        <p *ngIf="deleteOnly">
+            Do you want to delete this ticket ?
+        </p>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="dismiss()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Yes</button>
+        </div>
+    </form>
+</div> -->
+
+<div class="col-sm-12" style="padding: 0;">
+    <div class="model-header">
+        <h4 mat-dialog-title>
+            <span class="close" (click)="dismiss()">&times;</span>
+            {{getTitle()}}
+        </h4>
+    </div>
+
+    <form name="deleteArchiveForm" #deleteArchiveForm="ngForm" (ngSubmit)="archiveDelete(deleteArchiveForm)" novalidate>
+        <div class="model-body">
+            <div *ngIf="!deleteOnly">
+                Do you want to archive this ticket ?
+
+                <p *ngIf="!deleteOnly">
+                    <input type="checkbox" (click)="deleteThis = !deleteThis" /> <i>Skip archive and delete ticket ?</i>
+                </p>
+            </div>
+            <p *ngIf="deleteOnly">
+                Do you want to delete this ticket ?
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="dismiss()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Yes</button>
+        </div>
+    </form>
+</div>

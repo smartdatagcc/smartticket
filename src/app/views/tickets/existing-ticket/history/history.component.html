@@ -1,0 +1,21 @@
+<section class="content">
+    <div class="card card-theme" id="ticket-history" *ngIf="ticket != undefined">
+        <div class="card-header with-border">
+            <div class="row">
+                <div class="col-md-6">
+                    <app-ticket-header [ticket]="ticket"></app-ticket-header>
+                </div>
+                <div class="col-md-6">
+                    <app-ticket-menu [ticket]="ticket" active="history" [lookup]="lookupData"></app-ticket-menu>
+                </div>
+            </div>
+        </div><!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <app-ticket-timeline [items]="ticket.history" [ticket]="ticket"> </app-ticket-timeline>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

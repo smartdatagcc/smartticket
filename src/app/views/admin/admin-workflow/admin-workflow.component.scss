@@ -1,0 +1,112 @@
+#adminWorkflow {
+    padding: 20px 0 50px;
+    
+    .card {
+        .card-header{
+            padding: 10px;
+            .card-title {
+                margin-bottom: 0;
+                font-weight: 500;
+            }
+        }
+        .card-body{
+            padding: 10px;
+
+            li{
+                border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+            }
+        }
+
+        .card-footer{
+            padding-top: 30px;
+            border-top: 1px solid #f4f4f4;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 0 0 3px 3px;
+        }
+        .allform_status{
+            padding: 0;
+            li{
+                border-radius: 0;
+                border-top: 0;
+                border-left: 3px solid transparent;
+                color: #444;
+                padding: 10px 15px;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+                a {
+                    .badge{
+                        display: inline-block;
+                        min-width: 10px;
+                        padding: 3px 7px;
+                        font-size: 12px;
+                        color: #fff;
+                        vertical-align: middle;
+                        background-color: #777;
+                        border-radius: 10px;
+                        margin-left: 5px;
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
+    }
+    .bg-theme-alt{
+        background-color: #00c0ef!important;
+    }
+    
+
+    .workflow-start{
+        font-size: 28px;
+        float: right;
+        margin-right: 20px;
+        margin-bottom: -20px;
+        color: #fff;
+        position: relative;
+        z-index: 1;
+        clear:both;
+    }
+    .workflow-bullet{
+        font-size: 19px;
+        float: right;
+        clear: both;
+        margin-right: -58px !important;
+        position: relative;
+        z-index: 2;
+    }
+
+    .workflow-end{
+        margin-right: 20px;
+        font-size: 40px;
+        margin-top: -14px;
+        float:right;
+        clear:both;
+        color:#d2d6de;
+    }
+
+    .nav.nav-stacked {
+        min-height: 42px;
+        position: relative;
+        clear:both;
+
+        & > li{
+            position: relative;
+            width: 100%;
+
+            & > span{
+                position: relative;
+                display: block;
+                padding: 10px 50px 10px 15px;
+                cursor: move;
+                border-right: 4px solid #d2d6de;
+                margin-bottom:-1px;
+                margin-right:30px;
+                padding-right:50px;
+            }
+        }
+        .fa {
+            margin-right: 10px;
+        }
+
+    }
+
+}

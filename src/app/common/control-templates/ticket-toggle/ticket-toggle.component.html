@@ -1,0 +1,10 @@
+<div class="form-group" *ngIf="control != undefined">
+    <label> {{control.label}}  <i *ngIf="control.showToolTip === true" class="fa fa-question-circle helptext_toggle" data-toggle="tooltip" data-placement="top" title="{{control.helpText}}" aria-hidden="true"></i></label>
+    <div>
+        <mat-slide-toggle name="tickettoggle_{{index}}"  [(ngModel)]="isChecked" [color]=color (change)="onChange($event)"
+            [disabled]="isDisabled">
+            Selected Value : {{selectedvalue}}
+        </mat-slide-toggle>
+    </div>
+    <span  *ngIf="control.showHelpText === true" class="helptext" >{{control.helpText}} </span>
+</div>

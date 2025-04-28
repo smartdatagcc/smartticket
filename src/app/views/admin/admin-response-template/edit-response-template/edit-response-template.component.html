@@ -1,0 +1,63 @@
+<div class="col-sm-12" style="padding: 0;">
+    <div class="model-header">
+        <h4>
+            <button type="button" class="close" (click)="onDismiss()">&times;</button>
+            Edit Template
+        </h4>
+    </div>
+    <form name="editResponseTemplateControlForm"
+        (ngSubmit)="editResponseTemplateControl(editResponseTemplateControlForm)"
+        #editResponseTemplateControlForm="ngForm">
+        <div class="model-body">
+            <div class="row">
+                <div class="form-group col-md-12"
+                    [class.has-error]="editlabelControl.invalid && editlabelControl.touched">
+                    <label class="control-label"
+                        [ngClass]="{ 'invalid': editResponseTemplateControlsubmitted && editlabelControl.invalid}">Name/Title*</label>
+                    <input type="text" [(ngModel)]="itemTemplate.name" name="editlabel" #editlabelControl="ngModel"
+                        oninput="this.value = this.value.replace(/[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}|^ /g,'')"
+                        trim="blur" class="form-control col-md-12" maxLength="100" required />
+                    <span style="color:red" class="help-block"
+                        *ngIf="editlabelControl.errors?.required && editlabelControl.touched">
+                        Name/Title is Required
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12" [class.has-error]="editControl.invalid && editlabelControl.touched">
+                    <label class="control-label"
+                        [ngClass]="{ 'invalid': (editResponseTemplateControlsubmitted  || editControl.touched) && (editControl.value == null || editControl.value.length <= 0 || editControl.value.length >= 5000)}">Content*</label>
+                    <div class="form-group">
+                        <div>
+                            <editor name="editcontent" maxLength=5000 id="test" [(ngModel)]="itemTemplate.content"
+                                trim="blur" [ngClass]="{ 'is-invalid': editControl.dirty &&  editControl.invalid }"
+                                aria-required="true" #editControl="ngModel" required [init]="tinyMceConfig"></editor>
+                            <div *ngIf="editControl.dirty && editControl.invalid "
+                                [ngClass]="{ 'invalid': editControl.dirty &&  editControl.invalid  }">
+                                <div *ngIf="editControl.invalid && editControl.value.length >= 5000 ">
+                                    <span>Content must not exceed 5000</span>
+                                </div>
+                            </div>
+                            <span style="color:red" class="help-block"
+                                *ngIf="(editResponseTemplateControlsubmitted || editControl.touched)  &&(editControl.value == null || editControl.value.length <= 0)">
+                                Content is Required
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <!-- <span style="color:red" class="help-block" *ngIf = "contentControl.errors?.required && contentControl.touched">
+                    Content is Required
+                </span>                     -->
+                </div>
+            </div>
+            <div class="add-option-error" *ngIf="newMessage">
+                {{newMessage}}
+            </div>
+        </div>
+        <div class="model-footer text-right">
+            <button class="btn btn-primary" type="submit">Save Changes</button>
+            <button class="btn btn-default" (click)="onDismiss()">Cancel</button> 
+        </div>
+    </form>
+</div>

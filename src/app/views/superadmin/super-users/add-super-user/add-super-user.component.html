@@ -1,0 +1,32 @@
+<div class="col-sm-12" style="padding: 0;">
+    <div class="add-title model-header">
+        <button type="button" class="close outline-none" (click)="onCancel()">&times;</button>
+        <h2 class="primary">Add new User</h2>
+    </div>
+    <form [formGroup]="addSuperUserForm" (ngSubmit)="submit()">
+        <div class="modal-body">
+            <div style="margin-bottom: 1em;">
+                <div>
+                    <form-field>
+                        <label>Email Address: *</label>
+                        <input matInput placeholder="Email" formControlName="email" required class="form-control">
+                        <span style="color:red"
+                            *ngIf="addSuperUserForm.controls.email.hasError('required') && addSuperUserForm.controls.email.touched">
+                            Email Required
+                        </span>
+                        <span style="color:red"
+                            *ngIf="addSuperUserForm.controls.email.hasError('email') && addSuperUserForm.controls.email.touched">
+                            Enter Valid Email
+                        </span>
+                    </form-field>
+                </div>
+
+                <i>Enter an existing user to promote to Super User</i>
+            </div>
+        </div>
+        <div class="model-footer text-right">
+            <button type="submit" class="update-btn btn btn-primary" [disabled]="!addSuperUserForm.valid">Add</button>
+            <button type="button" class="cancel-btn btn btn-default" (click)="onCancel()">Cancel</button>
+        </div>
+    </form>
+</div>

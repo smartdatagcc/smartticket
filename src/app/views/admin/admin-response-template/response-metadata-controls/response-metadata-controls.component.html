@@ -1,0 +1,50 @@
+<div id="metadata-controls" cdkDropList (cdkDropListDropped)="drop($event)" *ngIf="templateControls != undefined && templateControls.length > 0">
+    <div class="panel-group card card-theme" [attr.id]="'accordion_' + i" *ngFor="let control of templateControls; let i = index;" cdkDrag>
+        <div class="control" >
+            <div class="panel panel-default inline-block">
+                <div class="panel-heading" cdkDragHandle>
+                    <h4 class="panel-title">
+                        <a class="btn btn-link collapsablebutton" data-toggle="collapse" [attr.data-parent]="'#accordion_' + i"
+                            [attr.href]="'#collapseOne_' + i">
+                            <svg class="bi bi-three-dots-vertical" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg" >
+                                <path fill-rule="evenodd"
+                                    d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                            </svg>
+                            {{ control.name }} </a>
+                    </h4>
+                </div>
+                <div [attr.id]="'collapseOne_' + i" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="clearfix">
+                            <button type="button" id="response_control" class="btn btn-danger pull-right m10" (click)="removeResponseControl(control)">Delete </button>
+                            <button type="button" class="btn btn-primary pull-right m10" (click)="editResponseControl(control)">Edit </button>
+                           
+                        </div>
+                        <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div
+                                    [ngClass]="{'col-xs-12':control.type != 'label', 'col-xs-8':control.type == 'label'}">
+                                    <div class="form-group">
+                                        <label>Name/Title *</label>
+                                        <div [innerHtml]="control.name | sanitizeHtml"></div>                                         
+                                    </div>
+                                </div>
+                               
+                            </div>
+                             <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label>Content *</label>
+                                        <div [innerHtml]="control.content | sanitizeHtml"></div>                                       
+                                    </div>
+                                </div>                               
+                            </div>                                                   
+                        </div>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

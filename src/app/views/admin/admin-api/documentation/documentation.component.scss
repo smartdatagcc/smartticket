@@ -1,0 +1,43 @@
+td {
+    padding-top: 0em;
+    padding-bottom: 0em;
+}
+
+pre {
+    padding: 9.5px;
+    margin: 0 15px 10px;
+    font-size: 13px;
+    word-break: break-all;    
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: block;
+    color: #333;
+}
+
+h4{
+    margin: 0;
+}
+
+.exampleform{
+    margin-top: 10px;
+}
+
+.demotest{
+    margin-top: 10px;
+    padding: 9.5px;
+}
+
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    border: transparent;
+    border-top: 1px solid transparent!important;
+}
+
+.table-hover tbody tr:hover {
+    color: #212529;
+    background-color: transparent;
+}
+
+.keynames{
+    font-weight: 600;
+}

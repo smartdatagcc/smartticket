@@ -1,0 +1,33 @@
+<!-- <app-header class="ml-0"></app-header> -->
+<app-su-header></app-su-header>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1 class="mb-0">Super User Dashboard</h1>
+    </section>
+    <div class="super-admin-body">
+        <mat-tab-group animationDuration="0ms" [color]="'transparent'" selectedIndex="0" (selectedTabChange)="changeTab($event)">
+            <mat-tab label="Manage Tenants" >
+                <app-tenants *ngIf="tabIndex === 0"></app-tenants>
+            </mat-tab>
+            <mat-tab label="Manage Super Users">
+                <app-super-users *ngIf="tabIndex === 1"></app-super-users>
+            </mat-tab>
+            <mat-tab label="Manage Global Settings">
+                <ng-template matTabContent>
+                    <app-global-settings></app-global-settings>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="View Logs">
+                <ng-template matTabContent>
+                    <app-logs></app-logs>
+                </ng-template>
+                <app-global-settings *ngIf="tabIndex === 2"></app-global-settings>
+            </mat-tab>
+            <!-- <mat-tab label="View Logs">
+                <app-logs *ngIf="tabIndex === 3"></app-logs>
+            </mat-tab> -->
+        </mat-tab-group>
+    </div>
+</div>
+<app-footer class="su-footer ml-0"></app-footer>

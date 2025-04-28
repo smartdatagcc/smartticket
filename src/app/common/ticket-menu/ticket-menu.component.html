@@ -1,0 +1,18 @@
+<div id="ticket-menu" *ngIf="ticket != undefined">
+    <a href="javascript:void(0)" (click)="navigate('details')"  class="btn btn-app" [ngClass]="{'active-ticket-type': active === 'comments'}">
+        <i class="fa fa-edit"></i> Details
+    </a>
+    <a *ngIf="canViewNotes" href="javascript:void(0)" (click)="navigate('notes')"  class="btn btn-app" [ngClass]="{'active-ticket-type': active === 'notes'}">
+        <i class="fa fa-comments"></i> Notes ({{ticket.notes.length}})
+    </a>
+    <a href="javascript:void(0)" (click)="navigate('history')"  class="btn btn-app" [ngClass]="{'active-ticket-type': active === 'history'}">
+        <i class="fa fa-history"></i> History
+    </a>
+    <span *ngFor="let module of modules;" >
+    <!-- ng-bind-html="val.links.ticket" -->
+    <a *ngIf="module.val.links.ticket &&  (!module.val.permissions || checkpermissions(module.val) )"  (click)="navigate('report')" href="javascript:void(0)"
+        class="btn btn-app" [ngClass]="{'active-ticket-type': active === module.key}">
+         <i class="fa fa-history"></i> Report
+        </a>
+    </span> 
+</div>

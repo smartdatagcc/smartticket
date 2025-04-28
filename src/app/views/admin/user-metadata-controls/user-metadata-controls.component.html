@@ -1,0 +1,33 @@
+<section class="content" id="user-controls">
+    <div class="row user-controls-content">
+        <div class="col-md-12 nopadding">
+            <div class="card card-theme">
+                <div class="card-header with-border">
+                    <h3 class="card-title"> User Fields</h3>
+                </div>
+                <div class="card-body">
+                    <form #editControlsForm="ngForm" (ngSubmit)="saveControls(editControlsForm)">
+                        <div class="clearfix">
+                            <a [routerLink]="['../users']" routerLinkActive="router-link-active"  data-toggle="tooltip" title="User Fields"  id="manager_user" class="m5 btn btn-default pull-right">Manage Users</a>
+                            <button type="button" data-toggle="tooltip" title="User Fields" id="add_new_field" (click)=AddUserField() class="m5 btn btn-primary pull-right">Add New
+                                Field
+                            </button>
+                            <h4 style="font-size:small" data-toggle="tooltip" title="User Fields">(click on field name to view details)</h4>
+                        </div>
+                       
+                        <div class="card-group">
+                            <app-metadata-controls class="meta-controls" [templateControls]="templateControls" (updateEvent)="saveControls(editControlsForm)"></app-metadata-controls>
+                        </div>
+
+                        <div class="card-group">
+                            <button *ngIf="editControlsForm.dirty" type="submit"
+                                class="btn btn-primary pull-right">Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

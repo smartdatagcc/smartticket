@@ -1,0 +1,80 @@
+@mixin skin($name, $color, $color-alt, $theme, $text-color: #fff){
+    // Add your classes with css colors added
+    .skin-#{$name} {
+
+        .bg-theme {
+            background-color: $color !important;
+        }
+      .main-header {
+        background: $color;
+        color: $text-color;
+        .nav-link {
+            i{
+                @include logobg($name);
+            }     
+        }
+        .headerName{
+            @include logobg($name);
+        }
+        .user-menu{
+            .nav-link {
+                span{
+                    @include logobg($name);
+                }
+            }
+        }
+      }
+      .formslist{
+          .formName{
+            background: $color-alt;
+            @include logobg($name);
+            a{
+                @include logobg($name);
+            }
+          }
+      }
+      .logo{
+        background-color: darken($color, 5%)!important;
+        border-top: 4px solid darken($color, 5%);
+        border-bottom: 4px solid darken($color, 5%);
+      }
+      .main-sidebar{
+        .logo{
+            background-color:  darken($color, 5%)!important;
+            @include logobg($name);
+          //  color: $white;
+        }
+        .sidebar{
+            //background: $theme;
+            @include sidebarbg($theme);
+            a {
+                @include sidebartextcolor($theme);
+            }
+
+            .togglemyall{
+                label{
+                    @include sidebartextcolor($theme);
+                }
+            }
+            .dashboard{
+                a{
+                    @include sidebartextcolor($theme);
+                    &:active{
+                        @include sidebartextcolor($theme);
+                        border-left: 3px solid $color!important;
+                    }
+                }
+                a.active{
+                    @include sidebartextcolor($theme);
+                    border-left: 3px solid $color!important;
+                }
+            }
+            .nav-item.active{
+                @include sidebartextcolor($theme);
+                border-left: 3px solid $color!important;
+            }
+        }
+      }
+      
+    }
+  }

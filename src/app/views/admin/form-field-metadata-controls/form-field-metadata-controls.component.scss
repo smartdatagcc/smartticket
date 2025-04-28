@@ -1,0 +1,19 @@
+
+#form-controls{
+    padding: 15px;
+    margin-bottom: 30px;
+    .user-controls-content{
+        background-color: #ffffff;
+        padding-bottom: 20px;
+    }
+}
+
+.collapsing {
+    -webkit-transition: none;
+    transition: none;
+    display: none;
+}
+
+#manager_user{
+    margin-left: 10px;
+}

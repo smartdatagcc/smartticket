@@ -1,0 +1,31 @@
+<div class="super-user-grid">
+    <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="input-group">
+        <!-- <input type="text" class="form-control" placeholder="Filter Items" (keyup)="quickSearch()"
+          [(ngModel)]="searchValue"> -->
+          <div class="search">
+            <input type="text" class="form-control" placeholder="Filter Items"
+            (keyup)="quickSearch()" [(ngModel)]="searchValue">
+            <a (click)="refreshgrid()" class="form-control-feedback feedback-link">×</a>
+        </div>
+        
+      </div>
+  
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary" (click)="openAddDialog()">Add Super User</button>
+      </div>
+    </div>
+  
+    <ag-grid-angular style="width: 100%;" class="ag-theme-alpine" 
+      [rowData]="rowData"
+      [columnDefs]="columnDefs" 
+      [pagination]="true" 
+      [paginationPageSize]="paginationPageSized" 
+      [tooltipShowDelay]="tooltipShowDelay"
+      [frameworkComponents]="frameworkComponents" 
+      (gridReady)="onGridReady($event)"
+      [rowSelection]="rowSelection"
+      [frameworkComponents]="frameworkComponents"
+      >
+    </ag-grid-angular>
+  </div>

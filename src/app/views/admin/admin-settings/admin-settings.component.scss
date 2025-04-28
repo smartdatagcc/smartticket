@@ -1,0 +1,63 @@
+#adminsettings {
+    padding-top: 15px;
+    .table > tbody > tr > td.p0{
+        padding: 0;
+    }
+    .logo {
+        overflow: visible;
+        white-space: nowrap;
+        line-height: 50px;
+        background-repeat: no-repeat;
+        background-size: contain;        
+        transition: width 0.3s ease-in-out;
+        background-position: center center;
+        height: 60px;
+    }
+    .brand-link {
+        display: block;
+        font-size: 1.25rem;
+        line-height: 1.5;
+        padding: 0.8125rem 0.5rem;
+        transition: width 0.3s ease-in-out;
+        white-space: nowrap;
+    }
+    .nopadding{
+        padding: 0;
+    }
+   
+    h4{
+        margin-bottom: 5px;
+    }
+   
+    .logo-lg{
+        line-height: 60px;
+        font-size: 20px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        text-align: center;
+
+    }
+    .box-footer{
+        padding-top: 30px;
+        border-top: 1px solid #f4f4f4;
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 0 0 3px 3px;
+    }
+    .action-buttons {
+        button{
+            margin-right: 15px;
+        }
+    }
+    .logobg{
+        background-position-y: center;
+    }
+    
+    .alert-danger{
+        P{
+            margin: 0;
+        }
+    }
+    h3{
+        margin: 0;
+    }
+}

@@ -1,0 +1,789 @@
+<section class="content">
+    <div class="card card-theme" id="ticket-content" *ngIf="ticket != undefined">
+        <div class="card-header with-border">
+            <div class="row">
+                <div class="col-md-6">
+                    <app-ticket-header [ticket]="ticket" [validTenantUser]="isValidUser"></app-ticket-header>
+                </div>
+                <div class="col-md-6">
+                    <app-ticket-menu [ticket]="ticket" active="comments" [lookup]="lookupData"></app-ticket-menu>
+                </div>
+            </div>
+        </div><!-- /.card-header -->
+        <div class="card-body padding15">
+            <div *ngIf="ticket.deleted" class="alert alert-danger" role="alert"><i>This
+                    {{ticket.form.name | lowercase}} is currently marked as deleted</i></div>
+            <div *ngIf="ticket.archived" class="alert alert-warning" role="alert"><i>This {{ticket.form.name}} is
+                    currently marked as archived</i></div>
+            <div class="row">
+
+                <div [hidden]="!expandComments === false" class="col-sm-12 col-md-12"
+                    [ngClass]="{'col-lg-12': expandDetails === true, 'col-lg-6': expandDetails === false, 'hidden-comments': expandComments === false }">
+                    <form name="editTicketFrm" #editTicketFrm="ngForm" (ngSubmit)="updateTicket(editTicketFrm)"
+                        form-unsaved novalidate>
+                        <div class="card card-solid card-theme">
+                            <div class="card-header with-border">
+                                <!--timeline-item-bgColor-->
+                                <h3 class="card-title">Details</h3>
+                                <div class="card-tools pull-right">
+                                    <button *ngIf="canEdit()" class="btn btn-card-tool" type="button"
+                                        [hidden]="inEditMode" (click)="setEditMode()" title="Edit">
+                                        <i class="fa fa-pencil"></i> Edit
+                                    </button>
+                                    <button *ngIf="ticket.deleted && canViewAdminPages" class="btn btn-card-tool"
+                                        type="button" [hidden]="inEditMode" (click)="undelete()" title="Undelete">
+                                        <i class="fa fa-rotate-left"></i> Undelete
+                                    </button>
+                                    <button *ngIf="ticket.archived && canManageTicket" class="btn btn-card-tool"
+                                        type="button" [hidden]="inEditMode" (click)="unarchive()" title="Unarchive">
+                                        <i class="fa fa-rotate-left"></i> Unarchive
+                                    </button>
+                                    <button class="btn btn-card-tool" type="submit" [hidden]="!inEditMode" title="Edit">
+                                        <i class="fa fa-save"></i> Save
+                                    </button>
+                                    <button *ngIf="displayArchiveButton() && ticket.archived === false"
+                                        class="btn btn-card-tool" type="button"
+                                        (click)="openDeletedTicketConfirmation()" title="Archive">
+                                        <i class="fa fa-archive"></i> Archive
+                                    </button>
+                                    <button *ngIf="displayArchiveButton() && ticket.archived === true"
+                                        class="btn btn-card-tool" type="button"
+                                        (click)="openDeletedTicketConfirmation()" title="Delete">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </button>
+                                    <button class="btn btn-card-tool" type="button" [hidden]="!inEditMode"
+                                        (click)="cancelEditDetails(editTicketFrm)" title="Cancel">
+                                        <i class="fa fa-times"></i> Cancel
+                                    </button>
+                                    <button class="btn btn-card-tool" type="button" (click)="exportPdf($event)"
+                                        *ngIf="canManageTicket">
+                                        <i class="fa fa-file-pdf-o"></i> Export...
+                                    </button>
+                                    <!-- <button class="btn btn-card-tool hidden-md hidden-lg" type="button"
+                                        data-widget="collapse" [hidden]="inEditMode">
+                                        <i class="fa fa-minus"></i>
+                                    </button> -->
+                                    <button type="button" class="btn btn-card-tool hidden-sm"
+                                        (click)="expandDetails = !expandDetails" class="hidden-xs hidden-sm">
+                                        <i
+                                            [ngClass]="{'fa': true, 'fa-expand': !expandDetails, 'fa-compress': expandDetails}"></i>
+                                    </button>
+
+                                </div>
+                                <!-- /.card-tools -->
+                            </div>
+
+                            <!-- /.card-header -->
+                            <div class="card-body" [ngClass]="{'bg-ticket-details': !inEditMode}">
+                                <div [hidden]="!inEditMode" class="padding15">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label><b>Status</b></label>
+                                                <select name="statustype" (change)="onStatusChange($event.target.value)"
+                                                    class="form-control">
+                                                    <option *ngFor="let status of statusTypes; let i = index"
+                                                        [selected]="status.id == ticket.statusType.id"
+                                                        [value]="status.id">
+                                                        {{status.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" *ngIf="canManageTicket">
+                                            <div class="form-group">
+                                                <label><b>Assigned To</b></label>
+                                                <select [(ngModel)]="this.ticket.assignedTo" name="assigneduser"
+                                                    (change)="onAssignedUserChange($event)" #autoAssignedUser="ngModel"
+                                                    class="form-control">
+                                                    <option [ngValue]=null>(None Assigned)</option>
+                                                    <option *ngFor="let user of assignableUsers; let i = index"
+                                                        [ngValue]="user.id">
+                                                        {{user.name}} ({{user.roleName}})
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" *ngIf="!canManageTicket">
+                                            <div class="form-group">
+                                                <label><b>Assigned To</b></label>
+                                                <div>
+                                                    <span
+                                                        *ngIf="ticket.assignedTo"><i>{{ticket.assignedUser.name}}</i></span>
+                                                    <span *ngIf="!ticket.assignedTo"><i>(Not Assigned)</i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div *ngFor="let control of metadataControls.userControls; let i=index;"
+                                            class="col-sm-12" [ngSwitch]="control.type">
+
+                                            <div *ngSwitchCase="'signature'" class="blue">
+                                                <div class="form-group">
+                                                    <label
+                                                        [ngClass]="{ 'invalid': formsubmitted && (control.value=== null && control.required && control.value != '')}">{{control.label}}
+                                                        <span *ngIf="control.required">*</span>
+                                                        <i *ngIf="control.showToolTip === true"
+                                                            class="fa fa-question-circle helptext_toggle"
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="{{control.helpText}}" aria-hidden="true"></i>
+                                                    </label>
+                                                    <div class="signaturediv">
+                                                        <input name="{{control.label}}_{{i}}"
+                                                            [(ngModel)]="control.value" required="control.required"
+                                                            hidden *ngIf="control.required" />
+                                                        <img class="img-responsive" src="{{control.value}}"
+                                                            *ngIf="control.value!= ''" />
+                                                        <button type="button" class="btn btn-primary"
+                                                            (click)="signature(control , i)">Sign</button>
+                                                        <div class="helptext">
+                                                            <span *ngIf="control.showHelpText === true"
+                                                            class="helptext">{{control.helpText}} </span>
+                                                        </div>
+                                                        <div *ngIf="formsubmitted && (control.value=== null && control.required && control.value != '')"
+                                                            [ngClass]="{ 'invalid': formsubmitted && (control.value=== null && control.required && control.value != '')}">
+                                                            {{control.label}} is required
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div *ngSwitchCase="'email'" class="blue">
+                                                <app-email [control]="control" [index]="i"
+                                                    [formsubmitted]="formsubmitted">
+                                                </app-email>
+                                            </div>
+
+                                            <div *ngSwitchCase="'checkboxlist'" class="blue">
+                                                <app-checkboxlist [control]="control" [index]="i"
+                                                    [formsubmitted]="formsubmitted">
+                                                </app-checkboxlist>
+                                            </div>
+
+                                            <div *ngSwitchCase="'text'" class="blue">
+                                                <app-text [control]="control" [index]="i"
+                                                    [formsubmitted]="formsubmitted">
+                                                </app-text>
+                                            </div>
+
+                                            <div *ngSwitchCase="'phone number'" class="blue">
+                                                <app-phonenumber [control]="control" [index]="i"
+                                                    [formsubmitted]="formsubmitted">
+                                                </app-phonenumber>
+                                            </div>
+
+                                            <div *ngSwitchCase="'datepicker'" class="blue">
+                                                <app-datepicker [control]="control" [index]="i"
+                                                    [formsubmitted]="formsubmitted">
+                                                </app-datepicker>
+                                            </div>
+
+                                            <div *ngSwitchCase="'timepicker'" class="blue">
+                                                <app-timepicker [control]="control" [index]="i"
+                                                    [formsubmitted]="formsubmitted">
+                                                </app-timepicker>
+                                            </div>
+
+                                            <div *ngSwitchCase="'radiobuttonlist'" class="blue">
+                                                <app-radiobuttonlist [control]="control" [index]="i"
+                                                    [formsubmitted]="formsubmitted"></app-radiobuttonlist>
+                                            </div>
+
+                                            <div *ngSwitchCase="'select'" class="blue">
+                                                <app-select [control]="control" [index]="i"
+                                                    [formsubmitted]="formsubmitted">
+                                                </app-select>
+                                            </div>
+
+                                            <div *ngSwitchCase="'textarea'" class="blue">
+                                                <app-textarea [control]="control" [index]="i"
+                                                    [formsubmitted]="formsubmitted">
+                                                </app-textarea>
+                                            </div>
+
+                                            <div *ngSwitchCase="'toggle'" class="blue">
+                                                <app-ticket-toggle [control]="control" [index]="i"
+                                                    [formsubmitted]="formsubmitted">
+                                                </app-ticket-toggle>
+                                            </div>
+                                            <div *ngSwitchCase="'label'" class="blue">
+                                                <app-label [control]="control" [index]="i"
+                                                    [formsubmitted]="formsubmitted">
+                                                </app-label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div *ngIf="metadataControls.internalControls.length > 0" class="col-sm-12">
+                                            <hr>
+                                            <label><i>Internal Only</i></label>
+                                            <div class="row">
+                                                <div *ngFor="let control of metadataControls.internalControls; let i=index;"
+                                                    class="col-sm-12" [ngSwitch]="control.type">
+
+                                                    <div *ngSwitchCase="'signature'" class="blue">
+                                                        <div class="form-group">
+                                                            <label
+                                                                [ngClass]="{ 'invalid': formsubmitted && (control.value=== null && control.required && control.value != '')}">{{control.label}}
+                                                                <span *ngIf="control.required">*</span>
+                                                                <i *ngIf="control.showToolTip === true"
+                                                                    class="fa fa-question-circle helptext_toggle"
+                                                                    data-toggle="tooltip" data-placement="top"
+                                                                    title="{{control.helpText}}" aria-hidden="true"></i>
+                                                            </label>
+                                                            <div class="signaturediv">
+                                                                <input name="{{control.label}}_{{i}}"
+                                                                    [(ngModel)]="control.value"
+                                                                    required="control.required" hidden
+                                                                    *ngIf="control.required" />
+                                                                <img class="img-responsive" src="{{control.value}}"
+                                                                    *ngIf="control.value!= ''" />
+                                                                <button type="button" class="btn btn-primary"
+                                                                    (click)="signature(control , i)">Sign</button>
+                                                                <div class="helptext">
+                                                                    <span *ngIf="control.showHelpText === true"
+                                                                    class="helptext">{{control.helpText}} </span>
+                                                                </div>
+                                                                <div *ngIf="formsubmitted && (control.value=== null && control.required && control.value != '')"
+                                                                    [ngClass]="{ 'invalid': formsubmitted && (control.value=== null && control.required && control.value != '')}">
+                                                                    {{control.label}} is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div *ngSwitchCase="'email'" class="blue">
+                                                        <app-email [control]="control" [index]="i"
+                                                            [formsubmitted]="formsubmitted">
+                                                        </app-email>
+                                                    </div>
+
+                                                    <div *ngSwitchCase="'checkboxlist'" class="blue">
+                                                        <app-checkboxlist [control]="control" [index]="i"
+                                                            [formsubmitted]="formsubmitted"></app-checkboxlist>
+                                                    </div>
+
+                                                    <div *ngSwitchCase="'text'" class="blue">
+                                                        <app-text [control]="control" [index]="i"
+                                                            [formsubmitted]="formsubmitted">
+                                                        </app-text>
+                                                    </div>
+
+                                                    <div *ngSwitchCase="'phone number'" class="blue">
+                                                        <app-phonenumber [control]="control" [index]="i"
+                                                            [formsubmitted]="formsubmitted"></app-phonenumber>
+                                                    </div>
+
+                                                    <div *ngSwitchCase="'datepicker'" class="blue">
+                                                        <app-datepicker [control]="control" [index]="i"
+                                                            [formsubmitted]="formsubmitted">
+                                                        </app-datepicker>
+                                                    </div>
+
+                                                    <div *ngSwitchCase="'timepicker'" class="blue">
+                                                        <app-timepicker [control]="control" [index]="i"
+                                                            [formsubmitted]="formsubmitted">
+                                                        </app-timepicker>
+                                                    </div>
+
+                                                    <div *ngSwitchCase="'radiobuttonlist'" class="blue">
+                                                        <app-radiobuttonlist [control]="control" [index]="i"
+                                                            [formsubmitted]="formsubmitted"></app-radiobuttonlist>
+                                                    </div>
+
+                                                    <div *ngSwitchCase="'select'" class="blue">
+                                                        <app-select [control]="control" [index]="i"
+                                                            [formsubmitted]="formsubmitted">
+                                                        </app-select>
+                                                    </div>
+
+                                                    <div *ngSwitchCase="'textarea'" class="blue">
+                                                        <app-textarea [control]="control" [index]="i"
+                                                            [formsubmitted]="formsubmitted">
+                                                        </app-textarea>
+                                                    </div>
+
+                                                    <div *ngSwitchCase="'toggle'" class="blue">
+                                                        <app-ticket-toggle [control]="control" [index]="i"
+                                                            [formsubmitted]="formsubmitted"></app-ticket-toggle>
+                                                    </div>
+                                                    <div *ngSwitchCase="'label'" class="blue">
+                                                        <app-label [control]="control" [index]="i"
+                                                            [formsubmitted]="formsubmitted">
+                                                        </app-label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id="accordion" class="panel-group">
+                                                <!-- User Fields -->
+                                                <div class="panel panel-default" [hidden]="inEditMode">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a data-toggle="collapse" data-parent="#accordion"
+                                                                href="">Fields</a>
+                                                            <i class="fa pull-right"></i>
+                                                        </h4>
+                                                    </div>
+                                                    <div class="panel-collapse" [hidden]="inEditMode">
+                                                        <div class="panel-body">
+                                                            <div class="row"
+                                                                *ngFor="let control of metadataControls.userControls">
+                                                                <div
+                                                                    [ngClass]="{'col-md-6':control.type !== 'textarea' && control.type !== 'label' && expandDetails === true, 'col-md-12': control.type === 'textarea' || control.type === 'label' || expandDetails === false}">
+                                                                    <label
+                                                                        *ngIf="control.type !== 'label' || control.type === 'label' && control.showMyLabel">{{control.label}}:</label>
+                                                                    <!-- <p *ngIf="control.type !== 'signature' && control.type !== 'textarea'">{{control.value}} </p> -->
+                                                                    <p *ngIf="control.type !== 'signature'"
+                                                                        [innerHtml]="getControlValue(control) | sanitizeHtml"> </p>
+                                                                    <!-- <p *ngIf="control.type == 'label'" [innerHtml]="control.content"> </p> -->
+                                                                    <div *ngIf="control.type == 'signature'">
+                                                                        <div *ngIf="control.value">
+                                                                            <img [src]="control.value" height="110"
+                                                                                width="284" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row" *ngIf="editTicketFrm.dirty && inEditMode">
+                                                            <div class="col md-12">
+                                                                <button type="button"
+                                                                class="btn btn-secondary pull-right m10"
+                                                                (click)="cancelEditDetails(editTicketFrm)">Cancel</button>
+                                                                <button 
+                                                                class="btn btn-primary pull-right m10">Save</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- User Fields  End-->
+
+                                                <!-- Internal User Fields -->
+                                                <div class="panel panel-default" [hidden]="inEditMode"
+                                                    *ngIf="metadataControls.internalControls.length > 0">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a data-toggle="collapse" data-parent="#accordion"
+                                                                href="">Internal Only Fields</a>
+                                                            <i class="fa pull-right"></i>
+                                                        </h4>
+                                                    </div>
+                                                    <div class="panel-collapse" [hidden]="inEditMode">
+                                                        <div class="panel-body">
+                                                            <div class="row"
+                                                                *ngFor="let control of metadataControls.internalControls">
+                                                                <div
+                                                                    ng-class="{'col-md-6':control.type !== 'textarea' && control.type !== 'label' && expandDetails === true, 'col-md-12': control.type === 'textarea' || control.type === 'label' || expandDetails === false}">
+                                                                    <label
+                                                                        *ngIf="control.type !== 'label' || control.type === 'label' && control.showMyLabel">{{control.label}}:</label>
+                                                                    <!-- <p *ngIf="control.type !== 'signature'">{{control.value}} </p>
+                                                                    <p *ngIf="control.type == 'label'" [innerHtml]="control.content"> </p> -->
+                                                                    <p *ngIf="control.type !== 'signature'"
+                                                                        [innerHtml]="getControlValue(control) | sanitizeHtml"> </p>
+                                                                    <div *ngIf="control.type == 'signature'">
+                                                                        <div *ngIf="control.value">
+                                                                            <img [src]="control.value" height="110"
+                                                                                width="284" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Internal User Fields End-->
+
+                                                <!-- Attachments [NOT HIDDEN AT ALL]-->
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div id="accordion" class="panel-group">
+                                                            <!-- Existing attachments list -->
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading">
+                                                                    <h4 class="panel-title">
+                                                                        <a data-toggle="collapse" data-parent="#accordion" href="">Attachments
+                                                                            ({{ticket.attachments.length || 0}})</a>
+                                                                        <i class="fa pull-right"></i>
+                                                                    </h4>
+                                                                </div>
+                                                                <div class="panel-collapse">
+                                                                    <div class="panel-body">
+                                                                        <div class="table-responsive">
+                                                                            <label *ngIf="ticket.attachments.length === 0"><i>No
+                                                                                    attachments</i></label>
+                                                                            <table *ngIf="ticket.attachments.length > 0"
+                                                                                class="table table-hover">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <th>File(s)</th>
+                                                                                        <th>Added by</th>
+                                                                                        <th>Added On</th>
+                                                                                        <th *ngIf="inEditMode">Remove</th>
+                                                                                    </tr>
+                                                                                    <tr *ngFor="let attachment of ticket.attachments">
+                                                                                        <td>
+                                                                                            <a download="{{attachment.filename.substr(37)}}"
+                                                                                                href="{{attachment.url}}">
+                                                                                                <i
+                                                                                                    class="fa {{attachment.filename.substr(attachment.filename.lastIndexOf('.') + 1)}}">
+                                                                                                    <span
+                                                                                                        class="ml10">{{attachment.filename.substr(37)}}</span>
+                                                                                                </i>
+                                                                                            </a>
+                                                                                        </td>
+                                                                                        <td>{{attachment.user.name}}</td>
+                                                                                        <td>{{attachment.created_at|date:'short'}}
+                                                                                        </td>
+                                                                                        <td *ngIf="inEditMode"><a href="javascript:void(0)"
+                                                                                                (click)="removeAttachment(attachment)">Delete</a>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div>
+                                                                            <div *ngFor="let attachment of ticketAttachments; let i = index">
+                                                                                <div class="file">
+                                                                                    <label for="file-input{{i}}" class="btn btn-default"><i
+                                                                                            class="fa fa-paperclip" aria-hidden="true"></i>
+                                                                                        <span>Replace Attachment</span></label>
+                                                                                    <input type="file" id="file-input{{i}}"
+                                                                                        (change)="replacefile($event, i)">
+                                                                                    <a>{{attachment.name}} <span (click)="removefile(attachment)"><i
+                                                                                                class="fa fa-times" aria-hidden="true"></i></span></a>
+                                                                                </div>
+                                                                                <br>
+                                                                            </div>
+                                                                            <div class="selectnewfile">
+                                                                                <div class="file">
+                                                                                    <label for="file-input" class="btn btn-primary"><i
+                                                                                            class="fa fa-paperclip" aria-hidden="true"></i>
+                                                                                            <span>Add Attachment</span></label>
+                                                                                    <input #imageInput type="file" id="file-input" accept="image/*"
+                                                                                        (click)="imageInput.value = null"
+                                                                                        (change)="processFile(imageInput)">
+        
+                                                                                    <div *ngIf="!inEditMode">
+                                                                                        <button type="submit" class="btn btn-default">Save</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="info-text">
+                                                                                    <i style="font-size:smaller;">You can not attach applications or files larger than 5 MB</i>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div> <!-- /accordion -->
+                                                    </div> <!-- /col -->
+                                                </div> <!-- /row -->
+
+                                                <!-- Summary -->
+                                                <div class="panel panel-default" [hidden]="inEditMode">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a data-toggle="collapse" data-parent="#accordion"
+                                                                href="">Summary</a>
+                                                            <i class="fa pull-right"></i>
+                                                        </h4>
+                                                    </div>
+                                                    <div class="panel-collapse">
+                                                        <div class="panel-body">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12 col-xs-12">
+                                                                            <p>
+                                                                                <a><label style="display:inline;">Ticket
+                                                                                        Id:</label> {{ticket.id}}</a>
+                                                                            </p>
+                                                                            <hr>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <label>Created By</label>
+                                                                            <p>
+                                                                                <a href="javascript: void(0)"
+                                                                                    (click)="openProfile(ticket.createdBy)">{{ticket.user.name}}</a>
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <label>Assigned To</label>
+
+                                                                            <p>
+                                                                                <a *ngIf="ticket.assignedTo && ticket.assignedUser != undefined"
+                                                                                    href="javascript: void(0)"
+                                                                                    (click)="openProfile(ticket.assignedTo)">{{ticket.assignedUser.name}}</a>
+                                                                                <span
+                                                                                    *ngIf="!ticket.assignedTo"><i>Unassigned</i></span>
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <label>Created On</label>
+
+                                                                            <p>{{ticket.created_at | date: 'short'}}</p>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <label>Last Updated At</label>
+
+                                                                            <p>{{ticket.updated_at | date: 'short'}}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Summary End -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Summary -->
+                                <div [hidden]="!inEditMode" class="padding15">
+                                    <div class="row">
+                                        <div class="col-md-12 action-buttons">
+                                            <span class="m10">Created by <a href="javascript: void(0)"
+                                                    (click)="openProfile(ticket.user.id)">
+                                                    {{ticket.user.name}}</a></span>
+                                        </div>
+                                        <div class="col-md-12 action-buttons">
+                                                <button *ngIf="editTicketFrm.dirty" type="button"
+                                                    class="btn btn-secondary pull-right m10"
+                                                    (click)="cancelEditDetails(editTicketFrm)">Cancel</button>
+                                                <button *ngIf="editTicketFrm.dirty"
+                                                    class="btn btn-primary pull-right m10">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- </card body> -->
+                        </div> <!-- </card> -->
+                    </form>
+                </div>
+
+                <div [hidden]="!expandDetails === false" class="col-sm-12 col-md-12"
+                    [ngClass]="{'col-lg-12': expandComments === true, 'col-lg-6': expandComments === false, 'hidden-comments': expandDetails === false }">
+                    <form name="addCommentForm" #addCommentForm="ngForm" (ngSubmit)="addComment(addCommentForm)"
+                        class="addcomeents" form-unsaved novalidate>
+                        <div class="card card-solid card-theme">
+                            <div class="card-header with-border">
+                                <h3 class="card-title">
+                                    Comments ({{ticket.comments.length}})
+                                </h3>
+                                <div class="card-tools pull-right">
+                                    <button *ngIf="!ticket.deleted && !ticket.archived && showAddComments == false"
+                                        class="btn btn-card-tool" type="button" title="Edit"
+                                        (click)="showAddComments = !showAddComments">
+                                        <i class="fa fa-plus"></i> Reply
+                                    </button>
+                                    <!--Showing 'Save' button when add comment is clicked-->
+                                    <button *ngIf="!ticket.deleted && showAddComments" class="btn btn-card-tool"
+                                        title="Add">
+                                        <i class="fa fa-save"></i> Send
+                                    </button>
+
+                                    <button *ngIf="!ticket.deleted && showAddComments" class="btn btn-card-tool"
+                                        type="button" title="Edit" (click)="cancelNewComment(addCommentForm)">
+                                        <i class="fa fa-times"></i> Cancel
+                                    </button>
+                                    <button class="btn btn-card-tool" type="button"
+                                        (click)="expandComments = !expandComments" class="hidden-xs hidden-sm">
+                                        <i
+                                            [ngClass]="{'fa': true, 'fa-expand': !expandComments, 'fa-compress': expandComments}"></i>
+                                    </button>
+
+                                </div><!-- /.card-tools -->
+                            </div><!-- /.card-header -->
+                            <!--<div class="card-body">-->
+                            <div class="card-body comment-card-body">
+                                <!-- leaving off card-body to remove padding it creates -->
+                                <form-field show-label="false" is-required="true" [hidden]="!showAddComments === true">
+                                    <label class="canned-comment-label" style="margin-left: 2.6em;">
+                                        <div title="Selecting a response template will override the current comment"
+                                            ng-init="addCommentForm = addCommentForm"
+                                            *ngIf="canManageTicket && responseTemplates.length > 0"
+                                            class="canned-comment-text pull-right" ng-dropdown-multiselect=""
+                                            options="responseTemplates" selected-model="currentResponseTemplate"
+                                            extra-settings="columnSelectionSettings"
+                                            translation-texts="columnSelectionTexts" events="events"></div>
+                                    </label>
+                                    <div class="form-group">
+                                        <editor name="newcomment"
+                                            [ngClass]="{ 'is-invalid': newcomment.dirty &&  newcomment.invalid }"
+                                            maxLength=5000 id="textarea" [(ngModel)]="newComment" #newcomment="ngModel"
+                                            required="required" [init]="tinyMceConfig"></editor>
+                                        <div *ngIf="newcomment.dirty &&  newcomment.invalid"
+                                            [ngClass]="{ 'invalid': newcomment.dirty &&  newcomment.invalid  }">
+                                            <p *ngIf="newcomment.value.length <= 0">Comment must have content before saving.</p>
+                                            <p *ngIf="newcomment.value.length >= 5000">Comment must not
+                                                exceed 5000 characters.</p>
+                                        </div>
+                                        <!-- <div *ngIf="newCommentformsubmitted &&  checklength()"
+                                            [ngClass]="{ 'invalid': newCommentformsubmitted  }">
+                                            New Comment Editor must not exceed 5000
+                                        </div> -->
+                                    </div>
+                                </form-field>
+
+                                <div class="row mt20" *ngIf="ticket != 'undfined'">
+                                    <div class="col-md-12 mb20"
+                                        *ngIf="ticket.comments.length === 0 && showAddComments === false">
+                                        <i>There are currently no comments for this ticket</i>
+                                    </div>
+                                    <div class="col-md-12" *ngIf="ticket.comments.length > 0">
+                                        <div class="row">
+                                            <div class="col-md-12 mb20">
+                                                <app-comments-notes-view [items]="ticket.comments" [ticket]="ticket">
+                                                </app-comments-notes-view>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form method="POST" action="{{environment}}/api/generate-pdf" target="_blank" id="formPdfDocument" #formPdfDocument style="display: none;">
+        <input type="hidden" name="document" id="document" value="" />
+    </form>
+</section>
+
+<!-- PDF EXPORT CONTENT-->
+<div  id="ticketcontent" #ticketcontent *ngIf="ticket != undefined" style="display: none;">
+    <div class="card card-theme" id="pdf-generation">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <div class="card-header with-border" style="border-bottom: 4px solid #eee; border-top: 4px solid #eee;">
+            <div id="ticket-header" *ngIf="ticket != undefined" style="margin-top: 10px; margin-bottom: 20px;">
+                <i class="pull-left fa {{ticket.form.settings.details.icon}} fa-4x"></i>
+                <div class="ticket-header-subject">
+                    <div class="ticket-header-status">
+                        <i class="fa fa-circle" [ngStyle]="{'color': ticket.statusType.color }"></i>
+                        {{ticket.statusType.name}}
+                    </div>
+                    <div class="ticket-header-details">
+                        <i>Created by {{ticket.user.name}}</i>
+                        <br/>
+                        <span *ngIf="ticket.assignedTo && ticket.assignedUser != undefined"><i>Assigned to  {{ticket.assignedUser.name}}</i>  </span>
+                        <span *ngIf="!ticket.assignedTo"><i>Unassigned</i></span>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.card-header -->
+        <div *ngIf="ticket.deleted" style="color: #ffffff; background: #dc3545; border-color: #d32535;padding: 0.75rem; margin: 10px;"><i style="font-size: 20px;">This
+            {{ticket.form.name | lowercase}} is currently marked as deleted</i></div>
+        <div *ngIf="ticket.archived" style="color: #1F2D3D; background: #ffc107; border-color: #edb100; padding: 0.75rem; margin: 10px;"><i style="font-size: 20px;">This {{ticket.form.name}} is
+            currently marked as archived</i></div>
+
+        <div class="card-body" style="padding: 0 20px;">
+            <div class="row">
+                <form name="pdfTicketFrm" #pdfTicketFrm="ngForm" form-unsaved novalidate>
+                    <div class="panel-group" style="border: 4px solid #eee; margin-top: 20px;">
+                        <!-- User Fields -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title" style="margin: 0; font-size: 20px;font-weight: 500; background: transparent; padding: 20px; border-bottom: 2px solid #eee;">
+                                    <a data-toggle="collapse" data-parent="#accordion" style="text-decoration: none;color: black;"
+                                        href="">Fields</a>
+                                </h4>
+                            </div>
+
+                            <div class="panel-body" style="padding: 20px;">
+                                <div class="row" style="margin-bottom: 10px;" *ngFor="let control of metadataControls.userControls">
+                                    <label *ngIf="control.type !== 'label' || control.type === 'label' && control.showMyLabel" style="font-weight: 600; font-size: 20px;">{{control.label}}:</label>
+                                    <p *ngIf="control.type !== 'signature'" [innerHtml]="getControlValue(control) | sanitizeHtml" style="margin: 5px 0;font-size: 18px;"> </p>
+                                    <div *ngIf="control.type == 'signature'" style="margin: 5px 0;">
+                                        <div *ngIf="control.value">
+                                            <img [src]="control.value" height="110" width="284" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- User Fields  End-->
+
+                        <!-- Internal User Fields -->
+                        <div class="panel panel-default" *ngIf="metadataControls.internalControls.length > 0">
+                            <div class="panel-heading">
+                                <h4 class="panel-title" style="margin: 0; font-size: 20px;font-weight: 500; background: transparent; padding: 20px; border-bottom: 2px solid #eee;">
+                                    <a data-toggle="collapse" data-parent="#accordion" style="text-decoration: none;color: black;"
+                                        href="">Internal Only Fields</a>
+                                </h4>
+                            </div>
+                            <div class="panel-body" style="padding: 20px;">
+                                <div class="row"  style="margin-bottom: 10px;" *ngFor="let control of metadataControls.internalControls">
+                                    <label *ngIf="control.type !== 'label' || control.type === 'label' && control.showMyLabel" style="font-weight: 600; font-size: 20px;">{{control.label}}:</label>
+                                    <p *ngIf="control.type !== 'signature'" [innerHtml]="getControlValue(control) | sanitizeHtml" style="margin: 5px 0;font-size: 18px;"> </p>
+                                    <div *ngIf="control.type == 'signature'" style="margin: 5px 0;">
+                                        <div *ngIf="control.value">
+                                            <img [src]="control.value" height="110" width="284" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Internal User Fields End-->
+                    </div>
+                    
+                    <div class="panel-group" style="border: 4px solid #eee; margin-top: 20px;">
+                        <!-- Summary -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title" style="margin: 0; font-size: 20px;font-weight: 500; background: transparent; padding: 20px; border-bottom: 2px solid #eee;">
+                                    <a data-toggle="collapse" data-parent="#accordion"href="" style="text-decoration: none;color: black;">Summary</a>
+                                </h4>
+                            </div>                           
+                            <div class="panel-body" style="padding: 20px;">
+                                <div class="row">
+                                    <div class="col-xs-12"  style="margin-bottom: 10px;">
+                                        <p style="margin: 5px 0; font-size: 18px;">
+                                            <a style=" font-size: 18px;"><label style="display:inline; font-weight: 600;">TicketId:</label> {{ticket.id}}</a>
+                                        </p>
+                                        <hr style="border: 1px solid #eee;">
+                                    </div>
+                                    <div style="width: 50%; display: inline-block; margin-bottom: 10px;">
+                                        <label style="font-size: 20px; font-weight: 600; ">Created By</label>
+                                        <p style="margin: 5px 0; font-size: 18px;">{{ticket.user.name}}</p>
+                                    </div>
+                                    <div style="width: 50%; display: inline-block; margin-bottom: 10px;">
+                                        <label style="font-size: 20px; font-weight: 600; ">Assigned To</label>
+                                        <p style="margin: 5px 0; font-size: 18px;">
+                                            <span *ngIf="ticket.assignedTo && ticket.assignedUser != undefined">{{ticket.assignedUser.name}}</span>
+                                            <span *ngIf="!ticket.assignedTo"><i>Unassigned</i></span>
+                                        </p>
+                                    </div>
+                                    <div style="width: 50%; display: inline-block; margin-bottom: 10px;">
+                                        <label style="font-size: 20px; font-weight: 600; ">Created On</label>
+                                        <p style="margin: 5px 0; font-size: 18px;">{{ticket.created_at | date: 'short'}}</p>
+                                    </div>
+                                    <div style="width: 50%; display: inline-block; margin-bottom: 10px;">
+                                        <label style="font-size: 20px; font-weight: 600; ">Last Updated At</label>
+                                        <p style="margin: 5px 0; font-size: 18px;">{{ticket.updated_at | date: 'short'}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Summary End -->
+                    </div>               
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

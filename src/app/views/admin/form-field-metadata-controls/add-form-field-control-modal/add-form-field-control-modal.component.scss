@@ -1,0 +1,36 @@
+.add-option-error {
+    color: #a94442;
+    font-weight: bold;
+  }
+  
+  .model-header {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 15px;
+    h2{
+      margin: 0;
+    }
+  }
+
+  .mat-footer{
+    padding: 15px;
+    text-align: right;
+    border-top: 1px solid #e5e5e5;
+    .cancel {
+      color: #333;
+      background-color: #d4d4d4;
+      border-color: #8c8c8c;
+    }
+  }
+
+  h2{
+    margin: 0;
+  }
+
+  .mat-footer{
+    button{
+      margin-left: 10px;
+    }
+  }
+  .btn {
+    margin-left: 10px;
+  }

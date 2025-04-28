@@ -1,0 +1,33 @@
+<div class="skin-blue" id="workspaces">
+    <div class="row-flex full-height center-sm middle-sm  bg-theme  bg-splash">
+        <header class="workspace_header">
+            <h1 class="logo-lg">SmartTicket</h1>
+        </header>
+        <div class="p30 workspace-list">
+            <h1 class="text-center"> Choose a Workspace</h1>
+            <div class="row h-100 justify-content-center align-items-start">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 tenant {{tenant.value['themeColor']}}" *ngFor="let tenant of tenantData | keyvalue ; let i = index">
+                    <a (click)="redirecttodashboard(tenant)"  >
+                        <div class="card card-theme" >
+                            <div class="card-header">
+                                <div class="logo" [ngStyle]="{'background-image': 'url(' + tenant.value['logoUrl'] + ')'}">
+                                    <h4 class="text-center" *ngIf="!tenant.value['logoUrl']">{{tenant.value['name']}}</h4>
+                                </div>
+                            </div>
+                            <div *ngFor="let status of tenant.value['status'] | keyvalue">
+                                <div class="card-body" *ngIf="status.value['myCount']">
+                                <a >
+                                    <i class="fa fa-circle" [ngStyle]="{'color':status.value['color']}"></i>
+                                    {{status.value['name']}} <span
+                                    class="label label-default pull-right badge badge-info">{{status.value['myCount'] || 0}}</span>
+                                </a>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-theme-alt"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

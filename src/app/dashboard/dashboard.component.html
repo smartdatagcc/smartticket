@@ -1,0 +1,31 @@
+<div class="wrapper" class="{{themeColor}}">
+  <div *ngIf="lookupdata != undefined">
+    <!-- navigation -->
+    <app-header></app-header>
+
+    <!-- side nav -->
+    <app-side-bar></app-side-bar>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content">
+        <div class="container-fluid">
+          <!-- <app-formslist *ngIf="lookupdata != undefined"></app-formslist> -->
+          <router-outlet></router-outlet>
+          
+        </div>
+      </section>
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <app-footer></app-footer>
+  </div>
+</div>

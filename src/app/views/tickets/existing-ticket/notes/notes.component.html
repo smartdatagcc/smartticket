@@ -1,0 +1,89 @@
+<section class="content">
+    <div class="card card-theme" id="ticket-history" *ngIf="ticket != undefined">
+        <div class="card-header with-border">
+            <div class="row">
+                <div class="col-md-6">
+                    <app-ticket-header [ticket]="ticket"></app-ticket-header>
+                </div>
+                <div class="col-md-6">
+                    <app-ticket-menu [ticket]="ticket" active="notes" [lookup]="lookupData"></app-ticket-menu>
+                </div>
+            </div>
+        </div><!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form name="addNotesForm" #addNotesForm="ngForm" (ngSubmit)="addNote(addNotesForm)" form-unsaved
+                        novalidate>
+                        <div class="row" *ngIf="!ticket.deleted">
+                            <div class="col-md-12" *ngIf="canCreateNote">
+                                <div class="align_notify_user">
+                                    <div class="pull-right notify-user-div">
+                                        <label>Also Notify:</label>
+                                        <div class="dropdown">
+                                            <button class="btn btn-default dropdown-toggle" type="button"
+                                                id="notifyusers" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                                <span *ngIf="notifyUser.length == 0">Select Users</span>
+                                                <span *ngIf="notifyUser.length > 0">{{notifyUser.length}} Checked</span>
+                                            </button>
+
+                                            <ul class="dropdown-menu notifyusers_class" aria-labelledby="notifyusers">
+                                                <li class="dropdown-item" (click)="checkUnckeckUsers($event, 'check')">
+                                                    <a>
+                                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                                        <span class="name">Check All</span>
+                                                    </a>
+                                                </li>
+                                                <li class="dropdown-item"
+                                                    (click)="checkUnckeckUsers($event, 'uncheck')">
+                                                    <a>
+                                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                                        <span class="name">Uncheck All</span>
+                                                    </a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li class="dropdown-item" *ngFor="let user of users"
+                                                    (click)="addusertonotify($event, user)">
+                                                    <a>
+                                                        <i [ngClass]="{'fa fa-check': notifyUser.includes(user.id)}"
+                                                            aria-hidden="true"></i>
+                                                        <span class="name">{{user.name}} ({{user.email}}) </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <label>Administrative Note: *</label>
+                                </div>
+                                <div class="form-group">
+                                    <editor name="newnote" maxLength=5000 [(ngModel)]="newNote" #newnote="ngModel"
+                                        [init]="tinyMceConfig"></editor>
+                                    <div class="alert alert-danger" *ngIf="newnote.dirty && newnote.invalid ">
+                                        <span>exceeded character limit...</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group action-buttons">
+                                    <button type="button" *ngIf="addNotesForm.dirty"
+                                        (click)="cancelNewNote(addNotesForm)"
+                                        class="btn btn-secondary pull-right m5">Cancel</button>
+                                    <button *ngIf="addNotesForm.dirty" type="submit"
+                                        class="btn btn-primary pull-right m5">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" *ngIf="ticket.notes.length > 0">
+                                <app-comments-notes-view [items]="ticket.notes" [ticket]="ticket">
+                                </app-comments-notes-view>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

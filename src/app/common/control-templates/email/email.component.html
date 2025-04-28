@@ -1,0 +1,17 @@
+<div class="form-group">
+        <label [ngClass]="{ 'invalid': formsubmitted && emailcomp.invalid }"> {{control.label}}: <span
+                        *ngIf="control.required">*</span>
+                        <i *ngIf="control.showToolTip === true" class="fa fa-question-circle helptext_toggle"
+                        data-toggle="tooltip" data-placement="top" title="{{control.helpText}}" aria-hidden="true"></i>
+                </label>
+        <input name="{{control.name}}_{{index}}" class="form-control" type="email"
+                pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$" (change)="texthandler($event)"
+                [required]="control.required" #emailcomp="ngModel"
+                [title]="control.showHelpText ? control.helpText : ''" [(ngModel)]="control.value"
+                [ngClass]="{ 'is-invalid': formsubmitted && emailcomp.invalid }">
+        <span *ngIf="control.showHelpText === true" class="helptext">{{control.helpText}} </span>
+        <div *ngIf="formsubmitted && emailcomp.invalid " [ngClass]="{ 'invalid': formsubmitted && emailcomp.invalid }">
+                <p *ngIf="emailcomp.errors?.required">Email is a required field!</p>
+                <p *ngIf="emailcomp.errors?.pattern">This is not a valid Email!!!</p>
+        </div>
+</div>

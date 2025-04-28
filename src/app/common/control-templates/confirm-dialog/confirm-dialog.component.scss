@@ -1,0 +1,21 @@
+h3, p{
+    margin: 0;
+}
+
+h3{
+    p{
+        color: #333;
+        font-weight: 500!important;
+        strong{
+            color: #333;
+            font-weight: 500!important;
+        }
+    }
+}
+button{
+    font-size: 14px;
+}
+
+.model-footer{
+    text-align: right;
+}

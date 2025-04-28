@@ -1,0 +1,21 @@
+<div style="padding-top: 15px;">
+    <div class="card card-theme">
+        <div class="callout callout-warning" *ngIf="forms != undefined && formLimit <= forms.length">
+            <h2>You have reached the maximum number of active forms for your plan. </h2>
+            <p>You will not be able to create new forms until you remove some existing forms or <a
+                    href="http://help.getsmartticket.com/wordpress/forms/change-subscription-level/?tid={{tenantId}}"
+                    target="_blank">upgrade your subscription.</a></p>
+        </div>
+        <div class="card-header with-border clearfix" style="padding-top: 10px;">
+            <h2 class="card-title"> Manage Forms
+                <a [routerLink]="['../form/create']" routerLinkActive="router-link-active"
+                    class="btn btn-primary pull-right clearfix" *ngIf="formLimit > forms.length">Create New Form</a>
+                <a href="" class="btn btn-primary pull-right  clearfix disabled"
+                    *ngIf="formLimit <= forms.length">Maximum Forms Reached</a>
+            </h2>
+        </div>
+        <div class="card-body mt20" style="padding-left: 10px; padding-top: 10px;">
+            <app-form-metadata-controls [templateControls]="forms"></app-form-metadata-controls>
+        </div>
+    </div>
+    <div>

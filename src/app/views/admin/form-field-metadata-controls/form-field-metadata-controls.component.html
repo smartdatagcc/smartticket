@@ -1,0 +1,57 @@
+<section class="content" id="form-controls">
+    <div class="row user-controls-content">
+        <div class="col-md-12">
+            <div class="box box-theme">
+                <div class="box-header with-border">
+                    <h2 class="box-title"> {{formname}} Form Fields</h2>
+                </div>
+                <div class="box-body">
+                    <form #editControlsForm="ngForm" (ngSubmit)="saveControls(editControlsForm)">
+                        <div class="clearfix">
+                            <button type="button" id="add_new_field" (click)=AddFormField() class="m5 btn btn-primary pull-right">Add New
+                                Field
+                            </button>
+                            <h4 style="font-size:small">(click on field name to view details)</h4>
+                        </div>
+                       
+                        <div class="box-group">
+                            <app-metadata-controls [templateControls]="templateControls" (updateEvent)="saveControls(editControlsForm)"></app-metadata-controls>
+                        </div>
+
+                        <div class="box-group mt20">
+                            <h4>Default Grid Columns</h4>
+                            <p><i>(These columns will be displayed by default on <a href="{{tenantId}}/tickets/{{formId}}">{{formname}} grid</a>)</i></p>
+                            <div class="row"> 
+                                <div *ngFor="let column of formdefaultGridColumns; let i = index;" class="col-md-2">
+                                    <div class="col-xs-4" >
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>{{column.label}}</label>      
+                                            </div>    
+                                            <div class="col-md-6">         
+                                                <mat-slide-toggle [(ngModel)]="column.selected"  name="column.label-{{i}}"
+                                                    color="primary" ></mat-slide-toggle>   
+                                            </div>                 
+                                        </div>  
+                                    </div>    
+
+                                    <!-- <form-field label="{{column.label}}:">
+                                        <toggle-switch form-control ng-model="column.selected"></toggle-switch>
+                                    </form-field> -->
+                                    <!--<form-field label="column"-->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box-group">
+                            <button *ngIf="editControlsForm.dirty" type="submit"
+                                class="btn btn-primary pull-right">Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

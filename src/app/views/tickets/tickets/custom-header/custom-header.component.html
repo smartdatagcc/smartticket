@@ -1,0 +1,10 @@
+<div *ngIf="params?.template" [innerHTML]="params.template"></div>
+<div (click)="setSort()">
+  <div class="customHeaderLabel">{{ params?.displayName }}</div>
+  <!-- <div *ngIf="params?.enableSorting" class="sort-arrow">
+    <i *ngIf="params.column.sort === 'asc'" class="fas fa-arrow-up"></i>
+    <i *ngIf="params.column.sort === 'desc'" class="fas fa-arrow-down"></i>
+  </div> -->
+  <i *ngIf="setShow(params?.column?.colDef?.field, 'asc')" class="fas fa-arrow-up"></i>
+  <i *ngIf="setShow(params?.column?.colDef?.field, 'desc')" class="fas fa-arrow-down"></i>
+</div>

@@ -1,0 +1,79 @@
+<div class="{{themeColor}}">
+<!-- Navbar -->
+<nav class="main-header navbar navbar-expand ">
+  <!-- Left navbar links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+    </li>
+
+    <li class="nav-item d-none d-sm-inline-block">
+      <a class="nav-link headerName" *ngIf="dispalyHeadername">
+        <i class="nav-icon fa {{formicon}}"></i>
+        {{toggleSetting}} {{formName}}
+      </a>
+    </li>
+  </ul>
+
+  <!-- Right navbar links -->
+  <ul class="navbar-nav ml-auto">
+    <!-- Notifications Dropdown Menu -->
+    <li class="nav-item dropdown" *ngIf="notifications.length">
+      <a class="nav-link" data-toggle="dropdown" href="#">
+        <i class="far fa-bell"></i>
+        <span class="badge badge-warning navbar-badge">{{notifications.length}}</span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right notifications">
+        <span class="dropdown-item dropdown-header">You have {{notifications.length || 'no'}} notifications</span>
+        <div class="dropdown-divider"></div>
+        <div class="media">
+          <div class="media-body dropdown-item" *ngFor="let notification of notifications">
+            <a (click)="clearVisitedNotification(notification, notification.url)" [routerLink]="['/' + notification.url]"  title="{{notification.message}}">
+              <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> {{notification.created_at | dateAgo}}
+              </p>
+              <p class="text-sm">
+                <i class="fa {{notification.icon}}"></i>
+                <span>{{notification.message}}</span>
+              </p>
+            </a>
+            <span class="float-right text-sm" (click)="clearNotifications(notification, notification.url)"><i class="fa fa-times" aria-hidden="true"></i></span>
+          </div>
+        </div>
+        <div class="dropdown-divider"></div>
+        <a href="javascript: void(0)" class="dropdown-item dropdown-footer clear_all" (click)="clearNotifications('',true)">Clear All </a>
+      </div>
+    </li>
+
+    <li class="nav-item dropdown user user-menu ">
+      <a class="nav-link" data-toggle="dropdown" href="#">
+        <img src="{{image}}" class="user-image" alt="" />
+        <span class="hidden-xs">{{name}}</span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+        <div class="dropdown-divider"></div>
+        <a *ngIf="su" href="#"  [routerLink]="['/su-dashboard']" routerLinkActive="router-link-active" class="dropdown-item">
+          SU Dashboard
+        </a>
+        <div class="dropdown-divider"></div>
+        <a  (click)=checkAndRouteProfilePage() class="dropdown-item">
+          Edit Profile
+        </a>
+        <div class="dropdown-divider"></div>
+        <a href="#" class="dropdown-item" [routerLink]="['./logout']"   class="dropdown-item">
+          Sign Out
+        </a>
+      </div>
+    </li>
+
+    <li class="nav-item" *ngIf="isAuth && canViewAdminPages">
+      <a class="nav-link" [routerLink]="['/'+ tenantId + '/admin/settings']" ><i class="fa fa-gear"></i></a>
+    </li>
+
+    <li class="nav-item"><a class="nav-link" href="http://help.getsmartticket.com/wordpress/" target="_blank"><i
+          class="fa fa-question-circle"></i></a>
+    </li>
+    <li *ngIf="!isAuth" class="nav-item"><a class="nav-link" href="/login">Log in</a></li>
+  </ul>
+</nav>
+<!-- /.navbar -->
+</div>

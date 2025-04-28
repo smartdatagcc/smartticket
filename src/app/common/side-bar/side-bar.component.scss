@@ -1,0 +1,87 @@
+@import "../../../assets/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.css";
+.logo {
+    overflow: visible;
+    white-space: nowrap;
+    line-height: 42px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+    height: 57px;
+}
+
+.form-names {
+    max-width: 130px;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    margin: -5px 0!important;
+}
+.nav li a{
+    padding: 12px 5px 0px 15px;
+}
+
+@media (min-width: 992px) {
+    .form-names {
+        width: auto!important;
+    }
+}
+@media (min-width: 320px){
+    .sidebar-menu{
+        li a{
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+}
+.dashboard {
+    a{
+        font-weight: 700;
+    }
+}
+.menu-open li {
+    border-left-color: #00c0ef;
+}
+.menu-open .active {
+    background: #2c3b41;
+
+    a{
+        color: #ffffff;
+    }
+   
+}
+
+.dropdown{
+    .brand-link{
+        text-align: center;
+        line-height: 32px;
+    }
+}
+
+.sidebar-menu{
+    .has-treeview {
+        >a {
+            font-weight: 700;
+        }
+        ul{
+            li{
+                a {
+                    padding: 12px 5px 0px 15px!important;
+                }
+            }
+           
+        }
+    }
+}
+
+app-toggle{
+    margin  : 10px;
+}
+
+.verticalalign{
+    margin: 0;
+    vertical-align: top;
+}
+
+mat-slide-toggle{
+    margin: 0 10px;
+}

@@ -1,0 +1,80 @@
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar">
+  <!-- Brand Logo -->
+  <app-workspace-change [tenants]="tenants" [tenantId]="tenantId"></app-workspace-change>
+  <!-- Sidebar -->
+  <div class="sidebar" *ngIf="dispalysidebar">
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <!-- Toggle Component -->
+      <div style="margin-left: 1em; margin-bottom: 10px;" class="togglemyall" *ngIf="canManageTicket">
+        <label class="verticalalign">Show</label>
+       
+        <mat-slide-toggle [(ngModel)]="toggleSettingchecked" [color]=color (change)="onToggleStatus($event)">
+        </mat-slide-toggle>
+        <label  class="verticalalign">{{toggleSetting}} Tickets</label>
+      </div>
+
+      <ul class="nav nav-pills nav-sidebar flex-column nav-legacy text-sm sidebar-menu" data-widget="treeview" role="menu"
+        data-accordion="true">
+        <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+        <li class="nav-item dashboard">
+          <a (click)="selectedForm('')" [routerLink]="['./dashboard']" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fa fa-home"></i>
+            <p>
+              Dashboard
+            </p>
+          </a>
+        </li>
+        <li class="nav-item has-treeview" *ngFor="let form of forms" [class.menu-open]="currentForm == form.id"
+          [class.active]="currentForm == form.id">
+          <a (click)="selectedForm(form)" [routerLink]="['./tickets', form.id]" routerLinkActive="active"
+            class="nav-link">
+            <i class="nav-icon fa {{form.settings.details.icon}}"></i>
+            <p class="form-names">
+              {{toggleSetting}} {{form.namePlural}}
+              <span class="badge badge-info label-default right">{{getCount(form.name, '')}}</span>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li *ngFor="let status of form.statusTypes.statusIds" class="nav-item"
+              [class.active]="statusId == status.id">
+              <a (click)="formStatusId(status)" [routerLink]="['./tickets', form.id]" *ngIf="getStatusTypes(status.id).length > 0"
+                [queryParams]="{ statusId: status.id }" class="nav-link">
+                <i class="fa fa-circle  nav-icon" [style.color]="getStatusTypes(status.id)[0].color"></i>
+                <p class="form-names">
+                  {{getStatusTypes(status.id)[0].name}}
+                  <span class="right">{{getCount(form.name, getStatusTypes(status?.id)[0]?.name)}}</span>
+                </p>
+              </a>
+            </li>
+
+            <li *ngIf="canManageTicket && getCount(form.name,'archived') > 0" class="nav-item"
+              [class.active]="statusArchivedeleted === 'archived'">
+              <a [routerLink]="['./tickets', form.id]" [queryParams]="{ archived: true }" class="nav-link">
+                <i class="fa fa-file-archive-o nav-icon"></i>
+                <p class="form-names">
+                  Archived
+                  <span class="right">{{getCount(form.name,'archived') || 0}}</span>
+                </p>
+              </a>
+            </li>
+            <li *ngIf="canViewAdminPages && getCount(form.name,'deleted') > 0" class="nav-item"
+              [class.active]="statusArchivedeleted === 'deleted'">
+              <a [routerLink]="['./tickets', form.id]" [queryParams]="{ deleted: true }" class="nav-link">
+                <i class="fa fa-trash nav-icon"></i>
+                <p class="form-names">
+                  Deleted
+                  <span class="right">{{getCount(form.name,'deleted') || 0}}</span>
+                </p>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

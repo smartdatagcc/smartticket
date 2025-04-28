@@ -1,0 +1,57 @@
+<div class="tenant-grid">
+  <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="input-group">
+      <div class="search" data-toggle="tooltip"  title="Manage Users" >
+        <input type="text" class="form-control" placeholder="Filter Items" (keyup)="quickSearch()"
+          [(ngModel)]="searchValue">
+        <a (click)="refreshgrid()" class="form-control-feedback feedback-link">×</a>
+      </div>
+    
+  
+      <div class="dropdown margin-bottom-sm" id="example"  data-toggle="tooltip"  title="Manage Users">
+        <button class="btn btn-default dropdown-toggle" type="button" id="advancefilter" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-cog" aria-hidden="true"></i>
+        </button>
+
+        <ul class="dropdown-menu advancefilter_class" aria-labelledby="advancefilter">
+          <li class="dropdown-item">
+            <a (click)="showhideallcolumns($event, true)">
+              <i class="fa fa-check" aria-hidden="true"></i>
+              <span class="name">Check All</span>
+            </a>
+          </li>
+          <li class="dropdown-item">
+            <a (click)="showhideallcolumns($event, false)">
+              <i class="fa fa-times" aria-hidden="true"></i>
+              <span class="name">Uncheck All</span>
+            </a>
+          </li>
+          <li class="divider"></li>
+          <li class="dropdown-item" *ngFor="let FilterColumns of advanceFilterColumns">
+            <a (click)="showhidecolumn($event, FilterColumns)">
+              <i [ngClass]="{'fa fa-check': FilterColumns.value === true}" aria-hidden="true"></i>
+              <span class="name">{{FilterColumns.label}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="btn-group" >
+      <button type="button" data-toggle="tooltip"  title="Manage Users" class="btn btn-primary margin-bottom-sm" *ngIf="userLimit > currentUserData.length" (click)=AddUser()>Add User</button>
+      <button class="btn btn-primary disabled margin-bottom-sm" *ngIf="userLimit <= currentUserData.length">Maximum Active Users Reached</button>
+      <button type="button"  data-toggle="tooltip"  title="Manage Users"  class="btn btn-default margin-bottom-sm" (click)="userFilelds()">User Fields</button>
+    </div>
+  </div>
+  <ag-grid-angular style="width: 100%;" class="ag-theme-alpine" 
+    [rowData]="rowData" 
+    [columnDefs]="columnDefs"
+    [pagination]="true" 
+    [paginationPageSize]="paginationPageSized" 
+    [rowSelection]="rowSelection"
+    (gridReady)="onGridReady($event)"
+    [frameworkComponents]="frameworkComponents"
+    >
+  </ag-grid-angular>
+</div>

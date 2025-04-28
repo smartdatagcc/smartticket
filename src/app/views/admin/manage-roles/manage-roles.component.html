@@ -1,0 +1,53 @@
+<div id="manageRoles" class="manageRoles-grid">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-theme">
+                    <div class="card-header with-border">
+                        <!-- <h1 class="mb-0">Roles</h1> -->
+                        <h3 class="card-title" data-toggle="tooltip" title="Manage Roles"> Roles</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button">
+                            <div class="input-group">
+                                <div class="search"  data-toggle="tooltip" title="Manage Roles" >
+                                    <input type="text" class="form-control" placeholder="Filter Items" [(ngModel)]="searchValue"
+                                        (keyup)="quickSearch()">
+                                    <a (click)="refreshgrid()" class="form-control-feedback feedback-link">×</a>
+                                </div>
+                            </div>
+                
+                            <div class="btn-group">
+                                <button   data-toggle="tooltip" title="Manage Roles"  type="button" class="btn btn-primary" (click)="AddRole()">Add Role</button>
+                            </div>
+                        </div>
+                
+                        <ag-grid-angular style="width: 100%;" class="ag-theme-alpine"
+                            [columnDefs]="columnDefs" 
+                            [rowData]="rowData" 
+                            [pagination]="true" 
+                            [paginationPageSize]="paginationPageSized"
+                            (gridReady)="onGridReady($event)" 
+                            (gridColumnsChanged)="gridSizeChanged($event)"
+                            [rowSelection]="rowSelection"
+                            [frameworkComponents]="frameworkComponents"
+                            >
+                        </ag-grid-angular>
+                
+                        <hr>
+                        <p>
+                            * Default is the role new users are assigned to when self-registering
+                        </p>
+                        <p>
+                            ** Roles can only be removed under the following circumstances:
+                        </p>
+                        <ul>
+                            <li>Does not contain any users</li>
+                            <li>Is not the current default role</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

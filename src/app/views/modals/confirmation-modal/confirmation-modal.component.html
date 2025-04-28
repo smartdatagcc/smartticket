@@ -1,0 +1,13 @@
+<div class="col-sm-12" style="padding: 0;">
+    <div class="model-header">
+        <button type="button" class="close" (click)="onCancel()">&times;</button>
+        <h2 class="primary">{{title}}</h2>
+    </div>
+    <div class="model-body">
+        <div class="confirm-modal-body" [innerHtml]="message"></div>
+    </div>
+    <div class="btn-section model-footer">
+        <button type="button" color="primary" class="confirm-btn btn btn-primary" (click)="onConfirm()">Yes</button>
+        <button type="button" class="cancel-btn btn btn-default" (click)="onCancel()">No</button>
+    </div>
+</div>

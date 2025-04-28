@@ -1,0 +1,80 @@
+<div id="adminWorkflow" class=" WorkflowList">
+    <section class="content">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-12 col-lg-6">
+                <!-- general form elements -->
+                <div class="card card-theme">
+                    <div class="card-header with-border">
+                        <h3 class="card-title" *ngIf= "form != undefined"> {{form.name}} Workflow Organization</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>The workflow is the process that a smart ticket follows from creation to completion.
+                            It can be as simple as Open -> Closed, or much more complex. You can drag and drop to order
+                            statuses.</p>
+
+                        <p>Turning off a status will take it out of
+                            the workflow, but the status will still be available to set manually (Useful for sidelining
+                            tickets, such as "Awaiting More Information")</p>
+                        <b class="pull-left">Status Name</b> <b class="pull-right">Edit / Delete / Workflow</b>
+                        <i class="fa fa-square workflow-start"></i>
+                        <ul class="nav nav-stacked" cdkDropList (cdkDropListDropped)="drop($event)" 
+                                        *ngIf="statusTypes != undefined && statusTypes.length > 0">
+                            <li *ngFor="let item of statusTypes; let i = index" cdkDrag>
+                                <span>
+                                    <i class="fa fa-circle workflow-bullet" [style.color]="item.color" *ngIf="item.isWorkFlow"></i>
+                                    <a class="text-danger pull-right" title="Remove" (click)="removeStatus(item)" ><i class="fa fa-trash"></i> </a>
+                                    <a class="pull-right" title="Edit" (click)="editStatus(item)"><i class="fa fa-edit" style="margin-right:25px;"></i></a>
+
+                                    <i class="fa fa-ellipsis-v text-gray" ></i> <i class="fa fa-circle" [style.color]="item.color"></i> {{item.name}}
+                                </span>
+                            </li>
+                        </ul>
+                        <i class="fa fa-caret-down workflow-end"></i>
+                    </div>
+                    <div class="card-footer">
+                        <form name="addStatusForm" (ngSubmit)="addStatus(addStatusForm)" #addStatusForm="ngForm">
+                            <div class="form-group input-group">
+                                <label>Add Status</label>
+                                <div class="input-group">
+                                    <input type="text" [(ngModel)]="newStatus" name="newStatus" (ngModelChange)="doFilter()"
+                                        #newStatusControl="ngModel" class="form-control" maxLength="25" 
+                                        placeholder="Completed" [matAutocomplete]="auto" trim="blur" oninput="this.value = this.value.replace(/[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}|^ /g,'')" />
+                                    <mat-autocomplete #auto="matAutocomplete">
+                                        <mat-option *ngFor="let status of filterOtherFormStatuslist" [value]="status">
+                                            {{status}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                    <span class="input-group-btn">
+                                        <!-- <button type="submit" class="btn btn-primary"  (disabled)="!newStatus.length || statusExists(newStatus)">Add</button> -->
+                                        <button type="submit" class="btn btn-primary"  [disabled]="newStatusControl.value == ''">Add</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <i *ngIf="newStatus != '' && newStatus != undefined">Action Label: {{newStatus}} </i>
+                        </form>
+                    </div>
+                </div> <!-- general form elements -->
+            </div> <!-- Left Column -->
+            <div class="col-md-12 col-sm-6 col-lg-6 col-xl-4 offset-xl-2">
+                <div class="card card-theme">
+                    <div class="card-header with-border">
+                        <h3 class="card-title">All Form Statuses</h3>
+                    </div>
+                    <div class="card-footer no-padding allform_status">
+                        <ul class="nav nav-stacked">   
+                            <ng-container *ngFor = "let item of allStatus" >
+                                <li  *ngIf="item.forms.length > 0">
+                                    <a class="clearfix">
+                                        {{item.name}}
+                                        <span *ngFor = "let form of item.forms" class="pull-right badge ml5" [style.background-color]= "form.color" >{{form.name}}</span>
+                                    </a>
+                                </li>
+                            </ng-container>                                                     
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- class="row-flex" -->
+    </section>
+</div>

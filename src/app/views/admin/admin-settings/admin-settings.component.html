@@ -1,0 +1,228 @@
+<div id="adminsettings" *ngIf="tenant!=undefined" class="{{themeColor}} sidebar-collapse">
+  <form name="tenantAdminForm" (ngSubmit)="updateTenant(tenantAdminForm)" #tenantAdminForm="ngForm">
+    <div class="clearfix mb15">
+      <button type="submit" class="btn btn-primary pull-right">
+        Save Changes
+      </button>
+      <h2 align="center"> {{ tenant.tenant.name }} Settings</h2>
+    </div>
+
+    <div class="alert alert-danger mb20" *ngIf="submitted && message">
+      <p><i class="icon fa fa-warning" *ngIf="message"></i> {{message}}</p>
+    </div>
+    <div class="row">
+      <!-- left column -->
+      <div class="col-12 col-sm-12 col-lg-12 col-xl-6">
+
+        <div class="card card-theme">
+          <div class="card-header with-border">
+            <h3 class="box-title">Workspace Settings</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <div class="card-body">
+            <div class="form-group row">
+              <label for="name" class="col-md-4 col-form-label text-md-left">Name *
+              </label>
+            </div>
+            <div class="form-group" [class.has-error]="tenantname.invalid && tenantname.touched">
+                <input type="text" [(ngModel)]="tenant.tenant.name" name="name" maxlength="100" #tenantname="ngModel"
+                  oninput="this.value = this.value.replace(/[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}|^ /g,'')"
+                  class="form-control"  trim="blur"  required />
+                <span style="color:red" class="help-block" *ngIf="tenantname.errors?.required && tenantname.touched">
+                  Name is Required
+                </span>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label for="name" class="col-md-12 col-form-label text-md-left">Enable Email Notifications:</label>
+                <div class="col-md-6">
+                  <app-toggle [isChecked]="tenant.tenant.tenantSettings.settings.emailNotification"
+                    (click)="makeformDirty()"
+                    (notifyChanged)="tenant.tenant.tenantSettings.settings.emailNotification = $event">
+                  </app-toggle>
+                </div>
+              </div>
+              <div class="col-md-6">
+                  <label for="name" class="col-md-12 col-form-label text-md-left">Remove Notifications when Visited:
+                  </label>
+                <div class="col-md-6">
+                  <app-toggle (notifyChanged)="tenant.tenant.tenantSettings.settings.clearOnVisit = $event"
+                    (click)="makeformDirty()" [isChecked]="tenant.tenant.tenantSettings.settings.clearOnVisit">
+                  </app-toggle>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6" *ngIf="tenant.tenant.tenantSettings.settings.registrationInviteOnly">
+                  <label for="name" class="col-md-12 col-form-label text-md-left">Restrict Registration to Domain:
+                  </label>
+                <div class="col-md-6">
+                  <app-toggle [isChecked]="tenant.tenant.tenantSettings.settings.restrictRegistrationToDomain"
+                    (click)="makeformDirty()" (notifyChanged)="onNotifyChange($event)"></app-toggle>
+                </div>
+              </div>
+
+              <div class="col-md-6"
+                *ngIf="tenant.tenant.tenantSettings.settings.registrationInviteOnly && tenant.tenant.tenantSettings.settings.restrictRegistrationToDomain">
+                  <label for="name" class="col-md-12 col-form-label text-md-left">Allowed Registration Domain: *
+                  </label>
+                <div class="col-md-12" [class.has-error]="RegistrationDomain.invalid && RegistrationDomain.touched">
+                  <input type="text" [(ngModel)]="tenant.tenant.tenantSettings.settings.restrictedRegistrationDomain"
+                   oninput="this.value = this.value.replace(/[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}|^ /g,'')"  trim="blur"
+                    name="domain" maxlength="100" #RegistrationDomain="ngModel" class="form-control" required />
+                  <span style="color:red" class="help-block"
+                    *ngIf="RegistrationDomain.errors?.required && RegistrationDomain.touched">
+                    Registration Domain is Required
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                  <label class="col-md-12 col-form-label text-md-left">Enable Invite Only:
+                  </label>
+                <div class="col-md-6">
+                  <app-toggle [isChecked]="tenant.tenant.tenantSettings.settings.registrationInviteOnly"
+                    (click)="makeformDirty()"
+                    (notifyChanged)="tenant.tenant.tenantSettings.settings.registrationInviteOnly = $event">
+                  </app-toggle>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="su || canViewAdminPages" class="form-group row">
+
+              <div *ngIf="su" class="col-md-6">
+                  <label class="col-md-12 col-form-label text-md-left">Tenant Modules (su):
+                  </label>
+                <div class="col-md-12">
+                  <!-- <div class="checkbox" form-control *ngFor="let module of modules; let i = index"> -->
+                  <label class="control-label">
+                    <input type="checkbox" name="custommodule" (change)="onChange($event.target.checked)"
+                      [(ngModel)]="isCustomReport">
+                    custom-report </label>
+                </div>
+              </div>
+              <div *ngIf="su || canViewAdminPages" class="col-md-6">
+                  <label for="name" class="col-md-12 col-form-label text-md-left">Subscription Level:
+                  </label>
+                <div class="col-md-12">
+                  <h5>{{ tierName }}</h5>
+                  <button type="button" class="btn btn-primary" (click)="changeSubscription()">
+                    Change Subscription Level
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Workspace Theme Color -->
+        <div class="card card-theme">
+          <div class="card-header with-border">
+            <h3 class="box-title">Workspace Theme Color</h3>
+          </div>
+
+          <div class="card-body">
+            <ul class="list-unstyled clearfix text-center" *ngIf="tenant != undefined">
+              <li style="display: inline-block; width: 100px; padding: 5px;" *ngFor="let theme of themes">
+                <label style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4); background-color: #ecf0f5;"
+                  class="clearfix full-opacity-hover">
+                  <div>
+                    <span style="display:block; width: 20%; float: left; height: 7px;"
+                      class="{{theme.primary}}-active"></span>
+                    <span style="display:block; width: 80%; float: left; height: 7px;" class="{{theme.primary}}"></span>
+                  </div>
+                  <div>
+                    <span style="display:block; width: 20%; float: left; height: 30px;"
+                      class="{{theme.secondary}}"></span>
+                  </div>
+                  <input type="radio" name="themeColor" value="{{theme.class}}" class="mt10"
+                    [(ngModel)]="tenant.tenant.tenantSettings.settings.themeColor" />
+                </label>
+                <p class="text-center no-margin">{{theme.name}}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-12 col-lg-12 col-xl-6">
+        <div class="card card-theme">
+          <div class="card-header with-border">
+            <h3 class="box-title">LOGO</h3>
+          </div>
+
+          <div class="card-body">
+            <div class="form-group row">
+              <div class="col-md-6 clearfix mb15">
+
+                <div class="logo text-center">
+                  <img src="{{ tenantLogo }}" *ngIf="tenant.tenant.tenantSettings.settings.logoUrl" height="55px" alt="" />
+                  <div *ngIf="!tenant.tenant.tenantSettings.settings.logoUrl">
+                      <h4 class="logo-lg name-header">{{tenant.tenant.name}}</h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 action-buttons">
+                <div class="col-md-12" style="padding-bottom:10px;">
+                  <input id="tenantPhotoId" type="file" id="tenantPhotoId" style="display: none;"
+                    (change)="onFileChange($event)" />
+                </div>
+                <button class="btn btn-default" (click)="openFileBrowser($event)">
+                  Change Logo
+                </button>
+                <button type="button" class="btn btn-default" (click)="removeLogoImage()">
+                  Remove Logo Image
+                </button>
+                <br />
+                <i>The logo will be resized to fit in a 230x42 area</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card card-theme">
+          <div class="card-header with-border">
+            <h3 class="box-title">Announcement Banner</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group row">
+              <label for="name" class="col-md-6 col-form-label text-md-left">Show Announcement on Dashboard
+              </label>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-12">
+                <app-toggle [isChecked]="tenant.tenant.tenantSettings.settings.showAnnouncement"
+                  (click)="markannouncedirty()" (notifyChanged)="onNotifyShowAnnouncementChange($event)"></app-toggle>
+              </div>
+            </div>
+            <div class="form-group row" *ngIf="tenant.tenant.tenantSettings.settings.showAnnouncement">
+              <label for="name" class="col-md-4 col-form-label text-md-left">Announcement Title:</label>
+            </div>
+            <div class="form-group row" *ngIf="tenant.tenant.tenantSettings.settings.showAnnouncement">
+              <div class="col-md-12" [class.has-error]="announcementTitle.invalid && announcementTitle.touched">
+                <input type="text" [(ngModel)]="tenant.tenant.tenantSettings.settings.announcementTitle" name="title"
+                  #announcementTitle="ngModel" class="form-control"
+                  oninput="this.value = this.value.replace(/[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}|^ /g,'')"  trim="blur"/>
+              </div>
+            </div>
+
+            <div class="form-group row" *ngIf="tenant.tenant.tenantSettings.settings.showAnnouncement">
+              <label for="name" class="col-md-4 col-form-label text-md-left"
+                [ngClass]="{ 'invalid': submitted && textareacomp.invalid }">Announcement Body:</label>
+
+              <div class="col-md-12">
+                <editor name="Description" [(ngModel)]="tenant.tenant.tenantSettings.settings.announcementBody"
+                  [ngClass]="{ 'is-invalid': submitted && textareacomp.invalid }" maxLength=5000 id="test"
+                  #textareacomp="ngModel" [init]="tinyMceConfig"></editor>
+                <div *ngIf="submitted && textareacomp.invalid "
+                  [ngClass]="{ 'invalid': submitted && textareacomp.invalid }">
+                  <p>Announcement Body: must not exceed 5000</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div>

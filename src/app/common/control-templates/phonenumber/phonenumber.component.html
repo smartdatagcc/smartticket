@@ -1,0 +1,15 @@
+<div class="form-group">
+    <label [ngClass]="{ 'invalid': formsubmitted && phonecomp.invalid }"> {{control.label}}
+        <span *ngIf="control.required">*</span>
+        <i *ngIf="control.showToolTip === true" class="fa fa-question-circle helptext_toggle"
+            data-toggle="tooltip" data-placement="top" title="{{control.helpText}}" aria-hidden="true"></i>
+    </label>
+    <input class="form-control" name="{{control.name}}_{{index}}" type="tel" [required]="control.required" pattern="^(\+[2-9]\d{1,2}\s)?\(?[2-9]\d{2}\)?[\s.-]\d{3}[\s.-]\d{4}$|^[2-9]\d{9}$"
+        placeholder="Use format xxx-xxx-xxxx or (xxx) xxx-xxxx" [(ngModel)]="control.value" #phonecomp="ngModel"
+        [ngClass]="{ 'is-invalid': formsubmitted && phonecomp.invalid }">
+    <span *ngIf="control.showHelpText === true" class="helptext">{{control.helpText}} </span>
+    <div *ngIf="formsubmitted && phonecomp.invalid " [ngClass]="{ 'invalid': formsubmitted && phonecomp.invalid }">
+        <p *ngIf="phonecomp.errors?.required">{{control.label}} is a required field!</p>
+        <p *ngIf="phonecomp.errors?.pattern">phone number must be a phone number (xxx-xxx-xxxx or (xxx) xxx-xxxx)</p>
+    </div>
+</div>

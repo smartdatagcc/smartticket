@@ -1,0 +1,21 @@
+<div class="col-sm-12" style="padding: 0;">
+  <div class="model-header">
+    <h4 mat-dialog-title>
+      <span class="close" (click)="close()">&times;</span>
+      {{data.control.label}}
+    </h4>
+  </div>
+  <div class="model-body">
+    <div class="signature-pad">
+      <div class="signature-pad--body">
+        <p>Sign Here : </p>
+        <canvas #sPad width="600" height="200" style="touch-action: none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="model-footer text-right">
+        <button class="btn btn-default" (click)="close()">Cancel</button>
+        <button class="btn btn-default" (click)="clear()">Clear</button>
+        <button class="btn btn-primary" (click)="save()">Sign</button>
+  </div>
+</div>

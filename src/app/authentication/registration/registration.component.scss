@@ -1,0 +1,92 @@
+#registration{
+    .registration-height {
+        min-height: 95vh;
+        overflow: auto;
+    }
+
+    .registration-footer {
+        background: #fff;
+        padding: 15px;
+        color: #444;
+        border-top: 1px solid #d2d6de;
+    
+        //transition: transform 0.3s ease-in-out, margin 0.3s ease-in-out;
+        z-index: 820;
+    }
+
+    .validation-error {
+        color: red;
+    }
+
+    .card {        
+        border-radius: 3px;
+        background: #fff;
+        margin: 0px 20px 20px;
+        width: 100%;
+        padding: 10px 20px 25px;
+        overflow-y: auto;
+    }
+ 
+    .main-header{
+        margin-left: 0!important;
+    }
+    
+    .logoimage{
+        width: 90px;
+        margin: 0% 48%;
+        display: unset;
+        height: 57px;
+    }
+    .brand-text{
+        display: inline-block;
+        vertical-align: middle;
+        line-height: normal;
+    }
+    .container{
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        left:50%;
+        transform:translate(-50%, -50%);
+    }
+  
+}
+.bg-theme{
+    height: 100vh;
+}
+.registration-footer{
+    width: 100%;
+    border: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 15px;
+    background-color: #ffffff;
+}
+
+.logo{
+    text-align: center;
+    .brand-text{
+        height: 57px;
+        font-size: 24px;
+        padding-top: 15px;
+    }
+}
+h1{
+    margin: 0;
+}
+
+.card-footer{
+    background: transparent;
+    padding: 0;
+}
+
+.signaturediv {
+    img{
+        width: 100%;
+    }
+}
+
+.card-footer{
+    margin-bottom: 20px;
+}

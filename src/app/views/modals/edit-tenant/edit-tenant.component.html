@@ -1,0 +1,51 @@
+<div class="col-sm-12" style="padding: 0;">
+    <div class="add-title model-header">
+        <button type="button" class="close outline-none" (click)="onCancel()">&times;</button>
+        <h2 class="primary">Edit Tenant</h2>
+    </div>
+    <form [formGroup]="editTenantForm" (ngSubmit)="submit()">
+        <div class="modal-body">
+            <div style="margin-bottom: 1em;">
+                <form-field>
+                    <label>Name: *</label>
+                    <input matInput placeholder="Tenant Name" formControlName="tenantname" required
+                        maxlength=100 class="form-control" (keypress)="omit_special_char($event)">
+                    <span style="color:red" *ngIf="editTenantForm.controls.tenantname.hasError('required')">
+                        Required
+                    </span>
+                </form-field>
+            </div>
+            <div style="margin-bottom: 1em;">
+                <form-field>
+                    <label>Tier:</label>
+                    <select formControlName="tier" class="form-control" (change)="tierChanged($event)">
+                        <option [ngValue]="item.key" *ngFor="let item of tierOptions">
+                            {{item.value}}</option>
+                    </select>
+                </form-field>
+            </div>
+            <div style="margin-bottom: 0.5em;">
+                <form-field>
+                    <label style="margin-right: .5em;">Enable Api Connectivity :</label>
+                    <input formControlName="apiConnectivity" type="checkbox" />
+                </form-field>
+            </div>
+            <div style="margin-bottom: 0.5em;">
+                <form-field>
+                    <label style="margin-right: .5em;">Enable Email Notifications * :</label>
+                    <input formControlName="emailNotification" type="checkbox" checked=true />
+                </form-field>
+            </div>
+            <div style="margin-bottom: 0.5em;">
+                <form-field>
+                    <label style="margin-right: .5em;">Deleted :</label>
+                    <input formControlName="tenantDeleted" type="checkbox" />
+                </form-field>
+            </div>
+        </div>
+        <div class="model-footer text-right">
+            <button type="submit" class="btn btn-primary update-btn" [disabled]="!editTenantForm.valid">Save</button>
+            <button type="button" class="cancel-btn btn btn-default" (click)="onCancel()">Cancel</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,23 @@
+.card-header{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.card-header:focus{
+    outline: transparent;
+}
+.card-footer {
+    .fa{
+        display: block;
+    }
+}
+.card-body {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.nopadding{
+    padding: 0;
+}
+p{
+    margin: 0!important;
+}

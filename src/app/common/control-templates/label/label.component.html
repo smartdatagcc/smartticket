@@ -1,0 +1,6 @@
+<div class="form-group">
+  <label *ngIf="control.showMyLabel" > {{control.label}} <span *ngIf="control.required">*</span></label>
+  <p [title]="control.showHelpText ? control.helpText : ''">
+    <span  [innerHTML]="control.content | sanitizeHtml"></span>
+  </p>
+</div>

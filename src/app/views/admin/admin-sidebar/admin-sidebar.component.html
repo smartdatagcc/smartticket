@@ -1,0 +1,149 @@
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar ">
+  <!-- Brand Logo -->
+  <app-workspace-change [tenants]="tenants" [tenantId]="tenantId"></app-workspace-change>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <!-- Toggle Component -->
+     
+      <ul class="nav nav-pills nav-sidebar flex-column nav-legacy text-sm admin-sidebar-menu" data-widget="treeview" role="menu"
+        data-accordion="true">
+        <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+        <li class="nav-item dashboard">
+          <!-- <a [routerLink]="['./dashboard']" routerLinkActive="active" class="nav-link"> -->
+          <a class="nav-link"  (click)="removeclass()" [routerLink]="['/' +tenantId + '/dashboard']" routerLinkActive="active">
+            <i class="nav-icon fa fa-home"></i>
+            <p>
+              My Dashboard
+            </p>
+          </a>
+        </li>
+        <li class="nav-item" [class.active]="path == ['/' +tenantId + '/admin/settings']">
+          <a (click)="selectedform('')" [routerLink]="['./settings']" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fa fa-gears"></i>
+            <p>
+              Workspace Settings
+            </p>
+          </a>
+        </li>
+
+
+        <li class="nav-item" [class.active]="path == ['/' +tenantId + '/admin/users'] || path == ['/' +tenantId + '/admin/user-controls']">
+          <a (click)="selectedform('')" [routerLink]="['./users']" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fa fa-user"></i>
+            <p>
+              Manage Users
+            </p>
+          </a>
+          <ul class="treeview-menu menu-open">
+            <li class="nav-item no-treeview"  [class.active]="path == ['/' +tenantId + '/admin/user-controls']">
+              <a (click)="selectedform('')" [routerLink]="['./user-controls']" routerLinkActive="active" class="nav-link"><i
+                  class="nav-icon fa fa-wrench"></i>Manage User Fields</a>
+            </li>
+          </ul>
+        </li>
+
+
+        <li class="nav-item" [class.active]="path == ['/' +tenantId + '/admin/roles'] || path == ['/' +tenantId + '/admin/roles/create']" >
+          <a (click)="selectedform('')" [routerLink]="['./roles']" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fa fa-lock"></i>
+            <p>
+              Manage Roles
+            </p>
+          </a>
+          <ul class="treeview-menu menu-open">
+            <li class="nav-item no-treeview" [class.active]="path == ['/' +tenantId + '/admin/roles/create']">
+              <a (click)="selectedform('')" [routerLink]="['./roles/create']" routerLinkActive="active" class="nav-link"><i
+                  class="nav-icon fa fa-plus-circle"></i>Create New Role</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item"  [class.forms-menu]="path == ['/' +tenantId + '/admin/forms/' +currentform]" >
+          <a (click)="selectedform('')" [routerLink]="['./admin-form']" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fa fa-pencil-square"></i>
+            <p>
+              Manage Forms
+            </p>
+          </a>
+          <ul class="treeview-menu ">
+            <li class="nav-item has-treeview" *ngFor="let form of forms" [class.menu-open]="currentform == form.id">
+              <a (click)="selectedform(form)" [routerLink]="['./forms', form.id]" class="nav-link">
+                <i class="nav-icon fa {{form.settings.details.icon}}"></i>
+                <p class="form-names">
+                  {{form.name}}
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a style="font-size:small;" [routerLink]="['./workflow', form.id]" routerLinkActive="active">
+                    Manage Workflow</a>
+                </li>
+                <li class="nav-item has-treeview">
+                  <a style="font-size:small;" [routerLink]="['./controls', form.id]" routerLinkActive="active">
+                    Manage Fields
+                  </a>
+                </li>
+                <li class="nav-item has-treeview">
+                  <a style="font-size:small;" [routerLink]="['./response-template', form.id]" routerLinkActive="active">
+                    Response Templates
+                  </a>
+                </li>
+                <li class="nav-item has-treeview" *ngFor="let module of modules;">
+                  <a style="font-size:small;" [routerLink]="['./',module.key, form.id]" routerLinkActive="active"
+                    *ngIf="module.val && module.val.links.adminform  && (!module.val.permissions.su || su)">
+                    {{module.val.links.adminform}}
+                    </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item has-treeview" [class.active]="path == ['/' +tenantId + '/admin/form/create']" 
+              *ngIf="formLimit > forms.length">
+              <a (click)="selectedform('')" [routerLink]="['./form/create']" routerLinkActive="active"  class="nav-link create-new-form-link" ><i class="nav-icon fa fa-plus-circle"></i>
+                <P>Create New Form</P>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item" [class.active]="path == ['/' +tenantId + '/admin/admin-api']" *ngIf="apiConnectivity">
+          <a (click)="selectedform('')" [routerLink]="['./admin-api']" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fa fa-code"></i>
+            <p>Api Connectivity
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item" [class.active]="path == ['/' +tenantId + '/admin/import-tickets']" *ngIf="su">
+          <a (click)="selectedform('')" [routerLink]="['./import-tickets']" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fa fa-upload"></i>
+            <p>Import Tickets
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item" [class.active]="path == ['/' +tenantId + '/admin/import-users']" *ngIf="su">
+          <a (click)="selectedform('')" [routerLink]="['./import-users']"  routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fa fa-upload"></i>
+            <p>Import Users
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item" [class.active]="path == ['/' +tenantId + '/admin/import-settings']" *ngIf="su">
+          <a (click)="selectedform('')" [routerLink]="['./import-settings']"  routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fa fa-upload"></i>
+            <p>Import/Export Settings
+            </p>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

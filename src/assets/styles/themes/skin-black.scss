@@ -1,0 +1,83 @@
+/*
+ * Skin: Black
+ * -----------
+ */
+//@import "../../bootstrap-less/mixins.less";
+//@import "../../bootstrap-less/variables.less";
+//@import "../variables.less";
+//@import "../mixins.less";
+$screen-header-collapse : 991px;
+@mixin box-shadow($value) {
+  -webkit-box-shadow: $value;
+  -moz-box-shadow: $value;
+  box-shadow: $value;
+}
+
+@mixin  navbar-variant($value) {
+  border: $value;
+}
+
+@mixin logo-variant($value) {
+  color: $value;
+}
+
+@mixin skin-dark-sidebar($value) {
+  color: $value;
+}
+
+/* skin-black navbar */
+.skin-black {
+    //Navbar & Logo
+    .main-header {
+      @include box-shadow(0px 1px 1px rgba(0, 0, 0, 0.05));
+      .navbar-toggle {
+        color: #333;
+      }
+      .navbar-brand {
+        color: #333;
+        border-right: 1px solid #eee;
+      }
+      > .navbar {
+        @include navbar-variant( 1px solid #fff);
+        > .sidebar-toggle {
+          color: #333;
+          border-right: 1px solid #eee;
+        }
+        .navbar-nav {
+          > li > a {
+            border-right: 1px solid #eee;
+          }
+        }
+        .navbar-custom-menu .navbar-nav,
+        .navbar-right {
+          > li {
+            > a {
+              border-left: 1px solid #eee;
+              border-right-width: 0;
+            }
+          }
+        }
+      }
+      > .logo {
+        @include logo-variant(#fff);
+        border-right: 1px solid #eee;
+        @media (max-width: $screen-header-collapse) {
+          @include logo-variant(#222);
+          border-right: none;
+        }
+      }
+  
+      li.user-header {
+        background-color: #222;
+      }
+    }
+  
+    //Content Header
+    .content-header {
+      background: transparent;
+      box-shadow: none;
+    }
+    //Create the sidebar skin
+    @include skin-dark-sidebar(#fff);
+  }
+  

@@ -1,0 +1,123 @@
+<div class="col-sm-12" style="padding: 0;">
+    <div class="model-header">
+        <h2>
+            <span class="close " (click)="onDismiss()">&times;</span>
+            Add Field
+        </h2>
+    </div>
+
+    <form name="addUserControlForm" (ngSubmit)="addUserControl(addUserControlForm)" #addUserControlForm="ngForm">
+        <div class="model-body">
+            <div class="row">
+                <div class="form-group col-md-12 col-xs-12"
+                    [class.has-error]="labelControl.invalid && labelControl.touched">
+                    <label class="control-label"
+                        [ngClass]="{ 'invalid': labelControl.invalid && labelControl.touched}">Label*</label>
+                    <input type="text" [(ngModel)]="newControl.label" name="label" #labelControl="ngModel"
+                        [ngClass]="{ 'is-invalid': labelControl.invalid && labelControl.touched}"
+                        oninput="this.value = this.value.replace(/[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}|^ /g,'')"
+                        trim="blur" class="form-control" (change)="setNewControlName()" maxLength="100" required />
+                    <span style="color:red" class="help-block"
+                        *ngIf="labelControl.errors?.required && labelControl.touched">
+                        Label is Required
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-xs-4">
+                    <div class="form-group">
+                        <label>Type*</label>
+                        <select [(ngModel)]="newControl.type" name="controlType" #controlTypeControl="ngModel"
+                            class="form-control" required>
+                            <option *ngFor="let control of controlTypes; let i = index" [value]="controlTypes[i]">
+                                {{control}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div style="padding: 15px" class="col-md-4 col-xs-4">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label>Requried</label>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-slide-toggle [isChecked]="true" [(ngModel)]="newControl.required" name="isRequired"
+                                #controlRequiredControl="ngModel" color="primary"></mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 15px" class="col-md-4 col-xs-4">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label>Internal Use Only</label>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-slide-toggle [isChecked]="true" [(ngModel)]="newControl.adminOnly"
+                                name="isAdminControl" #isAdminControl="ngModel" color="primary"></mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <label *ngIf="newControl.type === 'toggle'">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>On Label</label>
+                            <input type="text" class="form-control" name="toggleOnLabelContol" [(ngModel)]="onLabel"
+                                maxLength="25" />
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Off Label</label>
+                            <input type="text" class="form-control" name="toggleOffLabelContol" [(ngModel)]="offLabel"
+                                maxLength="25" />
+                        </div>
+                    </div>
+                </div>
+            </label>
+            <div *ngIf="hasOptionsControl(newControl.type)" class="col-xs-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <strong>Options for {{newControl.type}}:</strong>
+                    </div>
+                </div>
+                <div *ngFor="let option of newControl.options;let indexOfOptions=index;" class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="input-group ">
+                                <input type="text" class="form-control" [(ngModel)]="newControl.options[indexOfOptions]"
+                                    maxLength="100" [ngModelOptions]="{standalone: true}" />
+                                <div class="input-group-btn">
+                                    <button type="button" (click)="removeNewOption(newControl, option)"
+                                        class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="input-group ">
+                                <input type="text" class="form-control" placeholder="Option" [(ngModel)]="newOption"
+                                    maxLength="100" [ngModelOptions]="{standalone: true}" />
+                                <div class="input-group-btn">
+                                    <button type="button" (click)="addNewOption(newControl, newOption)"
+                                        class="btn btn-primary">Add </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="add-option-error" *ngIf="newMessage">
+                {{newMessage}}
+            </div>
+        </div>
+        <div align="end" class="model-footer">
+            <button class="btn btn-primary" type="submit">Create</button>
+            <button class="btn btn-default cancel" type="button" (click)="onDismiss()">Cancel</button>
+        </div>
+    </form>
+</div>

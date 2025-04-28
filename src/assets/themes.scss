@@ -1,0 +1,580 @@
+$white : #ffffffff;
+$light : #ffffffff;
+$dark  : #222d32;
+$text-color : white;
+$blue : #3c8dbc;
+$navy : #001F3F;
+$aqua : #00c0ef;
+$purple: #605ca8;
+$green : #00a65a;
+$red : #dd4b39;
+$yellow : #f39c12;
+$maroon: #D81B60;
+$lime : #96c93d;
+$light-blue : #00c0ef;
+$gray : #f4f4f4;
+$fuchsia : #F012BE;
+$orange : #FF851B;
+
+.btn-primary{
+    background-color: $blue;
+    border-color: #367fa9;
+}
+.btn-primary.hover, .btn-primary:active, .btn-primary:hover {
+    background-color: #367fa9;
+    border-color: #204d74;
+}
+
+@mixin theme-sidebar-colors($light-theme) {
+    @if $light-theme == false {
+        color : $light-theme;
+        background: $dark;
+        color: $white;
+    } @else {
+        color : $light-theme;
+        background: $white;
+        color: $dark;
+    }
+  }
+
+  
+  
+@mixin logobg( $temename ) {
+   @if $temename == black {
+        color: $dark;
+    } @else  {
+        color: $white;
+    }
+}
+
+@mixin sidebartextcolor($theme) {
+    @if $theme == light {
+        color: #444;
+    } @else {
+        color: #f4f6f9;
+    }
+}
+@mixin sidebarbg($theme) {
+    @if $theme == light {
+        background-color: #ffffff;
+    } @else {
+        background-color: #222d32;
+    }
+}
+
+
+
+// datk theme main side bar
+@mixin darkthemeMainsidebar($name, $color, $color-alt, $theme){
+    .main-sidebar{
+        .logo{
+            background-color:  darken($color, 5%)!important;
+            @include logobg($name);
+        }
+        .sidebar{
+            //background: $theme;
+            @include sidebarbg($theme);
+            a {
+                @include sidebartextcolor($theme);
+            }
+
+            .togglemyall{
+                label{
+                    @include sidebartextcolor($theme);
+                }
+            }
+            .dashboard{
+                a{
+                    @include sidebartextcolor($theme);
+                    &:active{
+                        @include sidebartextcolor($theme);
+                        border-left: 3px solid $color!important;
+                        color: #fff;
+                        background: #2c3b41;
+                    }
+                }
+                a.active{
+                    @include sidebartextcolor($theme);
+                    border-left: 3px solid $color!important;
+                }
+            }
+            .sidebar-menu {
+                li a{
+                    color: #b8c7ce;
+                }
+                >li.active{
+                    @include sidebartextcolor($theme);
+                    border-left: 3px solid $color!important;
+                    >a{
+                        color: #fff;
+                        background: #2c3b41;
+                    }
+                } 
+            }
+            .admin-sidebar-menu {
+                li{
+                    border-left: 3px solid transparent;
+                    > a{
+                        i{
+                            margin-left: 0!important;
+                        }
+                    }
+                    > ul.treeview-menu{
+                        li.active, li.menu-open{
+                            border-left:transparent!important;
+                            background: #2c3b41;
+                            >a{
+                                color: #fff;
+                                background: transparent;
+                            }
+                        } 
+                    }
+                }
+                >li.active{
+                    @include sidebartextcolor($theme);
+                    border-left: 3px solid $color!important;
+                    >a{
+                        color: #fff;
+                        background: #2c3b41;
+                    }
+                }
+                >li.forms-menu{
+                    @include sidebartextcolor($theme);
+                    border-left: transparent;
+                    >a{
+                        color: #fff;
+                        background: #2c3b41;
+                    }
+                }
+
+                a{
+                    color: #b8c7ce;
+                    &:active, &:hover{
+                        background: #2c3b41;
+                        color: #ffffff;
+                    }
+                }
+            } 
+        } 
+    }
+}
+
+// light theme main side bar
+@mixin lightthemeMainsidebar($name, $color, $color-alt, $theme) {
+    .main-sidebar{
+        .logo{
+            background-color:  darken($color, 5%)!important;
+            @include logobg($name);
+        }
+        .sidebar{
+            //background: $theme;
+            @include sidebarbg($theme);
+            a {
+                @include sidebartextcolor($theme);
+            }
+
+            .togglemyall{
+                label{
+                    color: #777;
+                }
+            }
+            .dashboard{
+                a{
+                    color: #777;
+                    &:active{
+                        color: #000;
+                        background: #f4f4f5;
+                        border-left: 3px solid $color!important;
+                    }
+                }
+                a.active{
+                    color: #000;
+                    background: #f4f4f5;
+                    border-left: 3px solid $color!important;
+                }
+            }
+            .sidebar-menu {
+                li a{
+                    color: #777;
+                }
+                >li.active{
+                    color: #000;
+                    background: #f4f4f5;
+                    border-left: 3px solid $color!important;
+                    >a{
+                        color: #000;
+                        background: #f4f4f5;
+                    }
+                    ul{
+                        li.active{
+                            a{
+                                color: #000;
+                                background: #f4f4f5;
+                            }
+                        }
+                    }
+                } 
+            }
+            .admin-sidebar-menu {
+                li{
+                    border-left: 3px solid transparent;
+                    > a{
+                        i{
+                            margin-left: 0!important;
+                        }
+                    }
+                    > ul.treeview-menu{
+                        li.active, li.menu-open{
+                            border-left:transparent!important;
+                            background: #2c3b41;
+                            >a{
+                                color: #000;
+                                background: #f4f4f5;
+                            }
+                        }
+                        li{
+                            ul{
+                                li{
+                                    color: #000;
+                                    background: #f4f4f5;
+                                   
+                                }
+                            }
+                        }
+                    }
+                }
+                >li.active{
+                    @include sidebartextcolor($theme);
+                    border-left: 3px solid $color!important;
+                    >a{
+                        color: #000;
+                        background: #f4f4f5;
+                    }
+                }
+                >li.forms-menu{
+                    @include sidebartextcolor($theme);
+                    border-left: transparent;
+                    >a{
+                        color: #000;
+                        background: #f4f4f5;
+                    }
+                }
+
+                a{
+                    color: #444;
+                    &:active, &:hover{
+                        color: #000;
+                        background: #f4f4f5;
+                    }
+                }
+            } 
+        }
+    }
+}
+
+.skin-black-light{
+    // $name, $color, $color-alt, $theme, $text-color: #fff
+    // black-light, $light, $gray, light
+    .bg-theme {
+        background-color: $light !important;
+      }
+    .bg-theme-alt {
+        background-color: $gray !important;
+    }    
+    .main-header {
+        background: $light;
+        color: $dark;
+        .nav-link {
+            i{
+                color: $dark;
+            }     
+        }
+        .headerName{
+            color: $dark;
+        }
+        .user-menu{
+            .nav-link {
+                span{
+                    color: $dark;
+                }
+            }
+        }
+      }
+
+      .card.card-theme{
+        border-top-color: $gray;
+      }
+  
+    .card.card-solid.card-theme{
+        border: 1px solid $gray!important;
+        .card-header{
+            background: $gray!important;
+            color: $dark!important;
+            padding: 5px 10px;
+            h3{
+                margin: 0;
+                color: $dark!important;
+            }
+            .card-tools{
+                margin-right: auto;
+                margin-top: 4px;
+                color: $dark!important;
+                button{
+                    padding: 0 10px;
+                    background: transparent;
+                    border: 0;
+                    color: $dark!important;
+                    font-size: 14px;
+
+                    &:active, &:hover{
+                        background: transparent;
+                        border: 0;
+                        outline: transparent;
+                    }
+                }
+                
+            }
+        }
+      }
+     
+      .formslist{
+        .card.card-info{
+            border : 1px solid $gray;
+          .formName{
+            background: $gray;
+            color: $dark;
+            a{
+                font-weight: 500;
+                color: $dark;
+            }
+          }
+        }
+      }
+      .logo{
+        background-color: darken($light, 5%)!important;
+        border-top: 4px solid darken($light, 5%);
+        border-bottom: 4px solid darken($light, 5%);
+        color: $dark;
+      }
+
+      .btn.btn-app.active-ticket-type {
+        border: 2px solid transparent;
+        border-bottom-color: $light;
+      }
+
+      .timeline-item-bgColor {
+        background-color: $light !important;
+        color: $dark;
+      }
+      
+      @include lightthemeMainsidebar(black-light, $light, $gray, light);
+
+      .main-sidebar{
+        .logo{
+            color: $dark!important;
+        }
+    }
+}
+
+// theme 
+@mixin skin($name, $color, $color-alt, $theme, $text-color: #fff){
+    // Add your classes with css colors added
+    .skin-#{$name} {
+
+        .bg-theme {
+            background-color: $color !important;
+          }
+       .bg-theme-alt {
+         background-color: $color-alt !important;
+       }
+       .logo-lg{
+            color: $text-color;
+       }
+   
+      .main-header {
+        background: $color;
+        color: $text-color;
+        .nav-link {
+            i{
+                @include logobg($name);
+            }     
+        }
+        .headerName{
+            @include logobg($name);
+        }
+        .user-menu{
+            .nav-link {
+                span{
+                    @include logobg($name);
+                }
+            }
+        }
+      }
+
+      .card.card-theme{
+        border-top-color: $color-alt;
+      }
+
+      .card.card-solid.card-theme{
+        border: 1px solid $color-alt;
+        .card-header{
+            background: $color-alt;
+            color: $text-color;
+            padding: 5px 10px;
+            h3{
+                margin: 0;
+            }
+            .card-tools{
+                margin-right: auto;
+                margin-top: 4px;
+                button{
+                    padding: 0 10px;
+                    background: transparent;
+                    border: 0;
+                    color: $text-color;
+                    font-size: 14px;
+
+                    &:active, &:hover{
+                        background: transparent;
+                        border: 0;
+                        outline: transparent;
+                    }
+                }
+                
+            }
+        }
+      }
+      
+      .formslist{
+        .card.card-info{
+            border : 1px solid $color-alt;
+          .formName{
+            background: $color-alt;
+            @include logobg($name);
+            a{
+                font-weight: 500;
+                color: $text-color;
+            }
+          }
+        }
+      }
+      .logo{
+        background-color: darken($color, 5%)!important;
+        border-top: 4px solid darken($color, 5%);
+        border-bottom: 4px solid darken($color, 5%);
+        color: $text-color;
+      }
+
+      .btn.btn-app.active-ticket-type {
+        border: 2px solid transparent;
+        border-bottom-color: $color;
+      }
+
+      .timeline-item-bgColor {
+        background-color: $color !important;
+        color: $text-color;
+      }
+
+      @if $theme == light {
+            @include lightthemeMainsidebar($name, $color, $color-alt, $theme);
+      }@else{
+            @include darkthemeMainsidebar($name, $color, $color-alt, $theme);
+      }
+      
+    }
+  }
+
+.bg-blue{
+    background-color : #3c8dbc!important;
+} 
+.bg-blue-active {
+    background-color: #005384!important;
+}
+.bg-navy{
+    background-color : #001F3F!important;
+}
+.bg-navy-active {
+    background-color: #001a35!important;
+}
+.bg-aqua{
+    background-color : #00c0ef!important;
+}
+.bg-aqua-active, .modal-info .modal-footer, .modal-info .modal-header {
+    background-color: #00a7d0!important;
+}
+.bg-purple{
+    background-color : #605ca8!important;
+}
+.bg-purple-active {
+    background-color: #555299!important;
+}
+.bg-green{
+    background-color : #00a65a!important;
+}
+.bg-green-active, .modal-success .modal-footer, .modal-success .modal-header {
+    background-color: #008d4c!important;
+}
+.bg-red{
+    background-color : #dd4b39!important;
+}
+.bg-red-active, .modal-danger .modal-footer, .modal-danger .modal-header {
+    background-color: #d33724!important;
+}
+.bg-yellow{
+    background-color : #f39c12!important;
+}
+.bg-yellow-active, .modal-warning .modal-footer, .modal-warning .modal-header {
+    background-color: #db8b0b!important;
+}
+.bg-maroon{
+    background-color : #D81B60!important;
+}
+.bg-maroon-active {
+    background-color: #ca195a!important;
+}
+.bg-lime{
+    background-color : #96c93d!important;
+}
+.bg-lime-active {
+    background-color: #88b933!important;
+}
+.bg-light-blue{
+    background-color : #00c0ef!important;
+}
+.bg-gray{
+    background-color : #f4f4f4!important;
+}
+.bg-fuchsia{
+    background-color : #F012BE!important;
+}
+.bg-orange{
+    background-color : #FF851B!important;
+}
+.bg-white, .bg-white-active {
+    color: #000;
+    background-color: #fff!important;
+}
+
+
+@include skin(aqua, $aqua, $light-blue, $dark);
+@include skin(blue, $blue, $aqua, $dark);
+@include skin(navy, $navy, $blue, $dark);
+@include skin(green, $green, $lime, $dark);
+@include skin(lime, $lime, $gray, $dark, $dark);
+@include skin(maroon, $maroon, $fuchsia, $dark);
+@include skin(purple, $purple, $aqua, $dark);
+@include skin(red, $red, $yellow, $dark);
+@include skin(yellow, $yellow, $orange, $dark);
+@include skin(black, $light, $gray, $dark, $dark);
+
+@include skin(aqua-light, $aqua, $light-blue, light, $text-color);
+@include skin(blue-light, $blue, $aqua, light);
+@include skin(navy-light, $navy, $blue, light);
+@include skin(green-light, $green, $lime, light);
+@include skin(lime-light, $lime, $gray, light);
+@include skin(maroon-light, $maroon, $fuchsia, light);
+@include skin(purple-light, $purple, $aqua, light);
+@include skin(red-light, $red, $yellow, light);
+@include skin(yellow-light, $yellow, $orange, light);
+@include skin(white-light, $light, $gray, light);
+// @include skin(black-light, $light, $gray, light);

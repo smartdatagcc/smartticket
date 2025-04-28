@@ -1,0 +1,22 @@
+<div class="usersdiv">
+    <div class="card card-theme">
+        <div class="card-header">
+            <h1 class="mb-0">Users</h1>
+        </div>
+        <div class="super-admin-body">
+            <div class="callout callout-warning" *ngIf="currentUserData!= undefined && userLimit <= currentUserData.length">
+                <h4>You have reached the maximum number of active users for your plan. </h4>
+    
+                <p>You will not be able to create new users (including pending users) until you remove some existing users or <a href="http://help.getsmartticket.com/wordpress/forms/change-subscription-level/?tid={{tenantId}}" target="_blank">upgrade your subscription.</a></p>
+            </div>
+            <mat-tab-group animationDuration="0ms" [color]="'transparent'" selectedIndex="0" (selectedTabChange)="changeTab($event)">
+                <mat-tab label="Current Users">
+                    <app-current-users (usersUpdate)="getNewusers($event)" [currentUserData]="currentUserData" *ngIf="tabIndex === 0 && currentUserData != undefined"></app-current-users>
+                </mat-tab>
+                <mat-tab label="Pending Users">
+                    <app-pending-users   [Userroles]="roles" *ngIf="tabIndex === 1 && pendingUserData != undefined"></app-pending-users>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

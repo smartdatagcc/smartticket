@@ -1,0 +1,316 @@
+
+.skin(@name, @color, @color-alt, @light: false, @text-color: #fff) {
+
+  .skin-@{name} {
+    //Navbar
+    .main-header {
+      .navbar {
+        .navbar-variant(@color; @text-color);
+        .sidebar-toggle {
+          color: @text-color;
+          &:hover {
+            background-color: darken(@color, 5%);
+          }
+        }
+        @media (max-width: @screen-header-collapse) {
+          .dropdown-menu {
+            li {
+              &.divider {
+                background-color: rgba(255, 255, 255, 0.1);
+              }
+              a {
+                //color: #fff;
+                &:hover {
+                  background: darken(@color, 5%);
+                }
+              }
+            }
+          }
+        }
+      }
+      //Logo
+      .logo {
+        .logo-variant(darken(@color, 5%));
+        border-top: 4px solid darken(@color, 5%);
+        border-bottom: 4px solid darken(@color, 5%);
+      }
+
+      li.user-header {
+        background-color: @color;
+      }
+    }
+
+    //Content Header
+    .content-header {
+      background: transparent;
+    }
+
+
+    & when (@light = true) {
+      //Create the sidebar skin
+      .skin-light-sidebar-custom(@color);
+    }
+
+    & when (@light = false) {
+      //Create the sidebar skin
+      .skin-dark-sidebar-custom(@color);
+    }
+
+    .skin-blue.layout-top-nav .main-header > .logo {
+      .logo-variant(@color);
+    }
+
+    .bg-theme {
+         background-color: @color !important;
+       }
+    .bg-theme-alt {
+      background-color: @color-alt !important;
+    }
+
+    .box.box-theme {
+      border-top-color: @color-alt;
+    }
+
+    .btn.btn-app.active-ticket-type{
+      border: 2px solid transparent;
+      border-bottom-color: @color;
+    }
+
+    .box.box-solid.box-theme {
+      border: 1px solid @color-alt;
+
+      > .box-header{
+        background: @color-alt;
+        color: @text-color;
+
+        a{
+          color: @text-color;
+        }
+      }
+    }
+
+    .timeline-item-bgColor {
+      background-color: @color !important;
+      color: @text-color;
+    }
+
+  }
+}
+
+
+//AdminLTE mixins
+//===============
+
+//Added 2.1.0
+//Skins Mixins
+
+//Dark Sidebar Mixin
+.skin-dark-sidebar-custom(@link-hover-border-color) {
+  // Sidebar background color (Both .wrapper and .left-side are responsible for sidebar bg color)
+  .wrapper,
+  .main-sidebar,
+  .left-side {
+    background-color: @sidebar-dark-bg;
+  }
+  //User Panel (resides in the sidebar)
+  .user-panel {
+    > .info, > .info > a {
+      color: #fff;
+    }
+  }
+  //Sidebar Menu. First level links
+  .sidebar-menu > li {
+    .transition(border-left-color .3s ease);
+    border-left: 3px solid transparent;
+    //Section Headning
+    &.header {
+      color: lighten(@sidebar-dark-bg, 40%);
+      background: @sidebar-dark-bg;
+    }
+    //links
+    > a{
+      border-left: 3px solid transparent;
+      font-weight: 600;
+    }
+    //Hover and active states
+    &:hover > a, &.active > a{
+      color: @sidebar-dark-hover-color;
+      background: @sidebar-dark-hover-bg;
+      //border-left-color: @link-hover-border-color;
+    }
+    &.active {
+      border-left-color: @link-hover-border-color;
+      > a {
+        font-weight: 600;
+      }
+    }
+    //First Level Submenu
+    > .treeview-menu {
+      //margin: 0 1px;
+
+    }
+  }
+  //All links within the sidebar menu
+  .sidebar a, .sidebar-menu a, .sidebar label {
+    color: @sidebar-dark-color;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  //All submenus
+  .treeview-menu {
+    > li {
+      > a , > label{
+        color: @sidebar-dark-submenu-color;
+      }
+      &.active > a, > a:hover, &.active > label, > label:hover {
+        color: @sidebar-dark-submenu-hover-color;
+
+      }
+      &.active > a {
+        font-weight: 400;
+      }
+      &.active{
+        background: @sidebar-dark-submenu-bg;
+      }
+    }
+  }
+  //The sidebar search form
+  .sidebar-form {
+    .border-radius(3px);
+    border: 1px solid lighten(@sidebar-dark-bg, 10%);
+    margin: 10px 10px;
+    input[type="text"], .btn {
+      box-shadow: none;
+      background-color: lighten(@sidebar-dark-bg, 10%);
+      border: 1px solid transparent;
+      height: 35px;
+      .transition(all @transition-speed @transition-fn);
+    }
+    input[type="text"] {
+      color: #666;
+      .border-radius(2px, 0, 2px, 0);
+      &:focus, &:focus + .input-group-btn .btn {
+        background-color: #fff;
+        color: #666;
+      }
+      &:focus + .input-group-btn .btn {
+        border-left-color: #fff;
+      }
+    }
+    .btn {
+      color: #999;
+      .border-radius(0, 2px, 0, 2px);
+    }
+  }
+}
+
+//Light Sidebar Mixin
+.skin-light-sidebar-custom(@icon-active-color) {
+  // Sidebar background color (Both .wrapper and .left-side are responsible for sidebar bg color)
+  .wrapper,
+  .main-sidebar,
+  .left-side {
+    background-color: @sidebar-light-bg;
+  }
+  .content-wrapper,
+  .main-footer {
+    border-left: 1px solid @gray;
+  }
+  //User Panel (resides in the sidebar)
+  .user-panel {
+    > .info, > .info > a {
+      color: @sidebar-light-color;
+    }
+  }
+  //Sidebar Menu. First level links
+  .sidebar-menu > li {
+    .transition(border-left-color .3s ease);
+    border-left: 3px solid transparent;
+    //Section Headning
+    &.header {
+      color: lighten(@sidebar-light-color, 25%);
+      background: @sidebar-light-bg;
+    }
+    //links
+    > a {
+      border-left: 3px solid transparent;
+      font-weight: 600;
+    }
+    //Hover and active states
+    &:hover > a,
+    &.active > a {
+      color: @sidebar-light-hover-color;
+      background: @sidebar-light-hover-bg;
+    }
+
+    &.active {
+      border-left-color: @icon-active-color;
+      > a {
+        font-weight: 600;
+      }
+    }
+    //First Level Submenu
+    > .treeview-menu {
+      background: @sidebar-light-submenu-bg;
+    }
+  }
+  //All links within the sidebar menu
+  .sidebar a, .sidebar-menu a, .sidebar label {
+    color: @sidebar-light-color;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  //All submenus
+  .treeview-menu {
+    > li {
+      > a , > label{
+        color: @sidebar-light-submenu-color;
+      }
+      &.active > a, > a:hover , &.active > label, > label:hover {
+        color: @sidebar-light-submenu-hover-color;
+      }
+      &.active > a {
+        font-weight: 400;
+      }
+    }
+  }
+  //The sidebar search form
+  .sidebar-form {
+    .border-radius(3px);
+    border: 1px solid @gray;//darken(@sidebar-light-bg, 5%);
+    margin: 10px 10px;
+    input[type="text"],
+    .btn {
+      box-shadow: none;
+      background-color: #fff;//darken(@sidebar-light-bg, 3%);
+      border: 1px solid transparent;
+      height: 35px;
+      .transition(all @transition-speed @transition-fn);
+    }
+    input[type="text"] {
+      color: #666;
+      .border-radius(2px, 0, 2px, 0);
+      &:focus,
+      &:focus + .input-group-btn .btn {
+        background-color: #fff;
+        color: #666;
+      }
+      &:focus + .input-group-btn .btn {
+        border-left-color: #fff;
+      }
+    }
+    .btn {
+      color: #999;
+      .border-radius(0, 2px, 0, 2px);
+    }
+  }
+  @media(min-width: @screen-sm-min) {
+    &.sidebar-mini.sidebar-collapse {
+      .sidebar-menu > li > .treeview-menu {
+        border-left: 1px solid @gray;
+      }
+    }
+  }
+}

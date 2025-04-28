@@ -1,0 +1,47 @@
+.mat-tab-body-wrapper {
+    padding: 0 15px!important;
+}
+
+.usersdiv {
+    background-color: #ffffff;
+}
+.super-admin-body {
+    padding: 0 15px;
+}
+
+.btn-toolbar{
+    width: 100%;
+    margin: 10px 0;
+}
+
+.btn-group button{
+    margin-left: 15px;
+    border-radius: 5px!important;
+}
+
+#advancefilter{
+    margin: 0 10px;
+}
+
+.advancefilter_class{
+    height: 260px;
+    overflow: auto;
+    .dropdown-item{
+        padding: 0;
+        a{
+            padding: 0.25rem 1rem;
+            display: block;
+            cursor: pointer;
+        }
+        .name{
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    }
+    .divider{
+        height: 1px;
+        margin: 9px 0;
+        overflow: hidden;
+        background-color: #e5e5e5;
+    }
+}

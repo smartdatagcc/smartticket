@@ -1,0 +1,24 @@
+<section class="content" id="user-controls">
+    <div class="row user-controls-content">
+        <div class="col-md-12">
+            <div class="card card-theme">
+                <div class="card-header with-border">
+                    <h2 class="card-title"> Response Templates </h2>
+                </div>
+                <div class="card-body">
+                    <form #editControlsForm="ngForm" (ngSubmit)="updateControls(editControlsForm)">
+                        <div class="clearfix">
+                            <button type="button" id="manager_user" (click)=AddResponseTemplate() class="m5 btn btn-primary pull-right">Add Response Template
+                            </button>
+                        </div>
+                       
+                        <div class="card-group">
+                            <app-response-metadata-controls [data]="data" [templateControls]="templateControls" (updateEvent)="updateControls(editControlsForm)"></app-response-metadata-controls>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

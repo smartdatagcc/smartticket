@@ -1,0 +1,57 @@
+<div class="col-sm-12" style="padding: 0;">
+    <div class="model-header">
+        <h4>
+            <span class="close" (click)="onDismiss()">&times;</span>
+            Create {{currentForm.name}} Endpoint
+        </h4>
+    </div>
+   
+    <div class="model-body">
+        <h5 class="mt0">POST {{baseUrl}}/public-api/{{tenantId}}/tickets</h5>
+        <table class="table table-hover table-borderless">
+            <tbody>
+                <tr>
+                    <td align="right" class="keynames">ApiKey</td>
+                    <td>{{tenant.tenantSettings.settings.apiKey}}</td>
+                </tr>
+                <tr>
+                    <td align="right" class="keynames">FormId</td>
+                    <td>{{currentForm.id}}</td>
+                </tr>
+                <tr>
+                    <td align="right" class="keynames">SuccessUrl</td>
+                    <td><em>(Optional Url)</em></td>
+                </tr>
+                <tr>
+                    <td align="right" class="keynames">ErrorUrl</td>
+                    <td><em>(Optional Url)</em></td>
+                </tr>
+                <ng-container *ngFor="let control of currentForm.ticketTemplate.controls">
+                    <tr>
+                        <td align="right" class="keynames">{{control.name}} </td>
+                        <td>
+                            <em>({{control.required ? 'Required' : 'Optional'}} {{getFriendlyType(control.type)}})</em>
+                            {{control.options && control.options.length ? '[ "' + control.options.join('", "') + '" ]' : ''}}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+        <div class="ExampleGroup">
+            <mat-tab-group animationDuration="0ms" [color]="'transparent'">
+                <mat-tab label="Example Form">
+                    <pre class="exampleform"><code>{{exampleCode}}</code></pre>
+                </mat-tab>
+                <mat-tab label="Demo Form Test">
+                    <div class="demotest">
+                        <em>To test this form from here, make sure {{apiDomain}} is in the allowed domains list.</em>
+                        <div [innerHTML]="exampleSafeHTML"></div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+    <div class="model-footer text-right">
+        <button class="btn btn-default" (click)="onDismiss()">Close</button>
+    </div>
+</div>

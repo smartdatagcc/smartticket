@@ -1,0 +1,161 @@
+<div id="create-new-role" class="CreateNewRole">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="card card-theme">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"> Create Role</h3>
+                    </div>
+                    <div class="card-body" *ngIf="newRole != undefined">
+                        <form name="createRolesForm" (ngSubmit)="saveRoles(createRolesForm)" #createRolesForm="ngForm">
+                            <div class="form-group"
+                                [class.has-error]="(roleNameControl.invalid && roleNameControl.touched) || showMessage">
+                                <label> Role Name*</label>
+                                <input type="text" [(ngModel)]="newRole.name" name="name" class="form-control" #roleNameControl="ngModel"
+                                trim="blur"  required maxLength="25" (change)="roleChange()"  oninput="this.value = this.value.replace(/[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}|^ /g,'')"/>
+                                <span style="color:red" class="help-block"
+                                    *ngIf="roleNameControl.errors?.required && roleNameControl.touched">
+                                    Role Name is required.
+                                </span>
+                                <span style="color:red" class="help-block" *ngIf="showMessage">
+                                    Role Name is required. </span>
+                            </div>
+                            <h4>Permissions</h4>
+                            <div class="form-group row">
+                                <div class="col-md-6 mb10">
+                                    <label class="col-md-12 col-form-label text-md-left">Can administrate
+                                        workspace:</label>
+                                    <mat-slide-toggle [(ngModel)]="newRole.permissions.access.CanViewAdminPages"
+                                        name="CanAdminstrateWorkspace" color="primary"
+                                        (change)="onNotifyCanAdministrateWorkspaceChange($event)">
+                                    </mat-slide-toggle>
+                                </div>
+                                <div class="col-md-6 mb10">
+                                    <label class="col-md-12 col-form-label text-md-left">Can edit administrative
+                                        notes:</label>
+
+                                    <mat-slide-toggle [(ngModel)]="newRole.permissions.access.CanEditNotes"
+                                        name="CanEditAdminstrativeNotes" color="primary"
+                                        (change)="onNotifyCanEditAdminNotesChange($event)"></mat-slide-toggle>
+                                </div>
+                                <div class="col-md-6 mb10">
+                                    <label class="col-md-12 col-form-label text-md-left">Can access all tickets and
+                                        internal use fields:</label>
+                                    <span class="toggle-switch" *ngIf=!newRole.permissions.access.CanViewAdminPages>
+                                        <mat-slide-toggle [(ngModel)]="newRole.permissions.access.CanManageTickets"
+                                            name="CanEditManageTickets" color="primary"
+                                            (change)="onNotifyCanAccessAllTicketsChange($event)"></mat-slide-toggle>
+                                    </span>
+                                    <span class="toggle-switch" *ngIf=newRole.permissions.access.CanViewAdminPages>
+                                        <mat-slide-toggle [(ngModel)]="newRole.permissions.access.CanManageTickets"
+                                            name="CanEditManageTickets" disabled=true
+                                            (change)="onNotifyCanAccessAllTicketsChange($event)" color="primary">
+                                        </mat-slide-toggle>
+                                        <span class="knob"><i class="fa fa-lock"></i></span>
+                                    </span>
+                                </div>
+                                <div class="col-md-6 mb10">
+                                    <label class="col-md-12 col-form-label text-md-left">Can view administrative
+                                        notes:</label>
+                                    <span class="toggle-switch" *ngIf=!newRole.permissions.access.CanEditNotes>
+                                        <mat-slide-toggle [(ngModel)]="newRole.permissions.access.CanViewNotes"
+                                            name="CanViewNotes" color="primary"></mat-slide-toggle>
+                                    </span>
+                                    <span class="toggle-switch" *ngIf=newRole.permissions.access.CanEditNotes>
+                                        <mat-slide-toggle [(ngModel)]="newRole.permissions.access.CanViewNotes"
+                                            name="CanViewNotes" disabled=true color="primary"></mat-slide-toggle>
+                                        <span class="knob"><i class="fa fa-lock"></i></span>
+                                    </span>
+                                </div>
+                                <div class="col-md-6 mb10">
+                                    <label  class="col-md-12 col-form-label text-md-left">Can edit ticket details: </label>
+                                    <span class="toggle-switch"
+                                        *ngIf="!newRole.permissions.access.CanViewAdminPages && !newRole.permissions.access.CanManageTickets">
+                                        <mat-slide-toggle [(ngModel)]="newRole.permissions.access.CanEditTickets"
+                                            name="CanEditTickets" color="primary"></mat-slide-toggle>
+                                    </span>
+                                    <span class="toggle-switch"
+                                        *ngIf="newRole.permissions.access.CanViewAdminPages || newRole.permissions.access.CanManageTickets">
+                                        <mat-slide-toggle [(ngModel)]="newRole.permissions.access.CanEditTickets"
+                                            name="CanEditTickets" disabled=true color="primary"></mat-slide-toggle>
+                                        <span class="knob"><i class="fa fa-lock"></i></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <hr>
+                            <h3 class="tm10" style="font-weight: bold;">Form Access</h3>
+                            <div class="card-body table-responsive">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>Form</th>
+                                            <th title="Can view and create tickets">Can View/Create ?</th>
+                                            <th>Can be Assigned ?</th>
+                                            <th>Notifications</th>
+                                            <th *ngIf="showEmail">Email</th>
+                                            <th>In App</th>
+                                        </tr>
+                                        <ng-container *ngFor="let form of newRole.formPermissions; let i = index">
+                                            <tr>
+                                                <td class="center-role">{{form.name}}</td>
+                                                <td class="center-role">
+                                                    <span *ngIf=!newRole.permissions.access.CanViewAdminPages>
+                                                        <mat-slide-toggle [(ngModel)]="form.canCreateTicket"
+                                                            name="CanCreateTickets" color="primary"></mat-slide-toggle>
+                                                    </span>
+                                                    <span *ngIf=newRole.permissions.access.CanViewAdminPages>
+                                                        <mat-slide-toggle [(ngModel)]="form.canCreateTicket"
+                                                            name="CanCreateTickets" color="primary" disabled=true>
+                                                        </mat-slide-toggle>
+                                                        <span class="knob"><i class="fa fa-lock"></i></span>
+                                                    </span>
+                                                </td>
+                                                <td class="center-role">
+                                                    <span *ngIf=form.canCreateTicket>
+                                                        <mat-slide-toggle [(ngModel)]="form.canBeAssigned"
+                                                            name="CanBeAssinged" color="primary"></mat-slide-toggle>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <div>New Comment</div>
+                                                    <div>On Update </div>
+                                                    <div>On Assigned</div>
+                                                </td>
+                                                <td *ngIf="showEmail">
+                                                    <div><input type="checkbox"
+                                                            [(ngModel)]="form.notifications.commentEmail"
+                                                            name="commentEmail"></div>
+                                                    <div><input type="checkbox"
+                                                            [(ngModel)]="form.notifications.updateEmail"
+                                                            name="updateEmail"></div>
+                                                    <div><input type="checkbox"
+                                                            [(ngModel)]="form.notifications.newEmail" name="newEmail">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div><input type="checkbox"
+                                                            [(ngModel)]="form.notifications.commentNotify"
+                                                            name="commentNotify"></div>
+                                                    <div><input type="checkbox"
+                                                            [(ngModel)]="form.notifications.updateNotify"
+                                                            name="updateNotify"></div>
+                                                    <div><input type="checkbox"
+                                                            [(ngModel)]="form.notifications.newNotify" name="newNotify">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary pull-right m10" id="create_role">Create
+                                    Role</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

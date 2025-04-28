@@ -1,0 +1,76 @@
+ @import "../../../../assets/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.css";
+
+.sidebar{
+    overflow-x: hidden;
+}
+.logo {
+    overflow: visible;
+    white-space: nowrap;
+    line-height: 42px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+    height: 57px;
+}
+
+.form-names {
+    max-width: 130px;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    margin: -5px 0!important;
+}
+.admin-sidebar-menu {
+    li{
+        border-left: 3px solid transparent;
+        > a{
+            padding: 12px 5px 12px 15px;
+            font-weight: 700;
+        }
+        > ul.treeview-menu{
+            list-style-type: none;
+            padding: 0;
+            li{
+                border-left: transparent;
+                > a{
+                    padding: 10px 30px;
+                    font-weight: 500;
+                    .nav-icon{
+                        margin-left: 0;
+                    }
+                }
+                ul.nav-treeview{
+                    li{
+                        border-left: transparent;
+                        padding: 5px 10px 5px 25px;
+                        a{
+                            p{
+                                font-size: 0.875rem !important;
+                                margin: 0;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+} 
+
+.create-new-form-link{
+    p{
+        margin: 0;
+    }
+}
+.dropdown{
+    .brand-link{
+        text-align: center;
+        line-height: 32px;
+    }
+}
+
+@media (min-width: 992px) {
+    .form-names {
+        width: auto!important;
+    }
+}
